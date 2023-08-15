@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Lora:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+.p-400{
+    font-family: "Plus Jakarta Sans";
+    font-weight: 400;
+}
+
+.p-500{
+    font-family: "Plus Jakarta Sans";
+    font-weight: 500;
+}
+
+.p-600{
+    font-family: "Plus Jakarta Sans";
+    font-weight: 600;
+}
+
+.p-700{
+    font-family: "Plus Jakarta Sans";
+    font-weight: 700;
+}
+
+.logo{
+    font-family: "Anton";
+}
+
+.swiper-button-prev, .swiper-button-next{
+    color: #2c2c2c !important;
+    background-color: rgb(243, 243, 243);
+    padding: 20px;
+    font-weight: 700 !important;
+    border-radius: 10px;
+}
