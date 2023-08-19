@@ -12,6 +12,7 @@ import ForgotPassword from './screens/Auth/ForgotPassword'
 import VerifyIdentity from './screens/Auth/VerifyIdentity'
 import SecurityCode from './screens/Auth/SecurityCode'
 import CreateAccount from './screens/Auth/CreateAccount'
+import Payment from './screens/Payment'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/auth/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/auth/verify-identity" element={<VerifyIdentity />}></Route>
         <Route path="/auth/security-code" element={<SecurityCode />}></Route>
+        <Route path="/payment" element={<Payment />}></Route>
       </Routes>
     </>
   )
