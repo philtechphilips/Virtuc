@@ -6,9 +6,9 @@ const PaymentContent = () => {
         <div className='px-4 md:px-12 py-6'>
             <div className='flex gap-3'>
                 <p className='p-500 text-gray-400'>Cart</p>
-                <i class="ri-arrow-right-s-line text-gray-400 p-500"></i>
+                <i className="ri-arrow-right-s-line text-gray-400 p-500"></i>
                 <p className='p-500 text-gray-400'>Checkout</p>
-                <i class="ri-arrow-right-s-line text-gray-400 p-500"></i>
+                <i className="ri-arrow-right-s-line text-gray-400 p-500"></i>
                 <p className='p-500 text-gray-800'>Payment</p>
             </div>
 

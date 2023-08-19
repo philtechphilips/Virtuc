@@ -13,6 +13,7 @@ import VerifyIdentity from './screens/Auth/VerifyIdentity'
 import SecurityCode from './screens/Auth/SecurityCode'
 import CreateAccount from './screens/Auth/CreateAccount'
 import Payment from './screens/Payment'
+import ProductDetails from './components/User/Product/ProductDetails'
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/auth/verify-identity" element={<VerifyIdentity />}></Route>
         <Route path="/auth/security-code" element={<SecurityCode />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
+        <Route path="/product-details" element={<ProductDetails />}></Route>
       </Routes>
     </>
   )
