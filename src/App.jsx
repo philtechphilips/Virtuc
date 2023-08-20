@@ -13,7 +13,7 @@ import VerifyIdentity from './screens/Auth/VerifyIdentity'
 import SecurityCode from './screens/Auth/SecurityCode'
 import CreateAccount from './screens/Auth/CreateAccount'
 import Payment from './screens/Payment'
-import ProductDetails from './components/User/Product/ProductDetails'
+import ProductDetails from './screens/ProductDetails'
 
 function App() {
   return (

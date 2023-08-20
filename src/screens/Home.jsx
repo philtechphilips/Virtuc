@@ -9,20 +9,22 @@ import TrendingProducts from '../components/User/Home/TrendingProducts'
 import AllProducts from '../components/User/Home/AllProducts'
 import Footer from '../components/User/Home/Footer'
 import Newsletter from '../components/User/Home/Newsletter'
+import RecentlyViewed from '../components/User/Shop/RecentlyViewed'
 
 const Home = () => {
     return (
-        <>
+        <div className='bg-gray-50'>
             <CTA />
             <NavBar />
-            <Banner />
+            {/* <Banner /> */}
             <CustomerExperience />
             <Categories />
             <TrendingProducts />
             <AllProducts />
+            <RecentlyViewed />
             <Newsletter />
             <Footer />
-        </>
+        </div>
     )
 }
 

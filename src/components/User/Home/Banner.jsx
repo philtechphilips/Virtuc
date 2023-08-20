@@ -35,13 +35,13 @@ const Banner = () => {
 
     return (
         <>
-            <div className='max-w-[1400px] h-[480px] hidden md:block w-full m-auto md:px-10 sm:px-5 relative group'>
+            <div className='max-w-[1400px] h-[480px] hidden md:block w-full m-auto md:px-10 sm:px-5 relative group z-[-100]'>
                 <div
                     style={{ backgroundImage: `url(${bannerSlides[currentIndex].image})` }}
                     className='w-full h-full rounded-lg bg-center bg-cover duration-200 relative'
                 >
 
-                    <div className="absolute top-0 left-0 z-1 w-full h-full bg-black opacity-60 rounded-lg"></div>
+                    <div className="absolute top-0 left-0 z-1 w-full h-full bg-blue-900 opacity-60 rounded-lg"></div>
 
                     <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white z-2">
                         <h1 className="text-white md:text-5xl sm:text-lg text-center p-600 leading-snug w-[800px] mb-10">{`${bannerSlides[currentIndex].title}`}</h1>
