@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 
 const NavBar = () => {
     const [isFixed, setIsFixed] = useState(false);
+    const [isAcountOpen, setIsAccountOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsFixed(window.scrollY > 100);
+            setIsFixed(window.scrollY > 0);
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -15,14 +16,19 @@ const NavBar = () => {
         };
     }, []);
     return (
-        <div className={`h-8  bg-white flex justify-between items-center px-5 md:px-10 py-8 drop-shadow-sm mb-5 ${isFixed ? 'fixed w-full top-0 z-[1000]' : ''}`}>
-            <Link to="/" className='logo text-2xl md:text-4xl text-gray-900'>NOSTRA</Link>
+        <div className={`h-8  bg-white flex justify-between items-center px-5 md:px-10 py-8 drop-shadow-sm mb-5 z-[1000] ${isFixed ? 'fixed w-full top-0' : ''}`}>
+            <Link to="/" className='logo text-xl md:text-2xl text-gray-800'>VirtuC</Link>
 
             <ul className="hidden md:flex justify-between gap-10 items-center">
-                <li className="p-600 text-gray-800"><Link to="/shop">Shop</Link></li>
-                <li className="p-600 text-gray-800"><Link to="/#">Most Wanted</Link></li>
-                <li className="p-600 text-gray-800"><Link to="/#">New Arrival</Link></li>
-                <li className="p-600 text-gray-800"><Link to="/#">Brands</Link></li>
+                <li className="p-500  text-gray-950 relative">
+                    <Link className='pb-5 border-b-[3px] border-gray-950' to="/#">Brands</Link>
+                    {/* <ul className='absolute top-[45px] w-12 h-12 border bg-red-900 z-[1000000]'>
+
+                    </ul> */}
+                </li>
+                <li className="p-500  text-gray-700"><Link to="/shop">Shop</Link></li>
+                <li className="p-500  text-gray-700"><Link to="/#">Most Wanted</Link></li>
+                <li className="p-500  text-gray-700"><Link to="/#">New Arrival</Link></li>
             </ul>
 
             <div className="hidden md:flex items-center gap-10">
@@ -35,9 +41,38 @@ const NavBar = () => {
                     />
                 </form>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 cursor-pointer">
                     <i className="ri-shopping-cart-2-line text-2xl"></i>
-                    <i className="ri-user-3-line text-2xl"></i>
+                    <div className='flex w-full items-center gap-2 z-1000 bg-slate-200 rounded px-4 relative' onClick={() => setIsAccountOpen(!isAcountOpen)}>
+                        <i className="ri-user-3-line text-xl"></i>
+                        <div className='flex items-center'>
+                            <p className='p-600'>Account</p>
+                            <i className="ri-arrow-drop-down-line text-3xl"></i>
+                        </div>
+
+                        <div className={` absolute ${isAcountOpen ? 'flex flex-col' : 'hidden'} gap-4 px-3 py-5 rounded w-48 -mt-3 h-fit z-[1000000] -left-5 bg-white top-[60px]`} style={{ boxShadow: "1px 1px 3px rgba(0, 0, 0, 0.3)" }}>
+                            <div className='bg-gray-300 w-full rounded px-4 py-2 flex items-center justify-center shadow-sm shadow-zinc-400'>
+                                <Link className='p-600'>Sign In</Link>
+                            </div>
+                            <div className='border-b border-b-gray-300'></div>
+                            <div className='flex flex-col'>
+                                <Link className='flex gap-3 items-center hover:bg-gray-100 p-2'>
+                                    <i className="text-lg p-500 ri-user-line"></i>
+                                    <p className='p-500 text-sm'>My Account</p>
+                                </Link>
+
+                                <Link className='flex gap-3 items-center hover:bg-gray-100 p-2'>
+                                    <i className="text-lg ri-luggage-cart-line"></i>
+                                    <p className='p-500 text-sm'>Orders</p>
+                                </Link>
+
+                                <Link className='flex gap-3 items-center hover:bg-gray-100 p-2'>
+                                    <i className="text-lg ri-heart-line"></i>
+                                    <p className='p-500 text-sm'>Saved Items</p>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className="flex items-center gap-4 md:hidden">

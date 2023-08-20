@@ -1,6 +1,4 @@
 import React from 'react'
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { categories } from '../../../assets/data/data';
