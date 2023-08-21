@@ -21,7 +21,7 @@ const CartPage = () => {
 
     return (
         <>
-            <div className='flex flex-col md:flex-row gap-10 items-start p-5 md:p-10'>
+            <div className='flex flex-col md:flex-row gap-10 items-start p-5 md:p-10 mt-20'>
                 <div className='flex flex-col justify-between w-full md:w-3/5'>
                     <div className='flex justify-between items-center w-full'>
                         <h1 className='p-700 text-2xl md:text-3xl'>Cart</h1>

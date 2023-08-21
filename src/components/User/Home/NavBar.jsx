@@ -22,7 +22,7 @@ const NavBar = () => {
     }, []);
     return (
         <>
-            <div className={`h-8  bg-white flex justify-between items-center px-5 md:px-10 py-8 drop-shadow-sm mb-5 z-[1000] ${isFixed ? 'fixed w-full top-0' : ''}`}>
+            <div className={`h-8  bg-white flex justify-between items-center px-5 md:px-10 py-8  mb-5 z-[1000] ${isFixed ? 'fixed w-full top-0' : 'fixed top-8 w-full'}`}>
                 <div className='md:hidden' onClick={showNavbar}>
                     <i className="text-2xl ri-menu-2-line"></i>
                 </div>
@@ -31,10 +31,10 @@ const NavBar = () => {
 
                 <ul className="hidden md:flex justify-between gap-10 items-center">
                     <li className="p-500  text-gray-950 relative">
-                        <Link className='pb-5 border-b-[3px] border-gray-950' to="/#">Brands</Link>
-                        {/* <ul className='absolute top-[45px] w-12 h-12 border bg-red-900 z-[1000000]'>
+                        <Link className='pb-5 border-b-[3px] border-gray-950' to="/#">Categories</Link>
+                        <ul className='absolute top-[45px] w-12 h-12 border bg-white shadow-sm z-[1000000]'>
 
-                    </ul> */}
+                        </ul>
                     </li>
                     <li className="p-500  text-gray-700"><Link to="/shop">Shop</Link></li>
                     <li className="p-500  text-gray-700"><Link to="/#">Most Wanted</Link></li>
@@ -55,8 +55,8 @@ const NavBar = () => {
                         <div className='relative'>
                             <i className="ri-shopping-cart-2-line text-2xl"></i>
                             <div className='absolute top-1 -right-1 flex h-2 w-2'>
-                                <span class="animate-ping absolute h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                <span className="animate-ping absolute h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                             </div>
                         </div>
                         <div className='flex w-full items-center gap-2 z-1000 bg-slate-200 rounded px-4 relative' onClick={() => setIsAccountOpen(!isAcountOpen)}>
@@ -95,8 +95,8 @@ const NavBar = () => {
                     <div className='relative'>
                         <i className="ri-shopping-cart-2-line text-2xl"></i>
                         <div className='absolute top-1 -right-1 flex h-2 w-2'>
-                            <span class="animate-ping absolute h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                            <span className="animate-ping absolute h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </div>
                     </div>
                     <i className="ri-user-3-line text-2xl"></i>
@@ -106,7 +106,7 @@ const NavBar = () => {
 
             <div className={`md:hidden fixed top-0 left-0 w-[90%] min-h-full overflow-y-auto bg-white z-[10000] shadow ${isMobileMenuOpen ? 'translate-y-0' : 'translate-y-[-100vh]'}`}>
                 <div className='flex gap-4 items-center p-5'>
-                    <i class="ri-close-line text-3xl p-600" onClick={showNavbar}></i>
+                    <i className="ri-close-line text-3xl p-600" onClick={showNavbar}></i>
                     <h1 className='logo text-2xl'>Virtuc</h1>
                 </div>
                 <div className='w-full border border-dashed'></div>

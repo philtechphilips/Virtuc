@@ -5,7 +5,7 @@ import { products } from '../../../assets/data/data'
 const AllProducts = () => {
     return (
         <div className='flex flex-col items-center'>
-            <div className='homepage-categories-container bg-white w-full'>
+            <div className='homepage-categories-container w-full'>
                 <div className='flex items-center justify-between'>
                     <h1 className='homepage-categories-container-heading p-600 text-xl md:text-2xl'>All Products</h1>
                 </div>

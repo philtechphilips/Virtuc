@@ -1,6 +1,6 @@
-import bannerImageOne from "../images/pexels-mnz-1639729.jpg"
-import bannerImageTwo from "../images/pexels-gustavo-fring-3865907.jpg"
-import bannerImageThree from "../images/pexels-pixabay-161440.jpg"
+import bannerImageOne from "../images/bluettisliders.png"
+import bannerImageTwo from "../images/defacto-slider.jpg"
+import bannerImageThree from "../images/Nokia.jpg_HJ9W-okhh.jpg"
 
 
 import phone from '../images/icons8-phone-100.png'
