@@ -16,7 +16,7 @@ const Home = () => {
         <div className='bg-gray-50'>
             <CTA />
             <NavBar />
-            {/* <Banner /> */}
+            <Banner />
             <CustomerExperience />
             <Categories />
             <TrendingProducts />

@@ -6,7 +6,7 @@ import 'swiper/css';
 const RecentlyViewed = () => {
   return (
     <div className='flex flex-col items-center'>
-      <div className='homepage-categories-container bg-white w-full'>
+      <div className='homepage-categories-container pb-16 w-full'>
         <div className='flex items-center justify-between'>
           <h1 className='homepage-categories-container-heading p-600 text-xl md:text-2xl'>Recently Viewed</h1>
         </div>
