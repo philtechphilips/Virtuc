@@ -1,8 +1,31 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const email = location.state;
+
+  useEffect(() => {
+    window.onpopstate = editEmail;
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []);
+
+  const editEmail = () => {
+    navigate("/auth/verify-identity", { state:  email });
+  }
+
+  const { login, errors, isSubmitting } = useAuthContext();
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    login({  email, password });
+  };
   return (
     <>
       <div className='w-full flex flex-col justify-center items-center min-h-screen'>
@@ -16,15 +39,15 @@ const Login = () => {
               <label className="p-700 block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2" htmlFor="grid-password">
                 E-mail Address
               </label>
-              <input className="p-400 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="email" disabled value="pelumiisola87@gmail.com" />
+              <input className="p-400 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="email" disabled value={email} />
               <span
                 className="absolute top-9 right-5 p-600 px-2 text-sm py-1 text-red-500 cursor-pointer"
-                onClick={() => { }}>
+                onClick={editEmail}>
                 Edit
               </span>
             </div>
             <div className="w-full px-3 relative">
-              <label className="p-700 block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2" htmlFor="grid-password">
+              <label className="p-700 block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2" htmlFor="grid-password" value={password} onChange={(e) => {setPassword(e.target.value)}}>
                 Password
               </label>
               <input className="p-400 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type={`${isPasswordVisible ? 'text' : 'password'}`} placeholder='Enter your password' />
