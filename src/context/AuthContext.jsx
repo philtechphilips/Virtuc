@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
 
-
+  
   const register = async ({ ...data }) => {
     setErrors([]);
     setIsSubmitting(true);
@@ -86,10 +86,9 @@ export const AuthProvider = ({ children }) => {
       }
       navigate("/");
     } catch (error) {
-      // return console.log(error)
       if (error.response.status === 400) {
-        if (error.response.data.message === "Please confirm your email to login.") {
-          navigate("/auth/security-code")
+        if(error.response.data.message === "Please confirm your email to login."){
+            navigate("/auth/email-verification", {state: {email : data.email}})
         }
         setErrors(error.response.data.message);
         setIsSubmitting(false);
