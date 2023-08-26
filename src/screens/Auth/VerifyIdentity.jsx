@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useAuthContext from '../../context/AuthContext';
 import axios from '../../api/axios';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -7,14 +7,16 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const VerifyIdentity = () => {
   const navigate = useNavigate();
-  let [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const { isSubmitting, setIsSubmitting } = useAuthContext();
   const [error, setError] = useState("");
   const location = useLocation();
-  console.log(location)
-  if(location.state !=null){
-    email = location.state;
-  }
+
+  useEffect(() => {
+    if (location.state != null) {
+      setEmail(location.state);
+    }
+  }, [location.state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

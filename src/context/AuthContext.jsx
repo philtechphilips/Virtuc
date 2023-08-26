@@ -6,7 +6,7 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState("");
   const navigate = useNavigate();
   const [errorsEmail, setErrorsEmail] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
 
-  
+
   const register = async ({ ...data }) => {
     setErrors([]);
     setIsSubmitting(true);
@@ -69,15 +69,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async ({ ...data }) => {
-    setErrors([]);
     setIsSubmitting(true);
     try {
-      const response = await axios.post("/auth/login", data);
-      if (response.status === 201) {
+      const response = await axios.post("/users/login", data);
+      if (response.status === 200) {
         const userResponse = {
-          role: response.data.user.role,
-          email: response.data.user.email,
-          name: response.data.user.username,
+          role: response.data.payload.role,
+          email: response.data.payload.email,
+          first_name: response.data.payload.first_name,
+          last_name: response.data.payload.last_name,
           token: response.data.token,
         };
         setUser(userResponse);
@@ -86,10 +86,15 @@ export const AuthProvider = ({ children }) => {
       }
       navigate("/");
     } catch (error) {
-      // console.log(error.response)
+      // return console.log(error)
       if (error.response.status === 400) {
-        // console.log(error.response.data)
-        setErrors(error.response.data);
+        if (error.response.data.message === "Please confirm your email to login.") {
+          navigate("/auth/security-code")
+        }
+        setErrors(error.response.data.message);
+        setIsSubmitting(false);
+      } else if (error.response.status === 422) {
+        setErrors("Invalid Login Credentials");
         setIsSubmitting(false);
       }
     }
