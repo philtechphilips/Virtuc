@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuthContext from '../../context/AuthContext';
 
-const Login = () => {
+const ResetPassword = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { login, errors, isSubmitting } = useAuthContext();
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ const Login = () => {
     if (location.state != null) {
       setEmail(location.state);
     } else {
-      navigate('/auth/verify-identity');
+      navigate('/auth/security-code');
     }
 
     const handlePopState = () => {
@@ -32,9 +33,9 @@ const Login = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  const editEmail = () => {
-    navigate("/auth/verify-identity", { state: email });
-  }
+//   const editEmail = () => {
+//     navigate("/auth/verify-identity", { state: email });
+//   }
 
 
   const handleSubmit = async (e) => {
@@ -45,8 +46,8 @@ const Login = () => {
   return (
     <div className='w-full flex flex-col justify-center items-center min-h-screen'>
       <div className='flex items-center flex-col mb-7 gap-2 w-[340px] md:w-[400px] px-1 text-sm'>
-        <h1 className='p-700 text-xl'>Welcome back!</h1>
-        <p className='p-500 text-gray-500 text-center'>Log back into your Nostra account..</p>
+        <h1 className='p-700 text-xl'>Reset Password!</h1>
+        <p className='p-500 text-gray-500 text-center'>Enter your new password!</p>
       </div>
       <form className='w-[340px] md:w-[400px]' onSubmit={handleSubmit}>
         {/* Email Input */}
@@ -60,9 +61,6 @@ const Login = () => {
             disabled
             value={email}
           />
-          <span className='absolute top-9 right-5 p-600 px-2 text-sm py-1 text-gray-800 cursor-pointer' onClick={editEmail}>
-            Edit
-          </span>
         </div>
         {errors && <p className='text-red-500 p-500 px-3 mb-3'>{errors}</p>}
         {/* Password Input */}
@@ -81,6 +79,23 @@ const Login = () => {
             {isPasswordVisible ? <i className='ri-eye-line'></i> : <i className='ri-eye-off-line'></i>}
           </span>
         </div>
+
+        <div className='w-full px-3 relative'>
+          <label className='p-700 block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2' htmlFor='grid-password'>
+            Confirm Password
+          </label>
+          <input
+            className='p-400 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+            type={isPasswordVisible ? 'text' : 'password'}
+            placeholder='Enter your password'
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <span className='absolute top-8 right-5 px-2 text-lg py-1 cursor-pointer' onClick={handlePasswordVisibilityToggle}>
+            {isPasswordVisible ? <i className='ri-eye-line'></i> : <i className='ri-eye-off-line'></i>}
+          </span>
+        </div>
+
         <div className='w-full my-3 px-3'>
           <button
             type='submit'
@@ -126,4 +141,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

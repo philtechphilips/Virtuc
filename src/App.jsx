@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import Home from './screens/Home'
 import 'remixicon/fonts/remixicon.css'
@@ -15,6 +14,7 @@ import CreateAccount from './screens/Auth/CreateAccount'
 import Payment from './screens/Payment'
 import ProductDetails from './screens/ProductDetails'
 import EmailVerification from './screens/Auth/EmailVerification'
+import ResetPassword from './screens/Auth/ResetPassword'
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
         <Route path="/auth/login" element={<Login />}></Route>
         <Route path="/auth/create-account" element={<CreateAccount />}></Route>
         <Route path="/auth/forgot-password" element={<ForgotPassword />}></Route>
+        <Route path="/auth/reset-password" element={<ResetPassword />}></Route>
         <Route path="/auth/verify-identity" element={<VerifyIdentity />}></Route>
         <Route path="/auth/security-code" element={<SecurityCode />}></Route>
         <Route path="/auth/email-verification" element={<EmailVerification />}></Route>
