@@ -5,7 +5,7 @@ import axios from '../../api/axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-const SecurityCode = () => {
+const EmailVerification = () => {
     const [verificationCode, setVerificationCode] = useState("");
     const { isSubmitting, setIsSubmitting } = useAuthContext();
     const [error, setError] = useState("");
@@ -13,13 +13,12 @@ const SecurityCode = () => {
     const [resendTokenSuccess, setResendTokenSuccess] = useState("");
     const [email, setEmail] = useState("")
     const location = useLocation();
-    // console.log(location)
     const navigate = useNavigate();
     useEffect(() => {
         if (location.state != null) {
             setEmail(location.state.email);
         } else {
-            navigate("/auth/forgot-password")
+            navigate("/auth/verify-identity")
         }
     }, [location.state]);
 
@@ -27,11 +26,11 @@ const SecurityCode = () => {
         e.preventDefault();
         setIsSubmitting(true)
         try {
-            const response = await axios.post(`${backendUrl}/users/verify-forgot-password`, { token: `${verificationCode}` })
+            const response = await axios.post(`${backendUrl}/users/verify-account`, { token: `${verificationCode}` })
             //   console.log(response)
             setIsSubmitting(false)
             if (response.status === 200) {
-                navigate('/auth/reset-password', {state: email});
+                navigate('/auth/login');
             }
         } catch (e) {
             setIsSubmitting(false)
@@ -119,4 +118,4 @@ const SecurityCode = () => {
     )
 }
 
-export default SecurityCode
+export default EmailVerification
