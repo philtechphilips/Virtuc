@@ -23,14 +23,20 @@ const VerifyIdentity = () => {
     setIsSubmitting(true)
     try {
       const response = await axios.post(`${backendUrl}/users/verify-email`, { email })
+      console.log(response)
       setIsSubmitting(false)
       if (response.status === 200) {
-        navigate('/auth/login', { state: email });
+        if (response.data.payload.isVerified === true) {
+          navigate('/auth/login', { state: email });
+        }else{
+          navigate('/auth/email-verification', { state: { email } });
+        }
+        
       }
     } catch (e) {
       setIsSubmitting(false)
-      if (e.response.status === 400) {
-        setError(e.response.data.errors)
+      if (e.response.status === 404) {
+        navigate('/auth/create-account', { state: { email } });
       } else if (e.response.status === 422) {
         setError(JSON.stringify(e.response.data.message));
         console.log(e.response.data.message)

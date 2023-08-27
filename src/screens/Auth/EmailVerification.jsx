@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import useAuthContext from '../../context/AuthContext';
 import { useState } from 'react';
 import axios from '../../api/axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const EmailVerification = () => {
@@ -12,10 +12,13 @@ const EmailVerification = () => {
     const [resendTokenError, setResendTokenError] = useState("");
     const [resendTokenSuccess, setResendTokenSuccess] = useState("");
     const [email, setEmail] = useState("")
-    const location = useLocation()
+    const location = useLocation();
+    const navigate = useNavigate();
     useEffect(() => {
         if (location.state != null) {
             setEmail(location.state.email);
+        } else {
+            navigate("/auth/verify-identity")
         }
     }, [location.state]);
 
