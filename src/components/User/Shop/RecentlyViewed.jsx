@@ -1,50 +1,72 @@
-import React from 'react'
-import { products } from '../../../assets/data/data'
-import ProductCard from '../Home/Cards/ProductCard'
+import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Scrollbar } from 'swiper/modules'
 import 'swiper/css';
+import 'swiper/css/bundle';
+import product from "../../../assets/images/Mens-Standard-Fit-Deconstructed-Knit-Blazer01-600x764.jpg";
+import productHover from "../../../assets/images/Mens-Standard-Fit-Deconstructed-Knit-Blazer02-600x764.jpg";
+
+
 const RecentlyViewed = () => {
-  return (
-    <div className='flex flex-col items-center'>
-      <div className='homepage-categories-container pb-16 w-full'>
-        <div className='flex items-center justify-between'>
-          <h1 className='homepage-categories-container-heading p-600 text-xl md:text-2xl'>Recently Viewed</h1>
-        </div>
-        <Swiper  loop={true} spaceBetween={10} breakpoints={{  320: {
-                    slidesPerView: 1.2,
-                    spaceBetween: 5, 
-                },640: {
-                    slidesPerView: 4,
-                    spaceBetween: 5, 
-                },1000: {
-                    slidesPerView: 3.7,
-                    spaceBetween: 5, 
-                }, }} className='flex flex-wrap justify-start gap-1 md:gap-4 mt-7 w-full'>
-          {products.map((product, index) => (
-           <SwiperSlide className='w-full' key={index}>
-              <div className='bg-gray-100 rounded-xl md:w-80 mb-4'>
-                <img className='rounded' src={product.image} alt={`Trending Product Image`} />
-                <div className='mt-2 flex flex-col gap-1 justify-between bg-white p-3'>
-                    <div className='flex gap-1 items-center'>
-                        <i className="ri-star-fill text-amber-500 text-sm"></i>
-                        <p className='p-400 text-sm'>4.8</p>
-                        <p className='text-sm'>(750)</p>
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                        <p className='p-400 text-sm text-gray-900'>{product.name}</p>
-                        <div className='flex justify-between items-center'>
-                            <p className='p-600 text-lg text-gray-800'>&#8358; 500 <sup className='text-xs p-400 text-gray-600'>&#8358;300</sup></p>
-                            <button className='bg-[#6FCEAD] rounded-full px-2 py-1 md:px-3 md:py-2'><i className="ri-shopping-cart-2-line text-lg md:text-xl text-[#fff]"></i></button>
-                        </div>
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+    return (
+        <>
+            <div className='w-full py-20'>
+                <div className='pl-5 md:pl-10'>
+                    <div className='flex'>
+                        <p className="p-600 text-2xl">Recently Viewed</p>
                     </div>
                 </div>
+                <Swiper loop={true} modules={[Scrollbar]} scrollbar={{ draggable: true, dragSize: 60 }} spaceBetween={10} breakpoints={{
+                    320: {
+                        slidesPerView: 1.5,
+                        spaceBetween: 10,
+                    }, 640: {
+                        slidesPerView: 4,
+                        spaceBetween: 5,
+                    }, 1000: {
+                        slidesPerView: 4.5,
+                        spaceBetween: 15,
+                    },
+                }} className='mt-3 pl-4 md:pl-10 pr-1'>
+
+                    <SwiperSlide className='flex flex-col w-[300px] gap-1 md:w-36 mb-4 py-5'>
+                        <div className='w-full relative'>
+                            <img
+                                className='rounded w-full item-center'
+                                src={isHovered ? productHover : product}
+                                alt='Product'
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
+                            />
+                            <div className="h-8 w-8 bg-white absolute bottom-2 right-2 rounded-full flex items-center justify-center">
+                                <i className="ri-heart-3-line font-bold text-xl"></i>
+                            </div>
+
+                            <div className="bg-red-500 absolute top-2 left-2 rounded px-2 py-1 flex items-center justify-center">
+                                <p className='text-white p-600 text-xs'>-30%</p>
+                            </div>
+
+                        </div>
+                        <p className='p-400 text-[15px]'>Mens Standard Fit Sweater Fleece Jacket</p>
+                        <div className='flex gap-1'>
+                            <p className='p-400 text-[15px] line-through'>&#8358;3,000</p>
+                            <p className='p-400 text-[15px]'>&#8358;3,000</p>
+                        </div>
+                    </SwiperSlide>
+
+                </Swiper>
             </div>
-         </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-    </div>
-  )
+        </>
+    )
 }
 
 export default RecentlyViewed
