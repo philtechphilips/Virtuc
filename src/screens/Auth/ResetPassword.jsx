@@ -153,12 +153,6 @@ const ResetPassword = () => {
                     </button>
                 </div>
             </form>
-            {/* Forgot Password Link */}
-            <div className='flex items-center mt-5 flex-col gap-2 w-[340px] md:w-[400px] px-1'>
-                <Link to='/auth/forgot-password' className='p-700'>
-                    Forgot Password?
-                </Link>
-            </div>
             {/* Support and Branding */}
             <div className='flex items-center flex-col mt-7 gap-2 w-[340px] md:w-[400px] px-1 text-sm'>
                 <p className='p-500 text-gray-500 text-center'>

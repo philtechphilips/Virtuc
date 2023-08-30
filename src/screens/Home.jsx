@@ -13,10 +13,10 @@ import RecentlyViewed from '../components/User/Shop/RecentlyViewed'
 
 const Home = () => {
     return (
-        <div className='bg-gray-50'>
+        <div className=''>
             <CTA />
-            <NavBar />
-            <Banner />
+            {/* <NavBar />
+            <Banner /> */}
             <CustomerExperience />
             <Categories />
             <TrendingProducts />
