@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import MegaMeuItem from './MegaMeuItem';
 
 const NavBar = () => {
     const [isFixed, setIsFixed] = useState(false);
@@ -30,16 +31,27 @@ const NavBar = () => {
                 <Link to="/" className='logo text-xl md:text-2xl text-gray-800'>VirtuC</Link>
 
                 <ul className="hidden md:flex justify-between gap-10 items-center">
-                    <li className="p-500  text-gray-950 relative">
-                        <Link className='pb-5 border-b-[3px] border-gray-950' to="/#">Categories</Link>
-                        <ul className='absolute top-[45px] w-12 h-12 border bg-white shadow-sm z-[1000000]'>
-
+                    <li className="p-700 text-sm text-gray-950 relative">
+                        <Link className='py-5 hover:border-b-[3px] hover:border-gray-950' to="/#">MEN</Link>
+                        <ul class='menu-dropdown flex gap-5'>
+                            <MegaMeuItem />
                         </ul>
                     </li>
-                    <li className="p-500  text-gray-700"><Link to="/shop">Shop</Link></li>
-                    <li className="p-500  text-gray-700"><Link to="/#">Most Wanted</Link></li>
-                    <li className="p-500  text-gray-700"><Link to="/#">New Arrival</Link></li>
+                    <li className="p-700 text-sm text-gray-950 relative">
+                        <Link  className='py-5 hover:border-b-[3px] hover:border-gray-950' to="/shop">WOMEN</Link>
+                        <ul class='menu-dropdown-women flex gap-5'>
+                            <MegaMeuItem />
+                        </ul>
+                    </li>
+                    <li className="p-700 text-sm text-gray-950 relative">
+                        <Link className='py-5 hover:border-b-[3px] hover:border-gray-950' to="/#">KIDS</Link>
+                        <ul class='menu-dropdown-kid flex gap-5'>
+                            <MegaMeuItem />
+                        </ul>
+                    </li>
+                    <li className="p-500 text-sm text-gray-700"><Link to="/#">Trending</Link></li>
                 </ul>
+
 
                 <div className="hidden md:flex items-center gap-10">
                     <form className="flex items-center bg-gray-100 border border-gray-300 rounded-lg p-2">
