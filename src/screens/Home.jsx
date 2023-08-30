@@ -15,8 +15,8 @@ const Home = () => {
     return (
         <div className=''>
             <CTA />
-            {/* <NavBar />
-            <Banner /> */}
+            <NavBar />
+            {/* <Banner /> */}
             <CustomerExperience />
             <Categories />
             <TrendingProducts />
