@@ -16,7 +16,7 @@ const Home = () => {
         <div className=''>
             <CTA />
             <NavBar />
-            {/* <Banner /> */}
+            <Banner />
             <CustomerExperience />
             <Categories />
             <TrendingProducts />
