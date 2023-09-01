@@ -28,7 +28,7 @@ const NavBar = () => {
                     <i className="text-2xl ri-menu-2-line"></i>
                 </div>
 
-                <Link to="/" className='logo text-xl md:text-2xl text-gray-800'>VirtuC</Link>
+                <Link to="/" className='logo text-xl md:text-2xl text-gray-800'>Nostra</Link>
 
                 <ul className="hidden md:flex justify-between gap-10 items-center">
                     <li className="p-700 text-sm text-gray-950 relative">

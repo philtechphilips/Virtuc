@@ -19,35 +19,19 @@ export const AuthProvider = ({ children }) => {
 
   
   const register = async ({ ...data }) => {
-    setErrors([]);
     setIsSubmitting(true);
+    console.log(data)
     try {
-      const response = await axios.post("/auth/register", data);
-
+      const response = await axios.post("/users/create-account", data);
       if (response.status === 201) {
-        const userResponse = {
-          role: response.data.user.role,
-          email: response.data.user.email,
-          name: response.data.user.username,
-          token: response.data.token,
-        };
-        setUser(userResponse);
-        localStorage.setItem("user", JSON.stringify(userResponse));
         setIsSubmitting(false);
+        navigate("/auth/email-verification", {state: {email : data.email}})
       }
-      navigate("/");
     } catch (error) {
-      // console.log(error.response.data)
-      if (error.response.status === 400) {
-        // console.log(error.response.data)
-        setErrors(error.response.data.errors);
-        setIsSubmitting(false);
-      } else if (error.response.status === 422) {
-        // console.log(error.response.data)
-        setErrors([]);
-        setErrorsEmail(error.response.data.error);
-        setIsSubmitting(false);
-      }
+    setIsSubmitting(false);
+     if (error.response.status === 400) {
+      setErrors(error.response.data.message);
+     }
     }
   };
 
@@ -110,7 +94,8 @@ export const AuthProvider = ({ children }) => {
         setUser,
         login,
         logout,
-        setIsSubmitting
+        setIsSubmitting,
+        setErrors
       }}
     >
       {children}
