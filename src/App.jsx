@@ -15,6 +15,8 @@ import Payment from './screens/Payment'
 import ProductDetails from './screens/ProductDetails'
 import EmailVerification from './screens/Auth/EmailVerification'
 import ResetPassword from './screens/Auth/ResetPassword'
+import GuestRoutes from './protectedRoutes/GuestRoutes'
+import AuthenticatedRoutes from './protectedRoutes/AuthenticatedRoutes'
 
 function App() {
   return (
@@ -22,18 +24,24 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/shop" element={<Shop />}></Route>
-        <Route path="/order-complete" element={<OrderComplete />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
-        <Route path="/auth/login" element={<Login />}></Route>
-        <Route path="/auth/create-account" element={<CreateAccount />}></Route>
-        <Route path="/auth/forgot-password" element={<ForgotPassword />}></Route>
-        <Route path="/auth/reset-password" element={<ResetPassword />}></Route>
-        <Route path="/auth/verify-identity" element={<VerifyIdentity />}></Route>
-        <Route path="/auth/security-code" element={<SecurityCode />}></Route>
-        <Route path="/auth/email-verification" element={<EmailVerification />}></Route>
-        <Route path="/payment" element={<Payment />}></Route>
         <Route path="/product-details" element={<ProductDetails />}></Route>
+
+        <Route element={<GuestRoutes />}>
+          <Route path="/auth/login" element={<Login />}></Route>
+          <Route path="/auth/create-account" element={<CreateAccount />}></Route>
+          <Route path="/auth/forgot-password" element={<ForgotPassword />}></Route>
+          <Route path="/auth/reset-password" element={<ResetPassword />}></Route>
+          <Route path="/auth/verify-identity" element={<VerifyIdentity />}></Route>
+          <Route path="/auth/security-code" element={<SecurityCode />}></Route>
+          <Route path="/auth/email-verification" element={<EmailVerification />}></Route>
+        </Route>
+
+        <Route element={<AuthenticatedRoutes />}>
+          <Route path="/order-complete" element={<OrderComplete />}></Route>
+          <Route path="/payment" element={<Payment />}></Route>
+        </Route>
       </Routes>
     </>
   )

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import apiService from '../../../api/apiRequests';
 import { Link } from 'react-router-dom'
 import MegaMeuItem from './MegaMeuItem';
 
 const NavBar = () => {
     const [isFixed, setIsFixed] = useState(false);
+    const [category, setCategory] = useState([])
     const [isAcountOpen, setIsAccountOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -20,6 +22,19 @@ const NavBar = () => {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
+
+    }, []);
+
+    useEffect(() => {
+        async function fetchMegamenu() {
+            try {
+                const categories = await apiService.fetchCategory();
+                setCategory(categories.data.payload)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchMegamenu()
     }, []);
     return (
         <>
@@ -31,24 +46,14 @@ const NavBar = () => {
                 <Link to="/" className='logo text-xl md:text-2xl text-gray-800'>Nostra</Link>
 
                 <ul className="hidden md:flex justify-between gap-10 items-center">
-                    <li className="p-700 text-sm text-gray-950 relative">
-                        <Link className='py-5 hover:border-b-[3px] hover:border-gray-950' to="/#">MEN</Link>
-                        <ul class='menu-dropdown flex gap-5'>
-                            <MegaMeuItem />
+                {category.map((item, index) => (
+                    <li className="p-700 text-sm text-gray-950 relative" key={index}>
+                        <Link className='py-5 hover:border-b-[3px] hover:border-gray-950' to="/#">{item.category}</Link>
+                        <ul className='menu-dropdown flex gap-5'>
+                            <MegaMeuItem category={item.category} />
                         </ul>
                     </li>
-                    <li className="p-700 text-sm text-gray-950 relative">
-                        <Link  className='py-5 hover:border-b-[3px] hover:border-gray-950' to="/shop">WOMEN</Link>
-                        <ul class='menu-dropdown-women flex gap-5'>
-                            <MegaMeuItem />
-                        </ul>
-                    </li>
-                    <li className="p-700 text-sm text-gray-950 relative">
-                        <Link className='py-5 hover:border-b-[3px] hover:border-gray-950' to="/#">KIDS</Link>
-                        <ul class='menu-dropdown-kid flex gap-5'>
-                            <MegaMeuItem />
-                        </ul>
-                    </li>
+                ))}
                     <li className="p-500 text-sm text-gray-700"><Link to="/#">Trending</Link></li>
                 </ul>
 
