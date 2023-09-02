@@ -19,6 +19,24 @@ const apiService = {
         } catch (error) {
           throw error;
         }
+      },
+
+      megaMenu: async () => {
+        try {
+          const response = await axios.get("/category/fetch-subcategory");
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      fetchCategory: async () => {
+        try {
+          const response = await axios.get("/category");
+          return response;
+        } catch (error) {
+          throw error;
+        }
       }
   };
   
