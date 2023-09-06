@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import apiService from '../../../api/apiRequests';
 import { Link } from 'react-router-dom'
 import MegaMeuItem from './MegaMeuItem';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const NavBar = () => {
     const [isFixed, setIsFixed] = useState(false);
@@ -45,15 +47,17 @@ const NavBar = () => {
 
                 <Link to="/" className='logo text-xl md:text-2xl text-gray-800'>Nostra</Link>
 
-                <ul className="hidden md:flex justify-between gap-10 items-center">
-                {category.map((item, index) => (
-                    <li className="p-700 text-sm text-gray-950 relative" key={index}>
-                        <Link className='py-5 hover:border-b-[3px] hover:border-gray-950' to="/#">{item.category}</Link>
-                        <ul className='menu-dropdown flex gap-5'>
-                            <MegaMeuItem category={item.category} />
-                        </ul>
-                    </li>
-                ))}
+                <ul className="hidden md:flex justify-between gap-10 items-center p-700 relative">
+                    {category.map((item, index) => (
+                        <>
+                            <li className="p-700 text-sm text-gray-950" key={index}>
+                                <Link className='py-5 hover:border-b-[3px] hover:border-gray-950 px-2' to="/#">{item.category}</Link>
+                            </li>
+                            <ul className='menu-dropdown flex gap-5'>
+                                <MegaMeuItem category={item.category} />
+                            </ul>
+                        </>
+                    ))}
                     <li className="p-500 text-sm text-gray-700"><Link to="/#">Trending</Link></li>
                 </ul>
 
@@ -70,42 +74,17 @@ const NavBar = () => {
 
                     <div className="flex items-center gap-4 cursor-pointer">
                         <div className='relative'>
-                            <i className="ri-shopping-cart-2-line text-2xl"></i>
-                            <div className='absolute top-1 -right-1 flex h-2 w-2'>
-                                <span className="animate-ping absolute h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                            </div>
+                            <i className="ri-shopping-bag-line text-2xl"></i>
+
                         </div>
-                        <div className='flex w-full items-center gap-2 z-1000 bg-slate-200 rounded px-4 relative' onClick={() => setIsAccountOpen(!isAcountOpen)}>
-                            <i className="ri-user-3-line text-xl"></i>
-                            <div className='flex items-center'>
-                                <p className='p-600'>Account</p>
-                                <i className="ri-arrow-drop-down-line text-3xl"></i>
-                            </div>
-
-                            <div className={` absolute ${isAcountOpen ? 'flex flex-col' : 'hidden'} gap-4 px-3 py-5 rounded w-48 -mt-3 h-fit z-[1000000] -left-5 bg-white top-[60px]`} style={{ boxShadow: "1px 1px 3px rgba(0, 0, 0, 0.3)" }}>
-                                <div className='bg-gray-300 w-full rounded px-4 py-2 flex items-center justify-center shadow-sm shadow-zinc-400'>
-                                    <Link className='p-600'>Sign In</Link>
-                                </div>
-                                <div className='border-b border-b-gray-300'></div>
-                                <div className='flex flex-col'>
-                                    <Link className='flex gap-3 items-center hover:bg-gray-100 p-2'>
-                                        <i className="text-lg p-500 ri-user-line"></i>
-                                        <p className='p-500 text-sm'>My Account</p>
-                                    </Link>
-
-                                    <Link className='flex gap-3 items-center hover:bg-gray-100 p-2'>
-                                        <i className="text-lg ri-luggage-cart-line"></i>
-                                        <p className='p-500 text-sm'>Orders</p>
-                                    </Link>
-
-                                    <Link className='flex gap-3 items-center hover:bg-gray-100 p-2'>
-                                        <i className="text-lg ri-heart-line"></i>
-                                        <p className='p-500 text-sm'>Saved Items</p>
-                                    </Link>
-                                </div>
-                            </div>
+                        <div className='relative'>
+                            <i className="ri-heart-line text-2xl"></i>
                         </div>
+
+                        <div className='relative'>
+                            <i className="ri-user-settings-line text-2xl"></i>
+                        </div>
+
                     </div>
                 </div>
                 <div className="flex items-center gap-4 md:hidden">
