@@ -19,7 +19,7 @@ const Categories = () => {
     };
     return (
         <>
-            <div className='px-5 md:px-10 pt-20 md:py-20 relative'>
+            <div className='px-5 md:px-10 pt-20 md:pt-20 relative'>
                 <div className='flex'>
                     <p className="p-600 text-2xl">Top Categories</p>
                 </div>
