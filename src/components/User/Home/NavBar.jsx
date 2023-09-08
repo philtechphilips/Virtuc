@@ -10,6 +10,7 @@ const NavBar = () => {
     const [category, setCategory] = useState([])
     const [isAcountOpen, setIsAccountOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
 
     const showNavbar = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -29,10 +30,13 @@ const NavBar = () => {
 
     useEffect(() => {
         async function fetchMegamenu() {
+            setIsLoading(true)
             try {
                 const categories = await apiService.fetchCategory();
                 setCategory(categories.data.payload)
+                setIsLoading(false)
             } catch (error) {
+                setIsLoading(false)
                 console.error(error);
             }
         }
@@ -51,7 +55,7 @@ const NavBar = () => {
                     {category.map((item, index) => (
                         <>
                             <li className="p-700 text-sm text-gray-950" key={index}>
-                                <Link className='py-5 hover:border-b-[3px] hover:border-gray-950 px-2' to="/#">{item.category}</Link>
+                                <Link className={`py-5 hover:border-b-[3px] hover:border-gray-950 ${isLoading ? "px-6" : ""}`} to="/#">{isLoading ? (<Skeleton style={{ zIndex: "10000 !important" }} />) : item.category}</Link>
                             </li>
                             <ul className='menu-dropdown flex gap-5'>
                                 <MegaMeuItem category={item.category} />
