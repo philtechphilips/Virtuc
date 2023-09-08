@@ -10,7 +10,7 @@ const NavBar = () => {
     const [category, setCategory] = useState([])
     const [isAcountOpen, setIsAccountOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
     const showNavbar = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -30,21 +30,20 @@ const NavBar = () => {
 
     useEffect(() => {
         async function fetchMegamenu() {
-            setIsLoading(true)
             try {
                 const categories = await apiService.fetchCategory();
                 setCategory(categories.data.payload)
-                setIsLoading(false)
             } catch (error) {
-                setIsLoading(false)
                 console.error(error);
+            } finally {
+                setIsLoading(false);
             }
         }
         fetchMegamenu()
     }, []);
     return (
         <>
-            <div className={`h-8  bg-white flex justify-between items-center px-5 md:px-10 py-8  mb-5 z-[1000] ${isFixed ? 'fixed w-full top-0' : 'fixed top-8 w-full'}`}>
+            <div className={`h-8  bg-white flex justify-between items-center px-5 md:px-10 py-8  mb-5 z-[1000] ${isFixed ? 'fixed w-full top-0 border-b' : 'fixed top-8 w-full border-b'}`}>
                 <div className='md:hidden' onClick={showNavbar}>
                     <i className="text-2xl ri-menu-2-line"></i>
                 </div>

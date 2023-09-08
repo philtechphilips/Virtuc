@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import bannerImage from "../../../assets/images/feet-1840619_1280.jpg";
 import apiService from '../../../api/apiRequests';
 import Skeleton from 'react-loading-skeleton';
 
@@ -10,16 +9,17 @@ const Banner = () => {
     useEffect(() => {
         async function fetchBanner() {
             try {
-                setIsLoading(false)
                 const response = await apiService.fetchBanner();
-                setBanner(response.data.payload)
+                setBanner(response.data.payload);
             } catch (error) {
-                setIsLoading(false)
                 console.error(error);
+            } finally {
+                setIsLoading(false);
             }
         }
-        fetchBanner()
+        fetchBanner();
     }, []);
+
     return (
         <div className='px-5 md:px-10'>
             {isLoading ? <Skeleton className="mt-20 py-5 md:py-20 h-56 md:h-[400px] flex w-full relative" /> : (banner.map((item, index) => (

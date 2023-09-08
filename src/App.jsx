@@ -17,6 +17,7 @@ import EmailVerification from './screens/Auth/EmailVerification'
 import ResetPassword from './screens/Auth/ResetPassword'
 import GuestRoutes from './protectedRoutes/GuestRoutes'
 import AuthenticatedRoutes from './protectedRoutes/AuthenticatedRoutes'
+import Account from './screens/Account'
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route element={<AuthenticatedRoutes />}>
           <Route path="/order-complete" element={<OrderComplete />}></Route>
           <Route path="/payment" element={<Payment />}></Route>
+          <Route path="/my-account" element={<Account />}></Route>
         </Route>
       </Routes>
     </>
