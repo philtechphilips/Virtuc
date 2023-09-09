@@ -7,6 +7,7 @@ import apiService from '../../../api/apiRequests'
 import { useEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import OrderHistory from './OrderHistory'
+import Wishlist from './Wishlist'
 
 const UserAccount = () => {
     const [section, setSection] = useState("overview");
@@ -109,9 +110,9 @@ const UserAccount = () => {
                         <OrderHistory />
                     </div>
                 )}
-                {section === 'discussion' && (
+                {section === 'wishlist' && (
                     <div className='mt-5 p-4'>
-                        <ProductDiscussion />
+                        <Wishlist />
                     </div>
                 )}
             </div>
