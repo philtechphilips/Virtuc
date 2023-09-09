@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import EditDetails from './AccountOverview/EditDetails'
 
 const AccountOverView = () => {
+    const [isEditAccount, setIsEditAccount] = useState(false)
     return (
         <>
             <div className='border mt-10 px-5 py-5 rounded-md'>
@@ -17,7 +19,7 @@ const AccountOverView = () => {
                     <p className='p-400 uppercase text-[15px]'>Male</p>
                     <p className='p-400 uppercase text-[15px]'>1993-09-03</p>
                     <p className='p-400 uppercase text-[15px]'>pelumiisola87@gmail.com</p>
-                    <Link className='p-600 uppercase underline text-gray-950 text-[15px] hover:bg-gray-900 hover:text-white w-fit'>EDIT</Link>
+                    <Link onClick={() => setIsEditAccount(true)} className='p-600 uppercase underline text-gray-950 text-[15px] hover:bg-gray-900 hover:text-white w-fit'>EDIT</Link>
                 </div>
 
                 <div className='flex flex-col gap-2 mb-5'>
@@ -33,6 +35,9 @@ const AccountOverView = () => {
                         <i className="ri-arrow-right-line"></i>
                     </Link>
                 </div>
+                {isEditAccount && (<div className='absolute bg-gray-900 bg-opacity-70 top-0 left-0 z-[1000] w-full h-[1520px]'></div>)}
+                <EditDetails onClose={() => setIsEditAccount(false)} open={isEditAccount} />
+
             </div>
         </>
     )
