@@ -105,7 +105,7 @@ const UserAccount = () => {
                     <AccountOverView isLoading={isLoading} userProfile={user} />
                 )}
                 {section === 'orderHistory' && (
-                    <div className='mt-5 p-4 border rounded'>
+                    <div className='mt-5 p-2 md:p-4 border rounded'>
                         <OrderHistory />
                     </div>
                 )}
