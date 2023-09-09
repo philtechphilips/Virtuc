@@ -1,6 +1,4 @@
 import React from 'react'
-import ProductDetailsCard from '../Product/Cards/ProductDetailsCard'
-import ProductRatings from '../Product/Cards/ProductRatings'
 import ProductDiscussion from '../Product/Cards/ProductDiscussion'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useState } from 'react'
@@ -8,6 +6,7 @@ import AccountOverView from './AccountOverView'
 import apiService from '../../../api/apiRequests'
 import { useEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
+import OrderHistory from './OrderHistory'
 
 const UserAccount = () => {
     const [section, setSection] = useState("overview");
@@ -72,10 +71,10 @@ const UserAccount = () => {
                     </SwiperSlide>
 
                     <SwiperSlide
-                        className={`cursor-pointer flex gap-2 justify-center pb-5 w-1/3 border-b-[3px] ${section === 'ratings' ? 'border-gray-800' : ''}`}
-                        onClick={() => handleSectionChange('ratings')}
+                        className={`cursor-pointer flex gap-2 justify-center pb-5 w-1/3 border-b-[3px] ${section === 'orderHistory' ? 'border-gray-800' : ''}`}
+                        onClick={() => handleSectionChange('orderHistory')}
                     >
-                        <h1 className={`p-500 text-gray-600 md:text-lg text-center ${section === 'ratings' ? 'text-gray-800 p-700' : ''}`}>Order History</h1>
+                        <h1 className={`p-500 text-gray-600 md:text-lg text-center ${section === 'orderHistory' ? 'text-gray-800 p-700' : ''}`}>Order History</h1>
                     </SwiperSlide>
 
                     <SwiperSlide
@@ -105,9 +104,9 @@ const UserAccount = () => {
                 {section === 'overview' && (
                     <AccountOverView isLoading={isLoading} userProfile={user} />
                 )}
-                {section === 'ratings' && (
+                {section === 'orderHistory' && (
                     <div className='mt-5 p-4 border rounded'>
-                        <ProductRatings />
+                        <OrderHistory />
                     </div>
                 )}
                 {section === 'discussion' && (
