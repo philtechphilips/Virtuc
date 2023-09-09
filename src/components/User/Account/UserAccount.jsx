@@ -5,9 +5,31 @@ import ProductDiscussion from '../Product/Cards/ProductDiscussion'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useState } from 'react'
 import AccountOverView from './AccountOverView'
+import apiService from '../../../api/apiRequests'
+import { useEffect } from 'react'
+import Skeleton from 'react-loading-skeleton'
 
 const UserAccount = () => {
     const [section, setSection] = useState("overview");
+
+    const [user, setUser] = useState(null);
+    const savedUser = JSON.parse(localStorage.getItem('user'))
+    const [isLoading, setIsLoading] = useState(true)
+    
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const response = await apiService.fetchAuthUser(savedUser);
+                setUser(response.data.payload)
+                // console.log(response.data.payload)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+        fetchUserProfile()
+    }, []);
 
     const handleSectionChange = (newSection) => {
         setSection(newSection);
@@ -17,12 +39,13 @@ const UserAccount = () => {
             <div className='py-20'>
                 <div className='flex flex-col-reverse pl-5 py-10 border' >
                     <div className='flex flex-col px-3'>
-                        <h1 className='p-700 text-2xl'>HI ISOLA</h1>
-                        <p className='p-500 text-sm'>+234 706 362 3539</p>
+                        <h1 className='p-700 text-2xl uppercase w-40'><span>{isLoading ? <Skeleton /> : `HI ${user.first_name}`}</span></h1>
+                        <p className='p-500 text-sm w-40'>{isLoading ? <Skeleton /> : `${user.phone_number}`}</p>
                     </div>
                     <div className='border-1 w-24 h-24 rounded-full border-gray-100 relative'>
-                        <img className='w-24 h-24 rounded-full border-4 border-white' src='https://res.cloudinary.com/dtwmo6wsb/image/upload/v1694119741/profileImage/tskerufvluxa6geyj2vb.jpg' />
-                        <div className='absolute bg-slate-200 h-7 flex items-center justify-center w-7 -top-0 -right-0 rounded-md'>
+                        {isLoading ? <Skeleton className='w-24 h-24 rounded-full border-4 border-white' /> : (<img className='w-24 h-24 rounded-full border-4 border-white' src={user.profileImgUrl} />)}
+
+                        <div className='absolute bg-slate-200 h-7 flex items-center justify-center w-7 -top-0 -right-0 rounded-md z-[100]'>
                             <i className="ri-pencil-line text-xl"></i>
                         </div>
                     </div>
@@ -80,7 +103,7 @@ const UserAccount = () => {
 
                 {/* Conditionally render section content based on the URL */}
                 {section === 'overview' && (
-                    <AccountOverView />
+                    <AccountOverView isLoading={isLoading} userProfile={user} />
                 )}
                 {section === 'ratings' && (
                     <div className='mt-5 p-4 border rounded'>
