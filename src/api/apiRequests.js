@@ -37,6 +37,15 @@ const apiService = {
         } catch (error) {
           throw error;
         }
+      },
+
+      fetchBanner: async () => {
+        try {
+          const response = await axios.get("/banner");
+          return response;
+        } catch (error) {
+          throw error;
+        }
       }
   };
   

@@ -16,7 +16,6 @@ const MegaMeuItem = ({ category }) => {
         }
         fetchMegamenu()
     }, []);
-    console.log(megaMenu)
     return (
         <>
             <div className='px-20 py-10 w-2/6 border-r'>
