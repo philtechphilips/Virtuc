@@ -46,6 +46,30 @@ const apiService = {
         } catch (error) {
           throw error;
         }
+      },
+
+      fetchAuthUser: async ({ token }) => {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        try {
+          const response = await axios.get("/users/user-profile", {headers});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      updateUserProfile: async ({ token, firstName, lastName, phoneNumber, dob, gender }) => {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        try {
+          const response = await axios.patch("/users/update-profile", {first_name: firstName, last_name: lastName, phone_number: phoneNumber, dob, gender}, {headers});
+          return response;
+        } catch (error) {
+          throw error;
+        }
       }
   };
   
