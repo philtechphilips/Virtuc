@@ -85,7 +85,9 @@ const NavBar = () => {
                         </div>
 
                         <div className='relative'>
-                            <i className="ri-user-settings-line text-2xl"></i>
+                            <Link to="/my-account">
+                            <i className="ri-user-line text-2xl"></i>
+                            </Link>
                         </div>
 
                     </div>
