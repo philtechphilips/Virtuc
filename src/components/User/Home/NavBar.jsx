@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import MegaMeuItem from './MegaMeuItem';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import useAuthContext from '../../../context/AuthContext';
 
 const NavBar = () => {
     const [isFixed, setIsFixed] = useState(false);
@@ -11,6 +12,7 @@ const NavBar = () => {
     const [isAcountOpen, setIsAccountOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
+    const { user } = useAuthContext()
 
     const showNavbar = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -85,9 +87,14 @@ const NavBar = () => {
                         </div>
 
                         <div className='relative'>
-                            <Link to="/my-account">
-                            <i className="ri-user-line text-2xl"></i>
-                            </Link>
+                            {user ?
+                                (<Link to="/my-account" className='flex items-center gap-1'>
+                                    <p className='p-700 text-sm'>Hi, Isola</p>
+                                    <i className="ri-user-line text-xl"></i>
+                                </Link>) : (<Link to="/my-account">
+                                    <i className="ri-user-line text-2xl"></i>
+                                </Link>)
+                            }
                         </div>
 
                     </div>

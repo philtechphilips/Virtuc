@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import OrderHistory from './OrderHistory'
 import Wishlist from './Wishlist'
+import PendingReview from './PendingReview'
 
 const UserAccount = () => {
     const [section, setSection] = useState("overview");
@@ -113,6 +114,11 @@ const UserAccount = () => {
                 {section === 'wishlist' && (
                     <div className='mt-5 p-4'>
                         <Wishlist />
+                    </div>
+                )}
+                 {section === 'review' && (
+                    <div className='mt-5 p-4'>
+                        <PendingReview />
                     </div>
                 )}
             </div>
