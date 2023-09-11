@@ -52,14 +52,14 @@ const NavBar = () => {
 
                 <ul className="hidden md:flex justify-between gap-10 items-center p-700 relative">
                     {category.map((item, index) => (
-                        <>
+                        <div key={index}>
                             <li className="p-700 text-sm text-gray-950" key={index}>
                                 <Link className={`py-5 hover:border-b-[3px] hover:border-gray-950 ${isLoading ? "px-6" : ""}`} to="/#">{isLoading ? (<Skeleton style={{ zIndex: "10000 !important" }} />) : item.category}</Link>
                             </li>
                             <ul className='menu-dropdown flex gap-5'>
                                 <MegaMeuItem category={item.category} />
                             </ul>
-                        </>
+                        </div>
                     ))}
                     <li className="p-500 text-sm text-gray-700"><Link to="/#">Trending</Link></li>
                 </ul>

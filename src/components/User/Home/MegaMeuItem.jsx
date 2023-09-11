@@ -28,7 +28,7 @@ const MegaMeuItem = ({ category }) => {
             </div>
             <div className='px-20 py-10 w-4/6 flex gap-20'>
                 {megaMenu.map((item, index) => (
-                    <>
+                    <React.Fragment key={index}>
                         {item.categoryId.category === category && (
                             <>
                                 {item.categoryId.categoryTypes.map((catType, index) => (
@@ -51,7 +51,7 @@ const MegaMeuItem = ({ category }) => {
                                 ))}
                             </>
                         )}
-                    </>
+                    </React.Fragment>
                 ))
                 }
 
