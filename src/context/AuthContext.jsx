@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import apiService from "../api/apiRequests";
 
 const AuthContext = createContext({});
 
@@ -13,11 +14,43 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem("user"));
+    if (userDetails) {
+      const token = userDetails.token;
+      const userDetailsTokenExpTimestamp = userDetails.tokenExp;
+      const currentTimestampInSeconds = Math.floor(Date.now() / 1000);
+
+      const timeDifferenceInSeconds = userDetailsTokenExpTimestamp - currentTimestampInSeconds;
+      const timeDifferenceInMinutes = timeDifferenceInSeconds / 60;
+
+      if (timeDifferenceInMinutes < 60 && timeDifferenceInMinutes > 0) {
+        const refreshToken = async () => {
+          try {
+            const response = await apiService.refreshToken({ token });
+            const userResponse = {
+              role: response.data.payload.role,
+              email: response.data.payload.email,
+              first_name: response.data.payload.first_name,
+              last_name: response.data.payload.last_name,
+              token: response.data.token,
+              tokenExp: response.data.tokenExp,
+            };
+            setUser(userResponse);
+            localStorage.setItem("user", JSON.stringify(userResponse));
+          } catch (error) {
+            console.log(error)
+          }
+        }
+        refreshToken()
+      } else if (timeDifferenceInMinutes < 0) {
+        localStorage.removeItem("user")
+      }
+    }
+
     setUser(userDetails);
   }, []);
 
 
-  
+
   const register = async ({ ...data }) => {
     setIsSubmitting(true);
     console.log(data)
@@ -25,13 +58,13 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post("/users/create-account", data);
       if (response.status === 201) {
         setIsSubmitting(false);
-        navigate("/auth/email-verification", {state: {email : data.email}})
+        navigate("/auth/email-verification", { state: { email: data.email } })
       }
     } catch (error) {
-    setIsSubmitting(false);
-     if (error.response.status === 400) {
-      setErrors(error.response.data.message);
-     }
+      setIsSubmitting(false);
+      if (error.response.status === 400) {
+        setErrors(error.response.data.message);
+      }
     }
   };
 
@@ -63,6 +96,7 @@ export const AuthProvider = ({ children }) => {
           first_name: response.data.payload.first_name,
           last_name: response.data.payload.last_name,
           token: response.data.token,
+          tokenExp: response.data.tokenExp,
         };
         setUser(userResponse);
         localStorage.setItem("user", JSON.stringify(userResponse));
@@ -71,8 +105,8 @@ export const AuthProvider = ({ children }) => {
       navigate("/");
     } catch (error) {
       if (error.response.status === 400) {
-        if(error.response.data.message === "Please confirm your email to login."){
-            navigate("/auth/email-verification", {state: {email : data.email}})
+        if (error.response.data.message === "Please confirm your email to login.") {
+          navigate("/auth/email-verification", { state: { email: data.email } })
         }
         setErrors(error.response.data.message);
         setIsSubmitting(false);

@@ -70,6 +70,19 @@ const apiService = {
         } catch (error) {
           throw error;
         }
+      },
+
+      refreshToken: async ({ token }) => {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        console.log(token)
+        try {
+          const response = await axios.post("/users/refresh-token", {refreshToken: token});
+          return response;
+        } catch (error) {
+          throw error;
+        }
       }
   };
   
