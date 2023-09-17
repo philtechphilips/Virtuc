@@ -21,7 +21,7 @@ const Categories = () => {
         <>
             <div className='px-5 md:px-10 pt-20 md:pt-20 relative'>
                 <div className='flex'>
-                    <p className="p-600 text-2xl">Top Categories</p>
+                    <p className="p-600 text-2xl">Trending</p>
                 </div>
                 <div className='w-full flex flex-wrap items-start gap-x-3 md:gap-x-5'>
                     <div className='flex flex-col w-[48%] md:w-[300px] gap-1  mb-4 py-2 md:py-5'>

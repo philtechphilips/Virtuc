@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [errorsEmail, setErrorsEmail] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("");
 
   useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem("user"));
@@ -125,6 +126,8 @@ export const AuthProvider = ({ children }) => {
         register,
         errorsEmail,
         isSubmitting,
+        activeCategory,
+        setActiveCategory,
         setUser,
         login,
         logout,

@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import apiService from '../../../api/apiRequests';
 import { Link } from 'react-router-dom'
-import MegaMeuItem from './MegaMeuItem';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import useAuthContext from '../../../context/AuthContext';
 
 const NavBar = () => {
     const [isFixed, setIsFixed] = useState(false);
-    const [category, setCategory] = useState([])
+    const [category, setCategory] = useState([]);
     const [isAcountOpen, setIsAccountOpen] = useState(false);
+    const { activeCategory, setActiveCategory} = useAuthContext();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
-    const { user } = useAuthContext()
-
+    const user = JSON.parse(localStorage.getItem('user'))
     const showNavbar = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen)
     };
@@ -35,6 +34,7 @@ const NavBar = () => {
             try {
                 const categories = await apiService.fetchCategory();
                 setCategory(categories.data.payload)
+                setActiveCategory(categories.data.payload[0].category)
             } catch (error) {
                 console.error(error);
             } finally {
@@ -53,18 +53,34 @@ const NavBar = () => {
                 <Link to="/" className='logo text-xl md:text-2xl text-gray-800'>Nostra</Link>
 
                 <ul className="hidden md:flex justify-between gap-10 items-center p-700 relative">
-                    {category.map((item, index) => (
-                        <div key={index}>
-                            <li className="p-700 text-sm text-gray-950" key={index}>
-                                <Link className={`py-5 hover:border-b-[3px] hover:border-gray-950 ${isLoading ? "px-6" : ""}`} to="/#">{isLoading ? (<Skeleton style={{ zIndex: "10000 !important" }} />) : item.category}</Link>
+                    {isLoading ? (
+                        <>
+                            <Skeleton style={{ zIndex: "10000 !important", padding: "1px 20px" }} />
+                            <Skeleton style={{ zIndex: "10000 !important", padding: "1px 20px" }} />
+                            <Skeleton style={{ zIndex: "10000 !important", padding: "1px 20px" }} />
+                        </>
+                    ) : (
+                        category.map((categoryItem, index) => (
+                            <li className="p-500 text-sm capitalize">
+                                <Link
+                                    key={categoryItem._id} // Assuming each category item has a unique ID
+                                    onClick={() => setActiveCategory(categoryItem.category)}
+                                    className={`py-5 hover:border-b-[2px] ${activeCategory === categoryItem.category
+                                        ? "text-gray-950 p-700 hover:border-gray-950"
+                                        : "text-gray-600 hover:border-gray-600"
+                                        } ${isLoading ? "px-6" : ""}`}
+                                    to="/#"
+                                >
+                                    {categoryItem.category}
+                                </Link>
                             </li>
-                            <ul className='menu-dropdown flex gap-5'>
-                                <MegaMeuItem category={item.category} />
-                            </ul>
-                        </div>
-                    ))}
+                        ))
+                    )}
+
                     <li className="p-500 text-sm text-gray-700"><Link to="/#">Trending</Link></li>
                 </ul>
+
+
 
 
                 <div className="hidden md:flex items-center gap-10">
@@ -87,14 +103,18 @@ const NavBar = () => {
                         </div>
 
                         <div className='relative'>
-                            {user ?
-                                (<Link to="/my-account" className='flex items-center gap-1'>
-                                    <p className='p-700 text-sm'>Hi, Isola</p>
-                                    <i className="ri-user-line text-xl"></i>
-                                </Link>) : (<Link to="/my-account">
+                            {user ? (
+                                <Link to="/my-account" className='flex items-center relative'>
                                     <i className="ri-user-line text-2xl"></i>
-                                </Link>)
-                            }
+                                    <div className='w-5 h-5 bg-yellow-400 rounded-full absolute -top-1 -right-2 animate-bounce flex items-center justify-center'>
+                                        <p className='p-400 text-xs'>1</p>
+                                    </div>
+                                </Link>
+                            ) : (
+                                <Link to="/my-account">
+                                    <i className="ri-user-line text-2xl"></i>
+                                </Link>
+                            )}
                         </div>
 
                     </div>
@@ -157,6 +177,31 @@ const NavBar = () => {
                     </Link>
                 </div>
             </div>
+
+            <div className='flex px-10 gap-5 pb-5 relative top-20'>
+                {isLoading ? (
+                    <>
+                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
+                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
+                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
+                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
+                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
+                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
+                    </>
+                ) : (
+                    category
+                        .filter((item) => item.category === activeCategory)
+                        .map((item) =>
+                            item.categoryTypes.map((type, typeIndex) => (
+                                <Link className='text-sm p-400 text-gray-950' key={typeIndex}>
+                                    {type.type}
+                                </Link>
+                            ))
+                        )
+                )}
+            </div>
+
+
         </>
     )
 }
