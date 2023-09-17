@@ -8,6 +8,8 @@ import { useEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import OrderHistory from './OrderHistory'
 import Wishlist from './Wishlist'
+import PendingReview from './PendingReview'
+import Notification from './Notification'
 
 const UserAccount = () => {
     const [section, setSection] = useState("overview");
@@ -93,10 +95,10 @@ const UserAccount = () => {
                     </SwiperSlide>
 
                     <SwiperSlide
-                        className={`cursor-pointer flex w-1/3 justify-center pb-5 gap-2 border-b-[3px] ${section === 'discussion' ? 'border-gray-800' : ''}`}
-                        onClick={() => handleSectionChange('discussion')}
+                        className={`cursor-pointer flex w-1/3 justify-center pb-5 gap-2 border-b-[3px] ${section === 'notification' ? 'border-gray-800' : ''}`}
+                        onClick={() => handleSectionChange('notification')}
                     >
-                        <h1 className={`p-500 text-gray-600 md:text-lg text-center ${section === 'discussion' ? 'text-gray-800 p-700' : ''}`}>Notifications</h1>
+                        <h1 className={`p-500 text-gray-600 md:text-lg text-center ${section === 'notification' ? 'text-gray-800 p-700' : ''}`}>Notifications</h1>
                     </SwiperSlide>
 
                 </Swiper>
@@ -113,6 +115,16 @@ const UserAccount = () => {
                 {section === 'wishlist' && (
                     <div className='mt-5 p-4'>
                         <Wishlist />
+                    </div>
+                )}
+                 {section === 'review' && (
+                    <div className='mt-5 p-4'>
+                        <PendingReview />
+                    </div>
+                )}
+                 {section === 'notification' && (
+                    <div className='mt-5 p-4'>
+                        <Notification />
                     </div>
                 )}
             </div>
