@@ -34,7 +34,7 @@ const NavBar = () => {
             try {
                 const categories = await apiService.fetchCategory();
                 setCategory(categories.data.payload)
-                setActiveCategory(categories.data.payload[0].category)
+                setActiveCategory(categories.data.payload[1].category)
             } catch (error) {
                 console.error(error);
             } finally {
@@ -79,9 +79,6 @@ const NavBar = () => {
 
                     <li className="p-500 text-sm text-gray-700"><Link to="/#">Trending</Link></li>
                 </ul>
-
-
-
 
                 <div className="hidden md:flex items-center gap-10">
                     <form className="flex items-center bg-gray-100 border border-gray-300 rounded-lg p-2">
@@ -132,7 +129,7 @@ const NavBar = () => {
             </div>
 
 
-            <div className={`md:hidden fixed top-0 left-0 w-[90%] min-h-full overflow-y-auto bg-white z-[10000] shadow ${isMobileMenuOpen ? 'translate-y-0' : 'translate-y-[-100vh]'}`}>
+            <div className={`md:hidden fixed top-0 left-0 w-[90%] min-h-full overflow-y-auto bg-white z-[10000] shadow ${isMobileMenuOpen ? 'translate-y-0' : 'translate-y-[-1000vh]'}`}>
                 <div className='flex gap-4 items-center p-5'>
                     <i className="ri-close-line text-3xl p-600" onClick={showNavbar}></i>
                     <h1 className='logo text-2xl'>Virtuc</h1>
