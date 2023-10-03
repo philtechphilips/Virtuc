@@ -67,7 +67,7 @@ const ProductInfo = () => {
                 </div>
                 <div className='flex flex-col w-full md:w-1/2 mt-2'>
                     <div className='flex justify-between'>
-                        <img src="https://ng.jumia.is/badges/dod/1/138x18.png?0767" className='w-24 h-4'></img>
+                        <p className='p-400'>Clothings</p>
                         <i className="text-[#F59E0B] text-2xl text-right ri-heart-add-line"></i>
                     </div>
                     <h1 className='p-600 text-2xl'>2 In 1 Men's Short Sleeve Shirt & Short Set - White</h1>
@@ -88,74 +88,24 @@ const ProductInfo = () => {
 
                     <div className='w-full border border-dashed mt-5 mb-5'></div>
 
-                    <div className='flex'>
-                        <div className='w-1/2'>
-                            <h1 className='p-600'>Avaliable Sizes</h1>
-                            <div className='flex flex-wrap mt-3 gap-3'>
-                                <label className="flex items-center space-x-2 cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        value="S"
-                                        checked={isChecked}
-                                        onChange={onChange}
-                                        className="hidden"
-                                    />
-                                    <span className="rounded-full px-3 py-1 border border-gray-200 p-600 bg-white">
-                                        S
-                                    </span>
-                                </label>
-
-                                <label className="flex items-center space-x-2 cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        value="S"
-                                        checked={isChecked}
-                                        onChange={onChange}
-                                        className="hidden"
-                                    />
-                                    <span className="rounded-full px-3 py-1 border border-gray-200 p-600 bg-white">
-                                        M
-                                    </span>
-                                </label>
-                                <label className="flex items-center space-x-2 cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        value="S"
-                                        checked={isChecked}
-                                        onChange={onChange}
-                                        className="hidden"
-                                    />
-                                    <span className="rounded-full px-3 py-1 border border-gray-200 p-600 bg-white">
-                                        L
-                                    </span>
-                                </label>
-                                <label className="flex items-center space-x-2 cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        value="S"
-                                        checked={isChecked}
-                                        onChange={onChange}
-                                        className="hidden"
-                                    />
-                                    <span className="rounded-full px-3 py-1 border border-gray-200 p-600 bg-white">
-                                        XL
-                                    </span>
-                                </label>
-                            </div>
+                    <div className='flex gap-4 flex-col md:flex-row'>
+                        <div className='w-full md:w-1/2'>
+                            <h1 className='p-500'>Avaliable Sizes</h1>
+                            <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'>
+                                <option>Small</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+                                <option>Extra Large</option>
+                            </select>
                         </div>
-                        <div className='w-1/2'>
-                            <h1 className='p-600'>Avaliable Color</h1>
-                            <div className='flex mt-3 gap-3'>
-                                <div className='rounded px-3 py-1 border border-gray-200'>
-                                    <p className='p-600 text-lg'>S</p>
-                                </div>
-                                <div className='rounded px-3 py-1 border border-gray-200'>
-                                    <p className='p-600 text-lg'>M</p>
-                                </div>
-                                <div className='rounded px-3 py-1 border border-gray-200'>
-                                    <p className='p-600 text-lg'>L</p>
-                                </div>
-                            </div>
+                        <div className='w-full md:w-1/2'>
+                            <h1 className='p-500'>Avaliable Color</h1>
+                            <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'>
+                                <option>Small</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+                                <option>Extra Large</option>
+                            </select>
                         </div>
                     </div>
 
