@@ -43,7 +43,7 @@ const AllProducts = () => {
                 {product.map((item, index) => (
                     <div key={index}>
                         {item && item.categoryId && item.categoryId.category === activeCategory && (
-                            <Link to="" className='flex flex-col w-[48%] md:w-[300px] gap-1  mb-4 py-2 md:py-5'>
+                            <Link to={`/product-details/${item.slug}`} className='flex flex-col w-full md:w-[300px] gap-1  mb-4 py-2 md:py-5'>
                                 <div className=' relative'>
                                     <img
                                         className='rounded w-full item-center'

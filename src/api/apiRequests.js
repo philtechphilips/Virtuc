@@ -94,9 +94,18 @@ const apiService = {
         }
       },
 
-      fetchProducts: async () => {
+      fetchProducts: async (slug) => {
         try {
-          const response = await axios.get("/product");
+          const response = await axios.get(`/product`);
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      fetchProductDetails: async (slug) => {
+        try {
+          const response = await axios.get(`/product/fetch-product/${slug}`);
           return response;
         } catch (error) {
           throw error;

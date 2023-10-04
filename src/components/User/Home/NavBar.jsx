@@ -61,7 +61,7 @@ const NavBar = () => {
                         </>
                     ) : (
                         category.map((categoryItem, index) => (
-                            <li className="p-500 text-sm capitalize">
+                            <li className="p-500 text-sm capitalize" key={index}>
                                 <Link
                                     key={categoryItem._id} // Assuming each category item has a unique ID
                                     onClick={() => setActiveCategory(categoryItem.category)}
@@ -175,7 +175,7 @@ const NavBar = () => {
                 </div>
             </div>
 
-            <div className='flex px-10 gap-5 pb-5 relative top-20'>
+            <div className='hidden md:flex px-10 gap-5 pb-5 relative top-20'>
                 {isLoading ? (
                     <>
                         <Skeleton className='px-8' style={{ zIndex: "10000" }} />
