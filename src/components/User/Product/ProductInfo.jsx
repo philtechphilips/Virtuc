@@ -53,7 +53,7 @@ const ProductInfo = () => {
 
     return (
         <>
-            <div className='flex flex-col md:flex-row w-full gap-10 mt-10'>
+            <div className='flex flex-col md:flex-row w-full gap-10 mt-3'>
                 <div className='flex flex-col w-full md:w-1/2'>
                     <Swiper loop={true} spaceBetween={10} navigation={true} modules={[Navigation]} grabCursor={true} className='w-full product-images-slider-thumbs'>
                         {
@@ -91,7 +91,7 @@ const ProductInfo = () => {
                     <div className='flex gap-4 flex-col md:flex-row'>
                         <div className='w-full md:w-1/2'>
                             <h1 className='p-500'>Avaliable Sizes</h1>
-                            <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'>
+                            <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
                                 <option>Small</option>
                                 <option>Medium</option>
                                 <option>Large</option>
@@ -100,7 +100,7 @@ const ProductInfo = () => {
                         </div>
                         <div className='w-full md:w-1/2'>
                             <h1 className='p-500'>Avaliable Color</h1>
-                            <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'>
+                            <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
                                 <option>Small</option>
                                 <option>Medium</option>
                                 <option>Large</option>

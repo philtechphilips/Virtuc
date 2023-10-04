@@ -93,6 +93,15 @@ const apiService = {
           throw error;
         }
       },
+
+      fetchProducts: async () => {
+        try {
+          const response = await axios.get("/product");
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
   };
   
   export default apiService;
