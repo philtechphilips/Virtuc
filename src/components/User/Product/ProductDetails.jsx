@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import ProductDiscussion from './Cards/ProductDiscussion';
 import ProductRatings from './Cards/ProductRatings';
 
-const ProductDetails = ({product}) => {
+const ProductDetails = ({product, loading}) => {
     const [section, setSection] = useState("details");
 
     const handleSectionChange = (newSection) => {
@@ -54,7 +54,7 @@ const ProductDetails = ({product}) => {
 
                 {/* Conditionally render section content based on the URL */}
                 {section === 'details' && (
-                    <ProductDetailsCard product={product} />
+                    <ProductDetailsCard product={product} loading={loading} />
                 )}
                 {section === 'ratings' && (
                     <div className='mt-5 p-4 border rounded'>

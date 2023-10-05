@@ -31,7 +31,7 @@ const ProductInfo = ({ product, loading }) => {
                 <div className='flex flex-col w-full md:w-1/2'>
                     {loading ? <Skeleton className='py-96 rounded-lg' /> : (
                         <Swiper loop={true} spaceBetween={10} navigation={true} modules={[Navigation]} grabCursor={true} className='w-full product-images-slider-thumbs'>
-                              {product && product.images &&
+                            {product && product.images &&
                                 product.images.map((item, index) => (
                                     <SwiperSlide key={index} className='w-full'>
                                         <img src={item} className='w-full rounded-lg' alt='product image'></img>
@@ -40,7 +40,7 @@ const ProductInfo = ({ product, loading }) => {
                             }
                         </Swiper>
                     )}
-                    
+
                 </div>
                 <div className='flex flex-col w-full md:w-1/2 mt-2'>
                     <div className='flex justify-between'>
@@ -99,17 +99,24 @@ const ProductInfo = ({ product, loading }) => {
 
                     <div className='flex gap-4 flex-col md:flex-row'>
                         <div className='w-full md:w-1/2'>
-                            <h1 className='p-500'>Avaliable Sizes</h1>
-                            <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
-                                <option defaultValue="" disabled>Select a size</option>
-                                {product
-                                    && product.sizes && product.sizes.map((item, index) => (
-                                        <option key={index}>{item}</option>
-                                    ))}
+                            {loading ? <Skeleton className='py-4' /> : (
+                                <>
+                                    <h1 className='p-500'>Avaliable Sizes</h1>
+                                    <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
+                                        <option defaultValue="" disabled>Select a size</option>
+                                        {product
+                                            && product.sizes && product.sizes.map((item, index) => (
+                                                <option key={index}>{item}</option>
+                                            ))}
 
-                            </select>
+                                    </select>
+                                </>
+                            )}
+
                         </div>
                         <div className='w-full md:w-1/2'>
+                        {loading ? <Skeleton className='py-4' /> : (
+                                <>
                             <h1 className='p-500'>Avaliable Color</h1>
                             <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
                                 <option defaultValue="" disabled>Select a color</option>
@@ -118,6 +125,8 @@ const ProductInfo = ({ product, loading }) => {
                                         <option key={index}>{item}</option>
                                     ))}
                             </select>
+                            </>
+                        )}
                         </div>
                     </div>
 

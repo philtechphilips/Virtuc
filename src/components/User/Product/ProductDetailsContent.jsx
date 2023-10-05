@@ -52,7 +52,7 @@ const ProductDetailsContent = () => {
                 )}
             </div>
             <ProductInfo product={product} loading={isLoading} />
-            <ProductDetails product={product} />
+            <ProductDetails product={product} loading={isLoading} />
             <RelatedProducts />
         </div>
     )
