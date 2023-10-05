@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import product from "../../../assets/images/Mens-Standard-Fit-Deconstructed-Knit-Blazer01-600x764.jpg";
-import productHover from "../../../assets/images/Mens-Standard-Fit-Deconstructed-Knit-Blazer02-600x764.jpg";
 import useAuthContext from '../../../context/AuthContext';
 import apiService from '../../../api/apiRequests';
 import { Link } from 'react-router-dom';

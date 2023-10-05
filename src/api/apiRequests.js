@@ -111,6 +111,15 @@ const apiService = {
           throw error;
         }
       },
+
+      fetchTrendingProducts: async (slug) => {
+        try {
+          const response = await axios.get(`/product/trending/fetch-trending-product`);
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
   };
   
   export default apiService;
