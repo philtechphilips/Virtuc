@@ -28,8 +28,15 @@ const ProductInfo = ({ product, loading }) => {
     return (
         <>
             <div className='flex flex-col md:flex-row w-full gap-10 mt-3'>
-                <div className='flex flex-col w-full md:w-1/2'>
-                    {loading ? <Skeleton className='py-96 rounded-lg' /> : (
+                <div className='hidden md:flex flex-col gap-4 w-24'>
+                {product && product.images &&
+                                product.images.map((item, index) => (
+                                        <img src={item} className='w-full rounded-lg' alt='product image'></img>
+                                ))
+                            }
+                </div>
+                <div className='flex flex-col w-full md:w-96'>
+                    {loading ? <Skeleton className='py-40 rounded-lg' /> : (
                         <Swiper loop={true} spaceBetween={10} navigation={true} modules={[Navigation]} grabCursor={true} className='w-full product-images-slider-thumbs'>
                             {product && product.images &&
                                 product.images.map((item, index) => (
@@ -115,18 +122,18 @@ const ProductInfo = ({ product, loading }) => {
 
                         </div>
                         <div className='w-full md:w-1/2'>
-                        {loading ? <Skeleton className='py-4' /> : (
+                            {loading ? <Skeleton className='py-4' /> : (
                                 <>
-                            <h1 className='p-500'>Avaliable Color</h1>
-                            <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
-                                <option defaultValue="" disabled>Select a color</option>
-                                {product
-                                    && product.colors && product.colors.map((item, index) => (
-                                        <option key={index}>{item}</option>
-                                    ))}
-                            </select>
-                            </>
-                        )}
+                                    <h1 className='p-500'>Avaliable Color</h1>
+                                    <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
+                                        <option defaultValue="" disabled>Select a color</option>
+                                        {product
+                                            && product.colors && product.colors.map((item, index) => (
+                                                <option key={index}>{item}</option>
+                                            ))}
+                                    </select>
+                                </>
+                            )}
                         </div>
                     </div>
 

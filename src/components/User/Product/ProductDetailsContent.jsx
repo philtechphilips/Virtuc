@@ -29,7 +29,7 @@ const ProductDetailsContent = () => {
     }, []);
 
     return (
-        <div className='px-4 md:px-12 py-2 mt-20'>
+        <div className='px-4 md:px-12 py-2'>
             <div className='flex gap-3'>
                 <p className='p-400 text-sm text-gray-400'>Shop</p>
                 <i className="ri-arrow-right-s-line text-gray-400 p-500"></i>

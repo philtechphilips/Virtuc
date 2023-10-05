@@ -16,9 +16,9 @@ const Products = () => {
   return (
     <>
     <div className='px-5 md:px-10 mt-40'>
-        <p className="p-600 text-2xl">Handpicked for you</p>
+        <p className="p-600 text-2xl">Best choice for you</p>
     </div>
-    <div className='w-full px-5 md:px-10 flex flex-wrap items-start gap-x-3 md:gap-x-5 py-10'>
+    <div className='w-full px-5 md:px-10 flex flex-wrap items-start gap-x-3 md:gap-x-5 py-5'>
         <div className='flex flex-col w-[48%] md:w-[300px] gap-1  mb-4 py-2 md:py-5'>
             <div className=' relative'>
                 <img

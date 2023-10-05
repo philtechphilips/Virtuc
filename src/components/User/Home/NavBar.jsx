@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import useAuthContext from '../../../context/AuthContext';
+import NavCategoryType from './NavCategoryType';
 
 const NavBar = () => {
     const [isFixed, setIsFixed] = useState(false);
     const [category, setCategory] = useState([]);
     const [isAcountOpen, setIsAccountOpen] = useState(false);
-    const { activeCategory, setActiveCategory} = useAuthContext();
+    const { activeCategory, setActiveCategory, activeCategoryId, setActiveCategoryId } = useAuthContext();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
     const user = JSON.parse(localStorage.getItem('user'))
@@ -35,6 +36,7 @@ const NavBar = () => {
                 const categories = await apiService.fetchCategory();
                 setCategory(categories.data.payload)
                 setActiveCategory(categories.data.payload[1].category)
+                setActiveCategoryId(categories.data.payload[1]._id)
             } catch (error) {
                 console.error(error);
             } finally {
@@ -45,7 +47,7 @@ const NavBar = () => {
     }, []);
     return (
         <>
-            <div className={`h-8  bg-white flex justify-between items-center px-5 md:px-10 py-8  mb-5 z-[1000] ${isFixed ? 'fixed w-full top-0 border-b' : 'fixed top-8 w-full border-b'}`}>
+            <div className={`h-8  bg-white flex justify-between items-center px-5 md:px-10 py-8  mb-5 z-[1000] border-b`}>
                 <div className='md:hidden' onClick={showNavbar}>
                     <i className="text-2xl ri-menu-2-line"></i>
                 </div>
@@ -63,8 +65,11 @@ const NavBar = () => {
                         category.map((categoryItem, index) => (
                             <li className="p-500 text-sm capitalize" key={index}>
                                 <Link
-                                    key={categoryItem._id} // Assuming each category item has a unique ID
-                                    onClick={() => setActiveCategory(categoryItem.category)}
+                                    key={categoryItem._id}
+                                    onClick={() => {
+                                        setActiveCategory(categoryItem.category);
+                                        setActiveCategoryId(categoryItem._id);
+                                    }}
                                     className={`py-5 hover:border-b-[2px] ${activeCategory === categoryItem.category
                                         ? "text-gray-950 p-700 hover:border-gray-950"
                                         : "text-gray-600 hover:border-gray-600"
@@ -73,6 +78,7 @@ const NavBar = () => {
                                 >
                                     {categoryItem.category}
                                 </Link>
+
                             </li>
                         ))
                     )}
@@ -175,29 +181,7 @@ const NavBar = () => {
                 </div>
             </div>
 
-            <div className='hidden md:flex px-10 gap-5 pb-5 relative top-20'>
-                {isLoading ? (
-                    <>
-                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
-                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
-                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
-                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
-                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
-                        <Skeleton className='px-8' style={{ zIndex: "10000" }} />
-                    </>
-                ) : (
-                    category
-                        .filter((item) => item.category === activeCategory)
-                        .map((item) =>
-                            item.categoryTypes.map((type, typeIndex) => (
-                                <Link className='text-sm p-400 text-gray-950' key={typeIndex}>
-                                    {type.type}
-                                </Link>
-                            ))
-                        )
-                )}
-            </div>
-
+          <NavCategoryType category={category} isLoading={isLoading} />
 
         </>
     )

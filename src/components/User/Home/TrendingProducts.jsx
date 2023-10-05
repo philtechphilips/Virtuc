@@ -60,8 +60,8 @@ const TrendingProducts = () => {
                     {product.length > 0 && product.map((item, index) => (
                         <div key={index}>
                             {item && item.categoryId && item.categoryId.category === activeCategory && (
-                                <SwiperSlide className='flex flex-col w-[300px] gap-1 md:w-36 mb-4 py-5'>
-                                    <Link to={`/product-details/${item.slug}`} className='flex flex-col w-full md:w-[300px] gap-1  mb-4 py-2 md:py-5'>
+                                <SwiperSlide className='flex flex-col w-[300px] gap-10 md:w-[25%] mb-4 py-5'>
+                                    <Link to={`/product-details/${item.slug}`} >
                                         <div className='w-full relative'>
                                             <img
                                                 className='rounded w-full item-center'

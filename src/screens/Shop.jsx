@@ -1,7 +1,7 @@
 import React from 'react'
 import CTA from '../components/User/Home/CTA'
 import NavBar from '../components/User/Home/NavBar'
-import Newsletter from '../components/User/Home/Newsletter'
+import RecentlyViewed from '../components/User/Shop/RecentlyViewed'
 import Footer from '../components/User/Home/Footer'
 import Products from '../components/User/Shop/Product'
 
@@ -11,7 +11,7 @@ const Shop = () => {
             <CTA />
             <NavBar />
             <Products />
-            <Newsletter />
+            <RecentlyViewed />
             <Footer />
         </>
     )

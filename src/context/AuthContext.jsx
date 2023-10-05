@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import apiService from "../api/apiRequests";
+import Cookies from 'js-cookie';
 
 const AuthContext = createContext({});
 
@@ -12,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [errorsEmail, setErrorsEmail] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeCategory, setActiveCategory] = useState("");
+  const [activeCategoryId, setActiveCategoryId] = useState("");
 
   useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem("user"));
@@ -101,6 +103,7 @@ export const AuthProvider = ({ children }) => {
         };
         setUser(userResponse);
         localStorage.setItem("user", JSON.stringify(userResponse));
+        Cookies.set('user', JSON.stringify(userResponse), { expires: 7 });
         setIsSubmitting(false);
       }
       navigate("/");
@@ -128,6 +131,8 @@ export const AuthProvider = ({ children }) => {
         isSubmitting,
         activeCategory,
         setActiveCategory,
+        activeCategoryId,
+        setActiveCategoryId,
         setUser,
         login,
         logout,
