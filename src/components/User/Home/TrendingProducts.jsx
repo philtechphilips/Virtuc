@@ -22,12 +22,12 @@ const TrendingProducts = () => {
 
     const [product, setProduct] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
-    const { activeCategory, setActiveCategory } = useAuthContext();
+    const { activeCategory, activeCategoryId } = useAuthContext();
     useEffect(() => {
         async function fetchproduct() {
+            const category = JSON.parse(localStorage.getItem("category"));
             try {
-                const response = await apiService.fetchTrendingProducts();
-                console.log(response.data.payload)
+                const response = await apiService.fetchTrendingProducts(category.id);
                 setProduct(response.data.payload);
             } catch (error) {
                 console.error(error);

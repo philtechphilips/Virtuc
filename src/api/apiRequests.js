@@ -112,9 +112,10 @@ const apiService = {
         }
       },
 
-      fetchTrendingProducts: async (slug) => {
+      fetchTrendingProducts: async (category) => {
+        console.log(category)
         try {
-          const response = await axios.get(`/product/trending/fetch-trending-product`);
+          const response = await axios.get(`/product/trending/fetch-trending-product/${category}`);
           return response;
         } catch (error) {
           throw error;

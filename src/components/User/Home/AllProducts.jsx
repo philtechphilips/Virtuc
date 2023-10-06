@@ -37,11 +37,11 @@ const AllProducts = () => {
             <div className='px-5 md:px-10 mb-4'>
                 <p className="p-600 text-2xl">Handpicked for you</p>
             </div>
-            <div className='w-full px-5 md:px-10 flex flex-wrap items-start gap-x-3 md:gap-x-5'>
+            <div className='w-full px-5 md:px-10 flex flex-wrap items-start gap-4'>
                 {product.map((item, index) => (
-                    <div key={index}>
-                        {item && item.categoryId && item.categoryId.category === activeCategory && (
-                            <Link to={`/product-details/${item.slug}`} className='flex flex-col w-full md:w-[300px] gap-1  mb-4 py-2 md:py-5'>
+                    <>
+                        {item && item.categoryId && item.categoryId[0].category === activeCategory && (
+                            <Link to={`/product-details/${item.slug}`} className='flex flex-col w-full md:w-[300px] gap-1  mb-4 py-2 ' key={index}>
                                 <div className=' relative'>
                                     <img
                                         className='rounded w-full item-center'
@@ -73,7 +73,7 @@ const AllProducts = () => {
                                 </div>
                             </Link>
                         )}
-                    </div>
+                    </>
                 ))}
 
             </div>

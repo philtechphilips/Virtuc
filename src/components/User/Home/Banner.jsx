@@ -31,7 +31,7 @@ const Banner = () => {
         <Swiper loop={true} autoplay={{ delay: 3000, disableOnInteraction: true }} modules={[Scrollbar, Autoplay]} scrollbar={{ draggable: true, dragSize: 60 }} initialSlide="1" spaceBetween={10} className='px-5 md:px-10'>
             {isLoading ? <Skeleton className="py-5 md:py-20 h-56 md:h-[400px] flex w-full relative" /> :
                 (banner.map((item, index) => (
-                    <>
+                    <div key={index}>
                         {item && item.categoryId && item.categoryId.category === activeCategory && (
                             <SwiperSlide className="py-5 md:py-20 h-56 md:h-[400px] flex w-full relative" style={{ backgroundImage: `url(${item.imageUrl})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundPosition: "center center" }} key={index}>
                                 <div className='px-5 md:px-10 flex flex-col justify-end gap-1 md:gap-2 w-[250px] md:w-[400px] z-[100]'>
@@ -42,7 +42,7 @@ const Banner = () => {
                                 <div style={{ content: '', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.5)' }}></div>
                             </SwiperSlide>
                         )}
-                    </>
+                    </div>
                 )))
             }
         </Swiper>
