@@ -93,6 +93,34 @@ const apiService = {
           throw error;
         }
       },
+
+      fetchProducts: async (slug) => {
+        try {
+          const response = await axios.get(`/product`);
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      fetchProductDetails: async (slug) => {
+        try {
+          const response = await axios.get(`/product/fetch-product/${slug}`);
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      fetchTrendingProducts: async (category) => {
+        console.log(category)
+        try {
+          const response = await axios.get(`/product/trending/fetch-trending-product/${category}`);
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
   };
   
   export default apiService;

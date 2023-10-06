@@ -18,6 +18,7 @@ import ResetPassword from './screens/Auth/ResetPassword'
 import GuestRoutes from './protectedRoutes/GuestRoutes'
 import AuthenticatedRoutes from './protectedRoutes/AuthenticatedRoutes'
 import Account from './screens/Account'
+import PageNotFound from './screens/404'
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
         <Route path="/shop" element={<Shop />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
-        <Route path="/product-details" element={<ProductDetails />}></Route>
+        <Route path="/product-details/:slug" element={<ProductDetails />}></Route>
+        <Route path="*" element={<PageNotFound />}></Route>
 
         <Route element={<GuestRoutes />}>
           <Route path="/auth/login" element={<Login />}></Route>

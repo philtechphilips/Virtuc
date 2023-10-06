@@ -16,6 +16,7 @@ const Banner = () => {
         async function fetchBanner() {
             try {
                 const response = await apiService.fetchBanner();
+                console.log(response.data.payload)
                 setBanner(response.data.payload);
             } catch (error) {
                 console.error(error);
@@ -28,11 +29,11 @@ const Banner = () => {
 
     return (
         <Swiper loop={true} autoplay={{ delay: 3000, disableOnInteraction: true }} modules={[Scrollbar, Autoplay]} scrollbar={{ draggable: true, dragSize: 60 }} initialSlide="1" spaceBetween={10} className='px-5 md:px-10'>
-            {isLoading ? <Skeleton className="mt-20 py-5 md:py-20 h-56 md:h-[400px] flex w-full relative" /> :
+            {isLoading ? <Skeleton className="py-5 md:py-20 h-56 md:h-[400px] flex w-full relative" /> :
                 (banner.map((item, index) => (
-                    <>
+                    <div key={index}>
                         {item && item.categoryId && item.categoryId.category === activeCategory && (
-                            <SwiperSlide className="mt-20 py-5 md:py-20 h-56 md:h-[400px] flex w-full relative" style={{ backgroundImage: `url(${item.imageUrl})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundPosition: "center center" }} key={index}>
+                            <SwiperSlide className="py-5 md:py-20 h-56 md:h-[400px] flex w-full relative" style={{ backgroundImage: `url(${item.imageUrl})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundPosition: "center center" }} key={index}>
                                 <div className='px-5 md:px-10 flex flex-col justify-end gap-1 md:gap-2 w-[250px] md:w-[400px] z-[100]'>
                                     <h1 className='p-700 text-gray-100 text-2xl'>{item.title}</h1>
                                     <p className='p-400 text-gray-100 text-sm'>{item.body}</p>
@@ -41,7 +42,7 @@ const Banner = () => {
                                 <div style={{ content: '', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.5)' }}></div>
                             </SwiperSlide>
                         )}
-                    </>
+                    </div>
                 )))
             }
         </Swiper>
