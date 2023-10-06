@@ -121,6 +121,15 @@ const apiService = {
           throw error;
         }
       },
+
+      fetchShopProducts: async (category, categoryType) => {
+        try {
+          const response = await axios.get(`/product/shop/${category}/${categoryType}`);
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
   };
   
   export default apiService;
