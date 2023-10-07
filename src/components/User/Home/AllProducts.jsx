@@ -22,7 +22,7 @@ const AllProducts = () => {
         async function fetchproduct() {
             try {
                 const response = await apiService.fetchProducts();
-                console.log(response.data.payload)
+                // console.log(response.data.payload)
                 setProduct(response.data.payload);
             } catch (error) {
                 console.error(error);

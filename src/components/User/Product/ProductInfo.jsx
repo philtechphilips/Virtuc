@@ -28,7 +28,7 @@ const ProductInfo = ({ product, loading }) => {
                 <div className='hidden md:flex flex-col gap-4 w-24'>
                     {product && product.images &&
                         product.images.map((item, index) => (
-                            <img src={item} className='w-full rounded-lg' alt='product image'></img>
+                            <img src={item} className='w-full rounded-lg' alt='product image' key={index}></img>
                         ))
                     }
                 </div>

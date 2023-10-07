@@ -138,13 +138,13 @@ const NavBar = () => {
                 </div>
                 <div className="flex items-center gap-4 md:hidden">
                     <div className='relative'>
-                        <i className="ri-shopping-cart-2-line text-2xl"></i>
+                        <i className="ri-shopping-bag-line text-2xl"></i>
                         <div className='absolute top-1 -right-1 flex h-2 w-2'>
                             <span className="animate-ping absolute h-full w-full rounded-full bg-red-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </div>
                     </div>
-                    <i className="ri-user-3-line text-2xl"></i>
+                    <Link to="/auth/login"><i className="ri-user-3-line text-2xl"></i></Link>
                 </div>
             </div>
             {/* Desktop menu ends here */}
