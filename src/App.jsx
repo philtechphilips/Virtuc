@@ -19,6 +19,7 @@ import GuestRoutes from './protectedRoutes/GuestRoutes'
 import AuthenticatedRoutes from './protectedRoutes/AuthenticatedRoutes'
 import Account from './screens/Account'
 import PageNotFound from './screens/404'
+import Wishlist from './screens/Wishlist'
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/shop/:categoryType" element={<Shop />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
+        <Route path="/wishlist" element={<Wishlist />}></Route>
         <Route path="/product-details/:slug" element={<ProductDetails />}></Route>
         <Route path="*" element={<PageNotFound />}></Route>
 

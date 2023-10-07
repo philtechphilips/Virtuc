@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 const ProductInfo = ({ product, loading }) => {
     const { setWishList } = useAuthContext();
     const [quantity, setQuantity] = useState(1);
-    
+
 
     const handleDecrease = () => {
         if (quantity > 1) {
@@ -119,15 +119,26 @@ const ProductInfo = ({ product, loading }) => {
                         <div className='w-full md:w-1/2'>
                             {loading ? <Skeleton className='py-4' /> : (
                                 <>
-                                    <h1 className='p-500'>Avaliable Sizes</h1>
-                                    <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
-                                        <option defaultValue="" disabled>Select a size</option>
-                                        {product
-                                            && product.sizes && product.sizes.map((item, index) => (
-                                                <option key={index}>{item}</option>
-                                            ))}
+                                    {product.sizes && product.sizes.length > 0 &&
+                                        (
+                                            <>
+                                                <h1 className='p-500'>Avaliable Size</h1>
+                                                <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
+                                                    <option defaultValue="" disabled>Select a size</option>
+                                                    {product
+                                                        && product.sizes && product.sizes.map((item, index) => (
+                                                            <>
+                                                                {item.quantity > 0 && (
+                                                                    <option key={index}>{item.size}</option>
+                                                                )}
+                                                            </>
 
-                                    </select>
+                                                        ))}
+                                                </select>
+                                            </>
+                                        )
+
+                                    }
                                 </>
                             )}
 
@@ -135,14 +146,26 @@ const ProductInfo = ({ product, loading }) => {
                         <div className='w-full md:w-1/2'>
                             {loading ? <Skeleton className='py-4' /> : (
                                 <>
-                                    <h1 className='p-500'>Avaliable Color</h1>
-                                    <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
-                                        <option defaultValue="" disabled>Select a color</option>
-                                        {product
-                                            && product.colors && product.colors.map((item, index) => (
-                                                <option key={index}>{item}</option>
-                                            ))}
-                                    </select>
+                                    {product.colors && product.colors.length > 0 &&
+                                        (
+                                            <>
+                                                <h1 className='p-500'>Avaliable Color</h1>
+                                                <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
+                                                    <option defaultValue="" disabled>Select a color</option>
+                                                    {product
+                                                        && product.colors && product.colors.map((item, index) => (
+                                                            <>
+                                                                {item.quantity > 0 && (
+                                                                    <option key={index}>{item.color}</option>
+                                                                )}
+                                                            </>
+
+                                                        ))}
+                                                </select>
+                                            </>
+                                        )
+
+                                    }
                                 </>
                             )}
                         </div>
@@ -169,7 +192,7 @@ const ProductInfo = ({ product, loading }) => {
                             </button>
                         </div>
                         <button className='bg-gray-900 hover:bg-transparent hover:text-gray-900 border border-gray-900 text-white p-500 px-4 py-2 rounded-md'>Add to cart</button>
-                        <button onClick={() => {addToWishlist(product)}} className='bg-transparent hover:bg-gray-900 border border-gray-900 text-gray-900 hover:text-white p-500 px-4 py-2 rounded-md'>Add to Wishlist</button>
+                        <button onClick={() => { addToWishlist(product) }} className='bg-transparent hover:bg-gray-900 border border-gray-900 text-gray-900 hover:text-white p-500 px-4 py-2 rounded-md'>Add to Wishlist</button>
                     </div>
                 </div>
             </div>
