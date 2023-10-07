@@ -14,9 +14,13 @@ export const AuthProvider = ({ children }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeCategory, setActiveCategory] = useState("");
   const [activeCategoryId, setActiveCategoryId] = useState("");
+  const [recentlyViewed, setRecentlyViewed] = useState([]);
+  const [wishList, setWishList] = useState("")
 
   useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem("user"));
+    const viewedProduct = JSON.parse(localStorage.getItem("recentlyViewed"));
+    setRecentlyViewed(viewedProduct)
     if (userDetails) {
       const token = userDetails.token;
       const userDetailsTokenExpTimestamp = userDetails.tokenExp;
@@ -133,11 +137,15 @@ export const AuthProvider = ({ children }) => {
         setActiveCategory,
         activeCategoryId,
         setActiveCategoryId,
+        recentlyViewed,
+        setRecentlyViewed,
         setUser,
         login,
         logout,
         setIsSubmitting,
-        setErrors
+        setErrors,
+        wishList,
+        setWishList
       }}
     >
       {children}

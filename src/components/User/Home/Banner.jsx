@@ -16,7 +16,7 @@ const Banner = () => {
         async function fetchBanner() {
             try {
                 const response = await apiService.fetchBanner();
-                console.log(response.data.payload)
+                // console.log(response.data.payload)
                 setBanner(response.data.payload);
             } catch (error) {
                 console.error(error);

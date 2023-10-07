@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import RelatedProducts from './RelatedProducts';
-import DiscussionForm from './DiscussionForm';
+import RecentlyViewed from "../Shop/RecentlyViewed"
 import ProductInfo from './ProductInfo';
 import ProductDetails from './ProductDetails';
 import useAuthContext from '../../../context/AuthContext';
@@ -10,22 +9,40 @@ import Skeleton from 'react-loading-skeleton';
 
 const ProductDetailsContent = () => {
     const [product, setProduct] = useState({});
+    const [recentlyViewed, setRecentlyViewed] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
     const { activeCategory, setActiveCategory } = useAuthContext();
     const { slug } = useParams();
+
+    function isItemInRecentlyViewed(recentlyViewed, itemId) {
+        return recentlyViewed.some((item) => item._id === itemId);
+    }
+
     useEffect(() => {
-        async function fetchproduct() {
+        // Load recently viewed items from local storage
+        const oldViewedProduct = JSON.parse(localStorage.getItem('recentItems')) || [];
+
+        async function fetchProduct() {
             try {
                 const response = await apiService.fetchProductDetails(slug);
-                console.log(response.data.payload)
-                setProduct(response.data.payload);
+                const newProduct = response.data.payload;
+
+                if (!isItemInRecentlyViewed(oldViewedProduct, newProduct._id)) {
+                    // Item is not in recently viewed, add it
+                    const updatedRecentlyViewed = [...oldViewedProduct, newProduct];
+                    localStorage.setItem('recentItems', JSON.stringify(updatedRecentlyViewed));
+                    setRecentlyViewed(updatedRecentlyViewed);
+                }
+
+                setProduct(newProduct);
             } catch (error) {
                 console.error(error);
             } finally {
                 setIsLoading(false);
             }
         }
-        fetchproduct();
+
+        fetchProduct();
     }, []);
 
     return (
@@ -53,7 +70,7 @@ const ProductDetailsContent = () => {
             </div>
             <ProductInfo product={product} loading={isLoading} />
             <ProductDetails product={product} loading={isLoading} />
-            <RelatedProducts />
+            <RecentlyViewed />
         </div>
     )
 }

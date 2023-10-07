@@ -36,7 +36,7 @@ const TrendingProducts = () => {
             }
         }
         fetchproduct();
-    }, []);
+    }, [activeCategory]);
     return (
         <>
             <div className='w-full py-20'>

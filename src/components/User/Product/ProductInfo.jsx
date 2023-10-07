@@ -1,19 +1,17 @@
 import React, { useState } from 'react'
-import productOne from "../../../assets/images/1.jpg"
-import productTwo from "../../../assets/images/2.jpg"
-import productThree from "../../../assets/images/4.jpg"
-import productFour from "../../../assets/images/5.jpg"
-import productFive from "../../../assets/images/6.jpg"
-import productSix from "../../../assets/images/7.jpg"
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Thumbs } from 'swiper/modules'
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Skeleton from 'react-loading-skeleton'
+import useAuthContext from '../../../context/AuthContext'
+import { useEffect } from 'react';
 
 const ProductInfo = ({ product, loading }) => {
+    const { setWishList } = useAuthContext();
     const [quantity, setQuantity] = useState(1);
+    
 
     const handleDecrease = () => {
         if (quantity > 1) {
@@ -25,15 +23,28 @@ const ProductInfo = ({ product, loading }) => {
         setQuantity(quantity + 1);
     };
 
+    const isItemInWishlist = (recentlyViewed, itemId) => {
+        return recentlyViewed.some((item) => item._id === itemId);
+    }
+
+    const addToWishlist = (item) => {
+        const oldWishList = JSON.parse(localStorage.getItem('wishlist')) || [];
+        if (!isItemInWishlist(oldWishList, item._id)) {
+            // Item is not in wishlist, add it
+            const updatedWishlist = [...oldWishList, item];
+            localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+            setWishList(updatedWishlist)
+        }
+    }
     return (
         <>
             <div className='flex flex-col md:flex-row w-full gap-10 mt-3'>
                 <div className='hidden md:flex flex-col gap-4 w-24'>
-                {product && product.images &&
-                                product.images.map((item, index) => (
-                                        <img src={item} className='w-full rounded-lg' alt='product image'></img>
-                                ))
-                            }
+                    {product && product.images &&
+                        product.images.map((item, index) => (
+                            <img src={item} className='w-full rounded-lg' alt='product image' key={index}></img>
+                        ))
+                    }
                 </div>
                 <div className='flex flex-col w-full md:w-96'>
                     {loading ? <Skeleton className='py-40 rounded-lg' /> : (
@@ -139,7 +150,7 @@ const ProductInfo = ({ product, loading }) => {
 
                     <div className='w-full border border-dashed mt-5 mb-5'></div>
 
-                    <div className='flex gap-4'>
+                    <div className='flex flex-col md:flex-row gap-4'>
                         <div className="flex">
                             <button
                                 className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
@@ -157,7 +168,8 @@ const ProductInfo = ({ product, loading }) => {
                                 +
                             </button>
                         </div>
-                        <button className='bg-gray-900 text-white p-600 px-4 py-2 rounded-md'>Add to cart</button>
+                        <button className='bg-gray-900 hover:bg-transparent hover:text-gray-900 border border-gray-900 text-white p-500 px-4 py-2 rounded-md'>Add to cart</button>
+                        <button onClick={() => {addToWishlist(product)}} className='bg-transparent hover:bg-gray-900 border border-gray-900 text-gray-900 hover:text-white p-500 px-4 py-2 rounded-md'>Add to Wishlist</button>
                     </div>
                 </div>
             </div>
