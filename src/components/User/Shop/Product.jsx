@@ -36,7 +36,7 @@ const Products = () => {
             }
         }
         fetchproduct(categoryType);
-    }, []);
+    }, [categoryType]);
     return (
         <>
             <div className='px-5 md:px-10 mt-4'>

@@ -59,14 +59,15 @@ const AllProducts = () => {
                                     </div>
 
                                 </div>
-                                <p className='p-600 '>Fashion</p>
+                                <p className='p-600 '>{item.categoryType}</p>
                                 <p className='p-400 text-[15px] '>{item.title}</p>
                                 <div className='flex gap-1 '>
-                                    <p className='p-400 text-[15px] line-through'>{item.discount.toLocaleString('en-NG', {
+                                  
+                                    <p className='p-400 text-[15px]'>{item.price.toLocaleString('en-NG', {
                                         style: 'currency',
                                         currency: 'NGN',
                                     })}</p>
-                                    <p className='p-400 text-[15px]'>{item.price.toLocaleString('en-NG', {
+                                      <p className='p-400 text-[15px] line-through'> - {item.discount.toLocaleString('en-NG', {
                                         style: 'currency',
                                         currency: 'NGN',
                                     })}</p>

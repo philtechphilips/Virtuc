@@ -12,7 +12,7 @@ const NavBar = () => {
     const [isFixed, setIsFixed] = useState(false);
     const [category, setCategory] = useState([]);
     const [isAcountOpen, setIsAccountOpen] = useState(false);
-    const { activeCategory, setActiveCategory, activeCategoryId, setActiveCategoryId } = useAuthContext();
+    const { activeCategory, setActiveCategory, activeCategoryId, setActiveCategoryId, setWishList, wishList } = useAuthContext();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
@@ -32,6 +32,12 @@ const NavBar = () => {
     }
 
     useEffect(() => {
+        const fetchedWishlist = JSON.parse(localStorage.getItem("wishlist"));
+        if(fetchedWishlist != null){
+            setWishList(fetchedWishlist.length);
+            console.log(fetchedWishlist.length)
+        }
+        
         async function fetchMegamenu() {
             try {
                 const categories = await apiService.fetchCategory();
@@ -58,7 +64,7 @@ const NavBar = () => {
             }
         }
         fetchMegamenu()
-    }, []);
+    }, [wishList]);
     return (
         <>
             {/* Desktop menu starts here */}
@@ -116,7 +122,19 @@ const NavBar = () => {
 
                         </div>
                         <div className='relative'>
-                            <i className="ri-heart-line text-2xl"></i>
+                        {wishList ? (
+                                <Link to="/wishlist" className='flex items-center relative'>
+                                    <i className="ri-heart-line text-2xl"></i>
+                                    <div className='w-5 h-5 bg-red-500 rounded-full absolute -top-1 -right-2 flex items-center justify-center'>
+                                        <p className='p-400 text-xs text-white font-bold'>1</p>
+                                    </div>
+                                </Link>
+                            ) : (
+                                <Link to="/wishlist">
+                                    <i className="ri-heart-line text-2xl"></i>
+                                </Link>
+                            )}
+                            
                         </div>
 
                         <div className='relative'>

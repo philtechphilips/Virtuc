@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [activeCategory, setActiveCategory] = useState("");
   const [activeCategoryId, setActiveCategoryId] = useState("");
   const [recentlyViewed, setRecentlyViewed] = useState([]);
+  const [wishList, setWishList] = useState("")
 
   useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem("user"));
@@ -142,7 +143,9 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         setIsSubmitting,
-        setErrors
+        setErrors,
+        wishList,
+        setWishList
       }}
     >
       {children}

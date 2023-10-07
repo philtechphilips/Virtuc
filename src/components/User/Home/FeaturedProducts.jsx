@@ -17,7 +17,7 @@ const Featured = () => {
             try {
                 const response = await apiService.fetchFeaturedProducts();
                 setFeaturedProduct(response.data.payload);
-                // console.log(response.data.payload)
+                console.log(response.data.payload)
             } catch (error) {
                 console.error(error);
             } finally {
