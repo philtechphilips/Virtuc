@@ -5,7 +5,6 @@ import CartItems from './CartItems';
 
 const CartPage = () => {
     const { setCart, cart } = useAuthContext();
-    const [quantity, setQuantity] = useState();
 
     const [initialPrice, setInitialPrice] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
