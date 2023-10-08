@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import useAuthContext from '../../../context/AuthContext';
 
-const Wishlist = () => {
+const Wishlists = () => {
     const { setWishList, wishList } = useAuthContext();
 
     const removeWishList = (wish) => {
@@ -10,11 +10,10 @@ const Wishlist = () => {
         localStorage.setItem('wishlist', JSON.stringify(newWishlist));
         setWishList(newWishlist)
     }
-   
     return (
-        <div className='p-1 md:px-2 md:py-2'>
+        <div className='p-5 mt-5 md:px-10 md:py-2'>
             <h1 className='p-600 text-xl'>Wishlist</h1>
-            <p className='p-400 text-gray-500 mt-1'>Here are your saved products.</p>
+            <p className='p-400 text-gray-500 mt-1'>Here are your saved items.</p>
 
             <div className='flex flex-col gap-4 border mt-8 border-gray-300 rounded-md px-2 py-2 md:px-3 md:py-3'>
                 {wishList && wishList.length > 0 ? (
@@ -59,4 +58,4 @@ const Wishlist = () => {
     )
 }
 
-export default Wishlist
+export default Wishlists
