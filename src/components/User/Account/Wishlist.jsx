@@ -10,12 +10,7 @@ const Wishlist = () => {
         localStorage.setItem('wishlist', JSON.stringify(newWishlist));
         setWishList(newWishlist)
     }
-    // useEffect(() => {
-    //     const fetchedWishlist = JSON.parse(localStorage.getItem("wishlist"));
-    //     if (fetchedWishlist != null) {
-    //         setWishList(fetchedWishlist);
-    //     }
-    // }, [])
+   
     return (
         <div className='p-1 md:px-2 md:py-2'>
             <h1 className='p-600 text-xl'>Wishlist</h1>
