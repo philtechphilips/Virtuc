@@ -9,10 +9,11 @@ import useAuthContext from '../../../context/AuthContext'
 import { useEffect } from 'react';
 
 const ProductInfo = ({ product, loading }) => {
-    const { setWishList } = useAuthContext();
+    const { setWishList, setCart } = useAuthContext();
     const [quantity, setQuantity] = useState(1);
-
-
+    const [color, setColor] = useState("");
+    const [size, setSize] = useState("");
+    
     const handleDecrease = () => {
         if (quantity > 1) {
             setQuantity(quantity - 1);
@@ -27,6 +28,10 @@ const ProductInfo = ({ product, loading }) => {
         return recentlyViewed.some((item) => item._id === itemId);
     }
 
+    const isItemInCart = (cartItems, itemId) => {
+        return cartItems.some((item) => item._id === itemId);
+    }
+
     const addToWishlist = (item) => {
         const oldWishList = JSON.parse(localStorage.getItem('wishlist')) || [];
         if (!isItemInWishlist(oldWishList, item._id)) {
@@ -34,6 +39,18 @@ const ProductInfo = ({ product, loading }) => {
             const updatedWishlist = [...oldWishList, item];
             localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
             setWishList(updatedWishlist)
+        }
+    }
+
+    const addToCart = (item) => {
+        let cartDetails = { ...item, cartQuantity: quantity, selectedColor: color, selectedSize: size }
+        console.log(cartDetails);
+        const oldCart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (!isItemInCart(oldCart, item._id)) {
+            // Item is not in cart, add it
+            const updatedCart = [...oldCart, cartDetails];
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
+            setCart(updatedCart)
         }
     }
     return (
@@ -60,7 +77,7 @@ const ProductInfo = ({ product, loading }) => {
                     )}
 
                 </div>
-                <div className='flex flex-col w-full md:w-1/2 mt-2'>
+                <form className='flex flex-col w-full md:w-1/2 mt-2'>
                     <div className='flex justify-between'>
                         {loading ? <Skeleton className='px-8 py-[1px]' /> : product
                             && product.categoryType
@@ -123,7 +140,10 @@ const ProductInfo = ({ product, loading }) => {
                                         (
                                             <>
                                                 <h1 className='p-500'>Avaliable Size</h1>
-                                                <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
+                                                <select
+                                                    value={size}
+                                                    onChange={(e) => setSize(e.target.value)}
+                                                    className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
                                                     <option defaultValue="" disabled>Select a size</option>
                                                     {product
                                                         && product.sizes && product.sizes.map((item, index) => (
@@ -150,18 +170,21 @@ const ProductInfo = ({ product, loading }) => {
                                         (
                                             <>
                                                 <h1 className='p-500'>Avaliable Color</h1>
-                                                <select className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
-                                                    <option defaultValue="" disabled>Select a color</option>
-                                                    {product
-                                                        && product.colors && product.colors.map((item, index) => (
-                                                            <>
-                                                                {item.quantity > 0 && (
-                                                                    <option key={index}>{item.color}</option>
-                                                                )}
-                                                            </>
-
+                                                <select
+                                                    value={color}
+                                                    onChange={(e) => setColor(e.target.value)}
+                                                    className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'
+                                                >
+                                                    <option value="" disabled>Select a color</option>
+                                                    {product &&
+                                                        product.colors &&
+                                                        product.colors.map((item, index) => (
+                                                            <option key={index} value={item.color} disabled={item.quantity === 0}>
+                                                                {item.color}
+                                                            </option>
                                                         ))}
                                                 </select>
+
                                             </>
                                         )
 
@@ -175,7 +198,7 @@ const ProductInfo = ({ product, loading }) => {
 
                     <div className='flex flex-col md:flex-row gap-4'>
                         <div className="flex">
-                            <button
+                            <button type='button'
                                 className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
                                 onClick={handleDecrease}
                             >
@@ -184,18 +207,24 @@ const ProductInfo = ({ product, loading }) => {
                             <div className="bg-gray-100 text-gray-800 px-4 py-2">
                                 {quantity}
                             </div>
-                            <button
+                            <button type='button'
                                 className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
                                 onClick={handleIncrease}
                             >
                                 +
                             </button>
                         </div>
-                        <button className='bg-gray-900 hover:bg-transparent hover:text-gray-900 border border-gray-900 text-white p-500 px-4 py-2 rounded-md'>Add to cart</button>
-                        <button onClick={() => { addToWishlist(product) }} className='bg-transparent hover:bg-gray-900 border border-gray-900 text-gray-900 hover:text-white p-500 px-4 py-2 rounded-md'>Add to Wishlist</button>
+                        <button type='submit' onClick={(e) => {
+                            e.preventDefault();
+                            addToCart(product);
+                        }} className='bg-gray-900 hover:bg-transparent hover:text-gray-900 border border-gray-900 text-white p-500 px-4 py-2 rounded-md'>Add to cart</button>
+                        <button type='button' onClick={() => { addToWishlist(product) }} className='bg-transparent hover:bg-gray-900 border border-gray-900 text-gray-900 hover:text-white p-500 px-4 py-2 rounded-md'>Add to Wishlist</button>
                     </div>
-                </div>
+                </form>
             </div>
+
+
+            
         </>
     )
 }

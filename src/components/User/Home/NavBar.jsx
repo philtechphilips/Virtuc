@@ -12,7 +12,7 @@ const NavBar = () => {
     const [isFixed, setIsFixed] = useState(false);
     const [category, setCategory] = useState([]);
     const [isAcountOpen, setIsAccountOpen] = useState(false);
-    const { activeCategory, setActiveCategory, activeCategoryId, setActiveCategoryId, setWishList, wishList } = useAuthContext();
+    const { activeCategory, setActiveCategory, activeCategoryId, setActiveCategoryId, setWishList, wishList, cart, setCart } = useAuthContext();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
@@ -35,6 +35,11 @@ const NavBar = () => {
         const fetchedWishlist = JSON.parse(localStorage.getItem("wishlist"));
         if(fetchedWishlist != null){
             setWishList(fetchedWishlist);
+        }
+
+        const fetchedCart = JSON.parse(localStorage.getItem("cart"));
+        if(fetchedCart != null){
+            setCart(fetchedCart);
         }
         async function fetchMegamenu() {
             try {
@@ -116,11 +121,22 @@ const NavBar = () => {
 
                     <div className="flex items-center gap-4 cursor-pointer">
                         <div className='relative'>
-                            <i className="ri-shopping-bag-line text-2xl"></i>
-
+                            
+                            {cart && cart.length > 0 ? (
+                                <Link to="/cart" className='flex items-center relative'>
+                                    <i className="ri-shopping-bag-line text-2xl"></i>
+                                    <div className='w-5 h-5 bg-red-500 rounded-full absolute -top-1 -right-2 flex items-center justify-center'>
+                                        <p className='p-400 text-xs text-white font-bold'>{cart.length}</p>
+                                    </div>
+                                </Link>
+                            ) : (
+                                <Link to="/cart">
+                                    <i className="ri-shopping-bag-line text-2xl"></i>
+                                </Link>
+                            )}
                         </div>
                         <div className='relative'>
-                        {wishList ? (
+                        {wishList && wishList.length > 0 ? (
                                 <Link to="/wishlist" className='flex items-center relative'>
                                     <i className="ri-heart-line text-2xl"></i>
                                     <div className='w-5 h-5 bg-red-500 rounded-full absolute -top-1 -right-2 flex items-center justify-center'>
@@ -154,11 +170,18 @@ const NavBar = () => {
                 </div>
                 <div className="flex items-center gap-4 md:hidden">
                     <div className='relative'>
-                        <i className="ri-shopping-bag-line text-2xl"></i>
-                        <div className='absolute top-1 -right-1 flex h-2 w-2'>
-                            <span className="animate-ping absolute h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                        </div>
+                    {cart && cart.length > 0 ? (
+                                <Link to="/cart" className='flex items-center relative'>
+                                    <i className="ri-shopping-bag-line text-2xl"></i>
+                                    <div className='w-5 h-5 bg-red-500 rounded-full absolute -top-1 -right-2 flex items-center justify-center'>
+                                        <p className='p-400 text-xs text-white font-bold'>{cart.length}</p>
+                                    </div>
+                                </Link>
+                            ) : (
+                                <Link to="/cart">
+                                    <i className="ri-shopping-bag-line text-2xl"></i>
+                                </Link>
+                            )}
                     </div>
                     <Link to="/auth/login"><i className="ri-user-3-line text-2xl"></i></Link>
                 </div>
@@ -178,17 +201,17 @@ const NavBar = () => {
                     <Link className='p-500 flex items-center justify-between'>
                         <p>My VirtuC Account</p>
                     </Link>
-                    <Link className='p-500 flex items-center gap-3'>
+                    <Link onClick={showNavbar} className='p-500 flex items-center gap-3'>
                         <i className="ri-shopping-bag-line text-xl"></i>
                         <p>Orders</p>
                     </Link>
 
-                    <Link className='p-500 flex items-center gap-3'>
+                    <Link onClick={showNavbar} to="/wishlist" className='p-500 flex items-center gap-3'>
                         <i className="ri-heart-line text-xl"></i>
                         <p>Saved Items</p>
                     </Link>
 
-                    <Link className='p-500 flex items-center gap-3'>
+                    <Link onClick={showNavbar} className='p-500 flex items-center gap-3'>
                         <i className="ri-message-3-line text-xl"></i>
                         <p>Pending Review</p>
                     </Link>
@@ -248,19 +271,19 @@ const NavBar = () => {
                             ))))}
                     <div className='w-full border border-dashed'></div>
                     <Link className='p-500 flex items-center justify-between'>
-                        <p>My VirtuC Account</p>
+                        <p>VirtuC Account</p>
                     </Link>
-                    <Link className='p-500 flex items-center gap-3'>
+                    <Link onClick={showNavbar}  className='p-500 flex items-center gap-3'>
                         <i className="ri-shopping-bag-line text-xl"></i>
                         <p>Orders</p>
                     </Link>
 
-                    <Link className='p-500 flex items-center gap-3'>
+                    <Link onClick={showNavbar}  to="/wishlist" className='p-500 flex items-center gap-3'>
                         <i className="ri-heart-line text-xl"></i>
                         <p>Saved Items</p>
                     </Link>
 
-                    <Link className='p-500 flex items-center gap-3'>
+                    <Link  onClick={showNavbar} className='p-500 flex items-center gap-3'>
                         <i className="ri-message-3-line text-xl"></i>
                         <p>Pending Review</p>
                     </Link>
