@@ -10,31 +10,34 @@ const CartPage = () => {
     const [initialPrice, setInitialPrice] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalDiscount, setTotalDiscount] = useState(0);
-  
+
     useEffect(() => {
-      calculateTotals();
+        calculateTotals();
+        increaseQuantity();
+        decreaseQuantity();
     }, [cart]);
-  
+
     const calculateTotals = () => {
-      let newTotalPrice = 0;
-      let newTotalDiscount = 0;
-      let initialPrice = 0;
-  
-      cart.forEach(item => {
-        const itemTotalPrice = item.price * item.cartQuantity;
-        const itemTotalDiscount = item.discount * item.cartQuantity;
-  
-        initialPrice = itemTotalPrice + itemTotalDiscount;
-        newTotalPrice += itemTotalPrice;
-        newTotalDiscount += itemTotalDiscount;
-      });
-      console.log(newTotalPrice, newTotalDiscount)
-  
-      setInitialPrice(initialPrice)
-      setTotalPrice(newTotalPrice);
-      setTotalDiscount(newTotalDiscount);
+        let newTotalPrice = 0;
+        let newTotalDiscount = 0;
+        let initialPrice = 0;
+
+        cart.forEach(item => {
+            const itemTotalPrice = item.price * item.cartQuantity;
+            const itemTotalDiscount = item.discount * item.cartQuantity;
+
+            
+            newTotalPrice += itemTotalPrice;
+            newTotalDiscount += itemTotalDiscount;
+            initialPrice = newTotalPrice + newTotalDiscount;
+        });
+        console.log(newTotalPrice, newTotalDiscount)
+
+        setInitialPrice(initialPrice)
+        setTotalPrice(newTotalPrice);
+        setTotalDiscount(newTotalDiscount);
     };
-  
+
 
     const removeCartItem = (cartItem) => {
         let newCartItems = cart.filter(item => item._id !== cartItem._id);
@@ -47,12 +50,33 @@ const CartPage = () => {
         setCart([])
     }
 
+    const increaseQuantity = (itemId) => {
+        const updatedCart = [...cart]; // Create a new copy of the cart array
+        const itemIndex = updatedCart.findIndex((item) => item._id === itemId);
+        if (itemIndex !== -1) {
+          updatedCart[itemIndex].cartQuantity += 1;
+          localStorage.setItem('cart', JSON.stringify(updatedCart));
+          setCart(updatedCart); 
+        }
+    }
+
+
+    const decreaseQuantity = (itemId) => {
+        const updatedCart = [...cart]; 
+        const itemIndex = updatedCart.findIndex((item) => item._id === itemId);
+        if (itemIndex !== -1 && updatedCart[itemIndex].cartQuantity > 1) {
+          updatedCart[itemIndex].cartQuantity -= 1;
+          localStorage.setItem('cart', JSON.stringify(updatedCart));
+          setCart(updatedCart); 
+        }
+    }
+
 
     return (
         <>
             <div className='flex flex-col md:flex-row gap-10 items-start p-5 md:p-10'>
-                
-                <CartItems cart={cart} removeCartItem={removeCartItem} removeCart={removeCart} />
+
+                <CartItems cart={cart} removeCartItem={removeCartItem} removeCart={removeCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity}  />
                 {cart && cart.length > 0 && (
                     <CheckoutComponent initialPrice={initialPrice} totalPrice={totalPrice} totalDiscount={totalDiscount} />
                 )}

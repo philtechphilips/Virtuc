@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import productOne from "../../../assets/images/1.jpg"
 
-const CartItems = ({ cart, removeCartItem, removeCart }) => {
+const CartItems = ({ cart, removeCartItem, removeCart, increaseQuantity, decreaseQuantity }) => {
     const [quantity, setQuantity] = useState(0);
 
     const handleDecrease = () => {
@@ -55,14 +55,14 @@ const CartItems = ({ cart, removeCartItem, removeCart }) => {
                                 </div>
                                 <div className='flex items-start flex-col md:items-end gap-3'>
                                     <p className='p-700 text-lg'>{(item.cartQuantity * item.price).toLocaleString('en-NG', {
-                                                style: 'currency',
-                                                currency: 'NGN',
-                                            })}</p>
+                                        style: 'currency',
+                                        currency: 'NGN',
+                                    })}</p>
                                     <div className='flex gap-2 items-center'>
                                         <p className='line-through p-500 text-gray-400 text-sm'>-{(item.cartQuantity * item.discount).toLocaleString('en-NG', {
-                                                style: 'currency',
-                                                currency: 'NGN',
-                                            })}</p>
+                                            style: 'currency',
+                                            currency: 'NGN',
+                                        })}</p>
                                         <p className='bg-[#ffe1ad] w-fit px-2 py-1 text-xs p-600 rounded'>
                                             -{Math.ceil(item.cartQuantity * item.discountInPercentage)}%
                                         </p>
@@ -71,7 +71,7 @@ const CartItems = ({ cart, removeCartItem, removeCart }) => {
                                     <div className="flex">
                                         <button
                                             className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-4 rounded-l"
-                                            onClick={handleDecrease}
+                                            onClick={() => decreaseQuantity(item._id)}
                                         >
                                             -
                                         </button>
@@ -80,7 +80,7 @@ const CartItems = ({ cart, removeCartItem, removeCart }) => {
                                         </div>
                                         <button
                                             className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-4 rounded-r"
-                                            onClick={handleIncrease}
+                                            onClick={() => increaseQuantity(item._id)}
                                         >
                                             +
                                         </button>
