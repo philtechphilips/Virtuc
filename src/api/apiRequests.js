@@ -153,6 +153,42 @@ const apiService = {
           throw error;
         }
       },
+
+      deleteCart: async (token, id) => {
+        try {
+          const response = await axios.delete(`/cart/delete-cart/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      deleteUserCart: async (token) => {
+        try {
+          const response = await axios.delete(`/cart/delete-cart`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      updateCart: async (token, id, cartQuantity) => {
+        try {
+          const response = await axios.patch(`/cart/update-cart/${id}`, {cartQuantity}, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
   };
   
   export default apiService;

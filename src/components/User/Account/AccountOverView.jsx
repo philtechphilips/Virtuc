@@ -2,9 +2,16 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import EditDetails from './AccountOverview/EditDetails'
 import Skeleton from 'react-loading-skeleton'
+import { useNavigate } from 'react-router-dom';
 
 const AccountOverView = ({ userProfile, isLoading }) => {
-    const [isEditAccount, setIsEditAccount] = useState(false)
+    const [isEditAccount, setIsEditAccount] = useState(false);
+    const navigate = useNavigate();
+
+    const logOut = () => {
+        localStorage.removeItem("user");
+        navigate('/');
+    }
     return (
         <>
             <div className='border mt-10 px-5 py-5 rounded-md'>
@@ -30,11 +37,11 @@ const AccountOverView = ({ userProfile, isLoading }) => {
 
                 <div className='flex flex-col gap-2 mb-5'>
                     <h1 className='p-700 text-gray-900 text-xl'>Logout</h1>
-                    <p className='p-400 text-[15px]'>This will log you out from all web browsers you have used to access the adidas website. To log in again, you'll have to enter your credentials.</p>
-                    <Link className='p-600 flex justify-between border border-gray-900 py-2 uppercase px-4 w-48 text-gray-950 text-[15px] hover:bg-gray-900 hover:text-white'>
+                    <p className='p-400 text-[15px]'>This will log you out. To log in again, you'll have to enter your credentials.</p>
+                    <button type='button' onClick={logOut} className='p-600 flex justify-between border border-gray-900 py-2 uppercase px-4 w-48 text-gray-950 text-[15px] hover:bg-gray-900 hover:text-white'>
                         <p className='p-600 text-[15px] uppercase '>LOG ME OUT</p>
                         <i className="ri-arrow-right-line"></i>
-                    </Link>
+                    </button>
                 </div>
                 {isEditAccount && (<div className='absolute bg-gray-900 bg-opacity-70 top-0 left-0 z-[1000] w-full h-[1520px]'></div>)}
                 <EditDetails isLoading={isLoading} user={userProfile} onClose={() => setIsEditAccount(false)} open={isEditAccount} />
