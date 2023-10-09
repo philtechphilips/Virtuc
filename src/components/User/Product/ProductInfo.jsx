@@ -7,13 +7,15 @@ import 'swiper/css/pagination';
 import Skeleton from 'react-loading-skeleton'
 import useAuthContext from '../../../context/AuthContext'
 import { useEffect } from 'react';
+import apiService from '../../../api/apiRequests';
 
 const ProductInfo = ({ product, loading }) => {
     const { setWishList, setCart } = useAuthContext();
     const [quantity, setQuantity] = useState(1);
     const [color, setColor] = useState("");
     const [size, setSize] = useState("");
-    
+    const user = JSON.parse(localStorage.getItem('user'))
+
     const handleDecrease = () => {
         if (quantity > 1) {
             setQuantity(quantity - 1);
@@ -42,15 +44,66 @@ const ProductInfo = ({ product, loading }) => {
         }
     }
 
-    const addToCart = (item) => {
-        let cartDetails = { ...item, cartQuantity: quantity, selectedColor: color, selectedSize: size }
-        console.log(cartDetails);
-        const oldCart = JSON.parse(localStorage.getItem('cart')) || [];
-        if (!isItemInCart(oldCart, item._id)) {
-            // Item is not in cart, add it
-            const updatedCart = [...oldCart, cartDetails];
-            localStorage.setItem('cart', JSON.stringify(updatedCart));
-            setCart(updatedCart)
+    const addToCart = async (item) => {
+        if (user) {
+            try {
+                if (color && size != "") {
+                    const createdCart = await apiService.createCart(user.token, item._id, quantity, color, size);
+                    const fetchedCart = await apiService.fetchCart(user.token);
+                    const transformedCart = fetchedCart.data.payload.map(item => ({
+                        ...item.productId,
+                        cartQuantity: item.cartQuantity,
+                        selectedColor: item.color,
+                        selectedSize: item.sizes
+                    }));
+
+                    setCart(transformedCart);
+                } else if (size !== "") {
+                    const createdCart = await apiService.createCart(user.token, item._id, quantity, size);
+                    const fetchedCart = await apiService.fetchCart(user.token);
+                    const transformedCart = fetchedCart.data.payload.map(item => ({
+                        ...item.productId,
+                        cartQuantity: item.cartQuantity,
+                        selectedColor: item.color,
+                        selectedSize: item.sizes
+                    }));
+
+                    setCart(transformedCart);
+                } else if (color !== "") {
+                    const createdCart = await apiService.createCart(user.token, item._id, quantity, color);
+                    const fetchedCart = await apiService.fetchCart(user.token);
+                    const transformedCart = fetchedCart.data.payload.map(item => ({
+                        ...item.productId,
+                        cartQuantity: item.cartQuantity,
+                        selectedColor: item.color,
+                        selectedSize: item.sizes
+                    }));
+
+                    setCart(transformedCart);
+                }
+                const createdCart = await apiService.createCart(user.token, item._id, quantity);
+                const fetchedCart = await apiService.fetchCart(user.token);
+                const transformedCart = fetchedCart.data.payload.map(item => ({
+                    ...item.productId,
+                    cartQuantity: item.cartQuantity,
+                    selectedColor: item.color,
+                    selectedSize: item.sizes
+                }));
+
+                setCart(transformedCart);
+            } catch (e) {
+                console.log(e)
+            }
+        } else {
+            let cartDetails = { ...item, cartQuantity: quantity, selectedColor: color, selectedSize: size }
+            console.log(cartDetails);
+            const oldCart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (!isItemInCart(oldCart, item._id)) {
+                // Item is not in cart, add it
+                const updatedCart = [...oldCart, cartDetails];
+                localStorage.setItem('cart', JSON.stringify(updatedCart));
+                setCart(updatedCart)
+            }
         }
     }
     return (
@@ -224,7 +277,7 @@ const ProductInfo = ({ product, loading }) => {
             </div>
 
 
-            
+
         </>
     )
 }

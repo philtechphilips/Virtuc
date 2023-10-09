@@ -32,14 +32,31 @@ const NavBar = () => {
     }
 
     useEffect(() => {
-        const fetchedWishlist = JSON.parse(localStorage.getItem("wishlist"));
-        if(fetchedWishlist != null){
-            setWishList(fetchedWishlist);
+        if (user) {
+            const fetchCart = async () => {
+                const fetchedCart = await apiService.fetchCart(user.token);
+                const transformedCart = fetchedCart.data.payload.map(item => ({
+                    ...item.productId,
+                    cartQuantity: item.cartQuantity,
+                    selectedColor: item.color,
+                    selectedSize: item.sizes
+                  }));
+                  
+                  setCart(transformedCart);
+            }
+            fetchCart(user.token)
+        } else {
+            const fetchedCart = JSON.parse(localStorage.getItem("cart"));
+            if (fetchedCart != null) {
+                setCart(fetchedCart);
+            }
         }
-
-        const fetchedCart = JSON.parse(localStorage.getItem("cart"));
-        if(fetchedCart != null){
-            setCart(fetchedCart);
+    }, [])
+    // console.log(cart)
+    useEffect(() => {
+        const fetchedWishlist = JSON.parse(localStorage.getItem("wishlist"));
+        if (fetchedWishlist != null) {
+            setWishList(fetchedWishlist);
         }
         async function fetchMegamenu() {
             try {
@@ -121,7 +138,7 @@ const NavBar = () => {
 
                     <div className="flex items-center gap-4 cursor-pointer">
                         <div className='relative'>
-                            
+
                             {cart && cart.length > 0 ? (
                                 <Link to="/cart" className='flex items-center relative'>
                                     <i className="ri-shopping-bag-line text-2xl"></i>
@@ -136,7 +153,7 @@ const NavBar = () => {
                             )}
                         </div>
                         <div className='relative'>
-                        {wishList && wishList.length > 0 ? (
+                            {wishList && wishList.length > 0 ? (
                                 <Link to="/wishlist" className='flex items-center relative'>
                                     <i className="ri-heart-line text-2xl"></i>
                                     <div className='w-5 h-5 bg-red-500 rounded-full absolute -top-1 -right-2 flex items-center justify-center'>
@@ -148,7 +165,7 @@ const NavBar = () => {
                                     <i className="ri-heart-line text-2xl"></i>
                                 </Link>
                             )}
-                            
+
                         </div>
 
                         <div className='relative'>
@@ -170,18 +187,18 @@ const NavBar = () => {
                 </div>
                 <div className="flex items-center gap-4 md:hidden">
                     <div className='relative'>
-                    {cart && cart.length > 0 ? (
-                                <Link to="/cart" className='flex items-center relative'>
-                                    <i className="ri-shopping-bag-line text-2xl"></i>
-                                    <div className='w-5 h-5 bg-red-500 rounded-full absolute -top-1 -right-2 flex items-center justify-center'>
-                                        <p className='p-400 text-xs text-white font-bold'>{cart.length}</p>
-                                    </div>
-                                </Link>
-                            ) : (
-                                <Link to="/cart">
-                                    <i className="ri-shopping-bag-line text-2xl"></i>
-                                </Link>
-                            )}
+                        {cart && cart.length > 0 ? (
+                            <Link to="/cart" className='flex items-center relative'>
+                                <i className="ri-shopping-bag-line text-2xl"></i>
+                                <div className='w-5 h-5 bg-red-500 rounded-full absolute -top-1 -right-2 flex items-center justify-center'>
+                                    <p className='p-400 text-xs text-white font-bold'>{cart.length}</p>
+                                </div>
+                            </Link>
+                        ) : (
+                            <Link to="/cart">
+                                <i className="ri-shopping-bag-line text-2xl"></i>
+                            </Link>
+                        )}
                     </div>
                     <Link to="/auth/login"><i className="ri-user-3-line text-2xl"></i></Link>
                 </div>
@@ -273,17 +290,17 @@ const NavBar = () => {
                     <Link className='p-500 flex items-center justify-between'>
                         <p>VirtuC Account</p>
                     </Link>
-                    <Link onClick={showNavbar}  className='p-500 flex items-center gap-3'>
+                    <Link onClick={showNavbar} className='p-500 flex items-center gap-3'>
                         <i className="ri-shopping-bag-line text-xl"></i>
                         <p>Orders</p>
                     </Link>
 
-                    <Link onClick={showNavbar}  to="/wishlist" className='p-500 flex items-center gap-3'>
+                    <Link onClick={showNavbar} to="/wishlist" className='p-500 flex items-center gap-3'>
                         <i className="ri-heart-line text-xl"></i>
                         <p>Saved Items</p>
                     </Link>
 
-                    <Link  onClick={showNavbar} className='p-500 flex items-center gap-3'>
+                    <Link onClick={showNavbar} className='p-500 flex items-center gap-3'>
                         <i className="ri-message-3-line text-xl"></i>
                         <p>Pending Review</p>
                     </Link>

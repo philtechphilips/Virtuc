@@ -129,6 +129,30 @@ const apiService = {
           throw error;
         }
       },
+
+      fetchCart: async (token) => {
+        try {
+          const response = await axios.get(`/cart`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      createCart: async (token, productId, cartQuantity, color, size) => {
+        try {
+          const response = await axios.post(`/cart/create-cart`, {productId, cartQuantity, color, size}, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
   };
   
   export default apiService;
