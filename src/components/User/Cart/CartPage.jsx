@@ -5,13 +5,13 @@ import CartItems from './CartItems';
 import apiService from '../../../api/apiRequests';
 
 const CartPage = () => {
-    const { setCart, cart } = useAuthContext();
+    const { setCart, cart, discountCodePercentage } = useAuthContext();
 
     const [initialPrice, setInitialPrice] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalDiscount, setTotalDiscount] = useState(0);
     const user = JSON.parse(localStorage.getItem('user'))
-
+    console.log(discountCodePercentage)
     useEffect(() => {
         calculateTotals();
         increaseQuantity();
@@ -27,13 +27,18 @@ const CartPage = () => {
             const itemTotalPrice = item.price * item.cartQuantity;
             const itemTotalDiscount = item.discount * item.cartQuantity;
 
-
             newTotalPrice += itemTotalPrice;
             newTotalDiscount += itemTotalDiscount;
             initialPrice = newTotalPrice + newTotalDiscount;
+
         });
         console.log(newTotalPrice, newTotalDiscount)
-
+        if(discountCodePercentage){
+            const discountCodeTotalPrice = (discountCodePercentage/100) * newTotalPrice;
+            newTotalPrice -= discountCodeTotalPrice;
+            const discountCodeTotalDiscount = (discountCodePercentage/100) * newTotalPrice;
+            newTotalDiscount += discountCodeTotalPrice;
+         }
         setInitialPrice(initialPrice)
         setTotalPrice(newTotalPrice);
         setTotalDiscount(newTotalDiscount);
@@ -117,7 +122,6 @@ const CartPage = () => {
         }
     }
 
-
     const decreaseQuantity = async (itemId) => {
         let cartQuantity;
         if (user) {
@@ -150,7 +154,6 @@ const CartPage = () => {
             setCart(updatedCart);
         }
     }
-
 
     return (
         <>

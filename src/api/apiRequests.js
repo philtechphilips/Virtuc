@@ -60,12 +60,12 @@ const apiService = {
         }
       },
 
-      updateUserProfile: async ({ token, firstName, lastName, phoneNumber, dob, gender }) => {
+      updateUserProfile: async ({ token, firstName, lastName, phoneNumber, dob, gender, home_address, city, region }) => {
         const headers = {
           Authorization: `Bearer ${token}`,
         };
         try {
-          const response = await axios.patch("/users/update-profile", {first_name: firstName, last_name: lastName, phone_number: phoneNumber, dob, gender}, {headers});
+          const response = await axios.patch("/users/update-profile", {first_name: firstName, last_name: lastName, phone_number: phoneNumber, dob, gender, home_address, city, region}, {headers});
           return response;
         } catch (error) {
           throw error;
@@ -184,6 +184,16 @@ const apiService = {
             headers: {
               Authorization: `Bearer ${token}`,
             }});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      fetchDiscountCode: async (code) => {
+        console.log(code)
+        try {
+          const response = await axios.get(`/discount/${code}`);
           return response;
         } catch (error) {
           throw error;

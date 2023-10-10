@@ -16,7 +16,8 @@ export const AuthProvider = ({ children }) => {
   const [activeCategoryId, setActiveCategoryId] = useState("");
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [wishList, setWishList] = useState([])
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState([]);
+  const [discountCodePercentage, setDiscountCodePercentage] = useState(null)
 
   useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem("user"));
@@ -167,7 +168,9 @@ export const AuthProvider = ({ children }) => {
         wishList,
         setWishList,
         cart,
-        setCart
+        setCart,
+        discountCodePercentage,
+        setDiscountCodePercentage
       }}
     >
       {children}

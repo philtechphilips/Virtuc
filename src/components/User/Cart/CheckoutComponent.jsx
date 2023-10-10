@@ -29,7 +29,7 @@ const CheckoutComponent = ({ initialPrice, totalPrice, totalDiscount }) => {
                 })}</p>
             </div>
 
-            <button className='p-3 bg-gray-900 hover:bg-gray-950 text-white p-600 rounded-lg'>Checkout now</button>
+            <a href='/checkout' className='p-3 bg-gray-900 hover:bg-gray-950 text-white p-600 rounded-lg text-center'>Checkout now</a>
         </div>
     )
 }
