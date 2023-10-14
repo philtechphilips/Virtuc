@@ -3,6 +3,9 @@ import useAuthContext from '../../../context/AuthContext';
 import CheckoutComponent from './CheckoutComponent';
 import CartItems from './CartItems';
 import apiService from '../../../api/apiRequests';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+import Swal from 'sweetalert2'
 
 const CartPage = () => {
     const { setCart, cart, discountCodePercentage } = useAuthContext();
@@ -10,8 +13,7 @@ const CartPage = () => {
     const [initialPrice, setInitialPrice] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalDiscount, setTotalDiscount] = useState(0);
-    const user = JSON.parse(localStorage.getItem('user'))
-    console.log(discountCodePercentage)
+    const user = JSON.parse(localStorage.getItem('user'));
     useEffect(() => {
         calculateTotals();
         increaseQuantity();
@@ -33,12 +35,12 @@ const CartPage = () => {
 
         });
         console.log(newTotalPrice, newTotalDiscount)
-        if(discountCodePercentage){
-            const discountCodeTotalPrice = (discountCodePercentage/100) * newTotalPrice;
+        if (discountCodePercentage) {
+            const discountCodeTotalPrice = (discountCodePercentage / 100) * newTotalPrice;
             newTotalPrice -= discountCodeTotalPrice;
-            const discountCodeTotalDiscount = (discountCodePercentage/100) * newTotalPrice;
+            const discountCodeTotalDiscount = (discountCodePercentage / 100) * newTotalPrice;
             newTotalDiscount += discountCodeTotalPrice;
-         }
+        }
         setInitialPrice(initialPrice)
         setTotalPrice(newTotalPrice);
         setTotalDiscount(newTotalDiscount);
@@ -47,20 +49,38 @@ const CartPage = () => {
 
     const removeCartItem = async (cartItem) => {
         if (user) {
-            try {
-                const deleteCart = await apiService.deleteCart(user.token, cartItem._id);
-                const fetchedCart = await apiService.fetchCart(user.token);
-                const transformedCart = fetchedCart.data.payload.map(item => ({
-                    ...item.productId,
-                    cartQuantity: item.cartQuantity,
-                    selectedColor: item.color,
-                    selectedSize: item.sizes
-                }));
-
-                setCart(transformedCart);
-            } catch (e) {
-                console.log(e)
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const deleteCart = await apiService.deleteCart(user.token, cartItem._id);
+                        const fetchedCart = await apiService.fetchCart(user.token);
+                        const transformedCart = fetchedCart.data.payload.map(item => ({
+                            ...item.productId,
+                            cartQuantity: item.cartQuantity,
+                            selectedColor: item.color,
+                            selectedSize: item.sizes
+                        }));
+        
+                        setCart(transformedCart);
+                        Swal.fire(
+                            'Deleted!',
+                            'Product removed from cart!.',
+                            'success'
+                          )
+                    } catch (e) {
+                        toast.warning('Something went wrong!');
+                    }
+               
+                }
+              });
             setCart(newCartItems)
             return true;
         }
@@ -71,25 +91,59 @@ const CartPage = () => {
 
     const removeCart = async () => {
         if (user) {
-            try {
-                const deleteCart = await apiService.deleteUserCart(user.token);
-                const fetchedCart = await apiService.fetchCart(user.token);
-                const transformedCart = fetchedCart.data.payload.map(item => ({
-                    ...item.productId,
-                    cartQuantity: item.cartQuantity,
-                    selectedColor: item.color,
-                    selectedSize: item.sizes
-                }));
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const deleteCart = await apiService.deleteUserCart(user.token);
+                        const fetchedCart = await apiService.fetchCart(user.token);
+                        const transformedCart = fetchedCart.data.payload.map(item => ({
+                            ...item.productId,
+                            cartQuantity: item.cartQuantity,
+                            selectedColor: item.color,
+                            selectedSize: item.sizes
+                        }));
+                        Swal.fire(
+                            'Deleted!',
+                            'Products deleted sucessfully!',
+                            'success'
+                        )
+                        setCart(transformedCart);
+                    } catch (e) {
+                        console.log(e)
+                    }
+                    setCart(newCartItems);
+                }
+            })
 
-                setCart(transformedCart);
-            } catch (e) {
-                console.log(e)
-            }
-            setCart(newCartItems)
             return true;
         }
-        localStorage.removeItem("cart")
-        setCart([])
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem("cart")
+                setCart([])
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
     }
 
     const increaseQuantity = async (itemId) => {
@@ -164,6 +218,7 @@ const CartPage = () => {
                     <CheckoutComponent initialPrice={initialPrice} totalPrice={totalPrice} totalDiscount={totalDiscount} />
                 )}
             </div>
+            <ToastContainer />
         </>
     )
 }

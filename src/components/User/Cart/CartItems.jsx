@@ -1,6 +1,4 @@
-import React from 'react'
-import { useState } from 'react';
-import productOne from "../../../assets/images/1.jpg"
+import React from 'react';
 
 const CartItems = ({ cart, removeCartItem, removeCart, increaseQuantity, decreaseQuantity }) => {
     return (
