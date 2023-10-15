@@ -27,7 +27,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/shop/:categoryType" element={<Shop />}></Route>
-        <Route path="/checkout" element={<Checkout />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/wishlist" element={<Wishlist />}></Route>
         <Route path="/product-details/:slug" element={<ProductDetails />}></Route>
@@ -47,6 +46,7 @@ function App() {
           <Route path="/order-complete" element={<OrderComplete />}></Route>
           <Route path="/payment" element={<Payment />}></Route>
           <Route path="/my-account" element={<Account />}></Route>
+          <Route path="/checkout" element={<Checkout />}></Route>
         </Route>
       </Routes>
     </>

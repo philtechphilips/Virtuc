@@ -1,20 +1,6 @@
-import React from 'react'
-import { useState } from 'react';
-import productOne from "../../../assets/images/1.jpg"
+import React from 'react';
 
 const CartItems = ({ cart, removeCartItem, removeCart, increaseQuantity, decreaseQuantity }) => {
-    const [quantity, setQuantity] = useState(0);
-
-    const handleDecrease = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
-        }
-    };
-
-    const handleIncrease = () => {
-        setQuantity(quantity + 1);
-    };
-
     return (
         <div className='flex flex-col justify-between w-full md:w-3/5'>
             <div className='flex justify-between items-center w-full'>

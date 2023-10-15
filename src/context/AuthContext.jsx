@@ -16,7 +16,8 @@ export const AuthProvider = ({ children }) => {
   const [activeCategoryId, setActiveCategoryId] = useState("");
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [wishList, setWishList] = useState([])
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState([]);
+  const [discountCodePercentage, setDiscountCodePercentage] = useState(null)
 
   useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem("user"));
@@ -106,9 +107,28 @@ export const AuthProvider = ({ children }) => {
           token: response.data.token,
           tokenExp: response.data.tokenExp,
         };
+        
+        if (cart && cart.length > 0) {
+          cart.forEach(async (cartItem) => {
+            try {
+              const addToCart = await axios.post("/cart/create-cart", {
+                productId: cartItem._id,
+                cartQuantity: cartItem.cartQuantity,
+                color: cartItem.color,
+                size: cartItem.size
+              }, {
+                headers: {
+                  Authorization: `Bearer ${response.data.token}`,
+                }});
+                localStorage.removeItem("cart");
+              console.log(addToCart.data.payload);
+            } catch (error) {
+              console.error(error);
+            }
+          });
+        }         
         setUser(userResponse);
         localStorage.setItem("user", JSON.stringify(userResponse));
-        Cookies.set('user', JSON.stringify(userResponse), { expires: 7 });
         setIsSubmitting(false);
       }
       navigate("/");
@@ -148,7 +168,9 @@ export const AuthProvider = ({ children }) => {
         wishList,
         setWishList,
         cart,
-        setCart
+        setCart,
+        discountCodePercentage,
+        setDiscountCodePercentage
       }}
     >
       {children}
