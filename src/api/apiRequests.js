@@ -199,6 +199,19 @@ const apiService = {
           throw error;
         }
       },
+
+      verifyPayment: async (reference, token) => {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        console.log(token)
+        try {
+          const response = await axios.get(`/checkout/verify-payment/${reference}`, {headers});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
   };
   
   export default apiService;

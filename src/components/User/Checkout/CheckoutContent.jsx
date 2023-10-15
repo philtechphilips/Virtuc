@@ -32,21 +32,35 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
   }, []);
 
   const config = {
-    reference: (new Date()).getTime().toString(),
+    reference: "TRX"+(new Date()).getTime().toString(),
     email: user.email,
     amount: totalPrice * 100,
     publicKey: 'pk_test_7c371d93d1d4c27411cad38812b18a3533b6ff63',
   };
 
-
   const onSuccess = (reference) => {
-    // Implementation for whatever you want to do with reference and after success call.
-    console.log(reference);
+    const userJSON = localStorage.getItem("user");
+    if (!userJSON) {
+      console.error("User not found in localStorage.");
+      return;
+    }
+
+    const user = JSON.parse(userJSON);
+    if (!user || !user.token) {
+      console.error("User object or token not found in 'user'.");
+      return;
+    }
+    const token = user.token;
+    apiService.verifyPayment(reference.reference, token)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.error("An error occurred:", error);
+      });
   };
 
-  // you can call this function anything
   const onClose = () => {
-    // implementation for  whatever you want to do when the Paystack dialog closed.
     console.log('closed')
   }
 
@@ -94,9 +108,9 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
     <div className='px-4 md:px-12 py-6'>
       <div className='flex gap-3'>
         <p className='p-500 text-gray-400'>Cart</p>
-        <i class="ri-arrow-right-s-line text-gray-400 p-500"></i>
+        <i className="ri-arrow-right-s-line text-gray-400 p-500"></i>
         <p className='p-500 text-gray-800'>Checkout</p>
-        <i class="ri-arrow-right-s-line text-gray-400 p-500"></i>
+        <i className="ri-arrow-right-s-line text-gray-400 p-500"></i>
         <p className='p-500 text-gray-400'>Payment</p>
       </div>
 
@@ -105,33 +119,33 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
           <div className='border-[1.5px] rounded-lg border-gray-300 py-5 px-3 md:p-5'>
             <p className='p-600'>Customer Address</p>
             <div className='flex flex-col mt-3'>
-              <label for="name" className='p-600 text-gray-500 text-sm'>Full name*</label>
+              <label htmlFor="name" className='p-600 text-gray-500 text-sm'>Full name*</label>
               <input type='text' className='px-3 py-3 bg-gray-100 border border-gray-300 outline-none rounded mt-1' disabled value={userdetails && userdetails.first_name + ' ' + userdetails.last_name}></input>
             </div>
 
             <div className='flex flex-col md:flex-row mt-3 gap-4'>
               <div className='flex flex-col w-full md:w-1/2'>
-                <label for="name" className='p-600 text-gray-500 text-sm'>E-mail Address*</label>
+                <label htmlFor="name" className='p-600 text-gray-500 text-sm'>E-mail Address*</label>
                 <input type='email' className='px-3 py-3 bg-gray-100 border border-gray-300 outline-none rounded mt-1' disabled value={userdetails && userdetails.email} placeholder='Enter Your E-mail Address'></input>
               </div>
               <div className='flex flex-col w-full md:w-1/2'>
-                <label for="name" className='p-600 text-gray-500 text-sm'>Phone Number*</label>
+                <label htmlFor="name" className='p-600 text-gray-500 text-sm'>Phone Number*</label>
                 <input type='phone' className='px-3 py-3 bg-gray-100 border border-gray-300 outline-none rounded mt-1' disabled value={userdetails && userdetails.phone_number} placeholder='Enter Your Phone Number'></input>
               </div>
             </div>
 
             <div className='flex flex-col mt-3'>
-              <label for="name" className='p-600 text-gray-500 text-sm'>House Address*</label>
+              <label htmlFor="name" className='p-600 text-gray-500 text-sm'>House Address*</label>
               <input className='px-3 py-3 bg-gray-100 border border-gray-300 outline-none rounded mt-1' onChange={(e) => { setHomeAddress(e.target.value) }} disabled={userdetails && (userdetails.home_address === "" || userdetails.home_address === undefined) ? false : true} value={userdetails && homeAddress} placeholder='Enter Your House Address'></input>
             </div>
 
             <div className='flex flex-col md:flex-row mt-3 gap-4'>
               <div className='flex flex-col w-full md:w-1/2'>
-                <label for="name" className='p-600 text-gray-500 text-sm'>City*</label>
+                <label htmlFor="name" className='p-600 text-gray-500 text-sm'>City*</label>
                 <input type='text' className='px-3 py-3 bg-gray-100 border border-gray-300 outline-none rounded mt-1' onChange={(e) => { setCity(e.target.value) }} disabled={userdetails && (userdetails.city === "" || userdetails.city === undefined) ? false : true} value={userdetails && city} placeholder='Enter Your City'></input>
               </div>
               <div className='flex flex-col w-full md:w-1/2'>
-                <label for="name" className='p-600 text-gray-500 text-sm'>State*</label>
+                <label htmlFor="name" className='p-600 text-gray-500 text-sm'>State*</label>
                 <input type='phone' className='px-3 py-3 bg-gray-100 border border-gray-300 outline-none rounded mt-1' onChange={(e) => { setRegion(e.target.value) }} disabled={userdetails && (userdetails.region === "" || userdetails.region === undefined) ? false : true} value={userdetails && region} placeholder='Enter Your Region'></input>
               </div>
             </div>
