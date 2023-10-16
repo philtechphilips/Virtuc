@@ -248,6 +248,18 @@ const apiService = {
           throw error;
         }
       },
+
+      fetchNotifications: async (token) => {
+        try {
+          const response = await axios.get(`/notification`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
   };
   
   export default apiService;
