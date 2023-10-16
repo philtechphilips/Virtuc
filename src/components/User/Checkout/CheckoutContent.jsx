@@ -3,7 +3,9 @@ import apiService from '../../../api/apiRequests'
 import useAuthContext from '../../../context/AuthContext';
 import { usePaystackPayment } from 'react-paystack';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
   const [userdetails, setuserDetails] = useState();
@@ -12,7 +14,8 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
   const [city, setCity] = useState("");
   const [discountCode, setDiscountCode] = useState()
   const [isSubmittingDiscount, setIsSubmittingDiscount] = useState(false);
-  const { setDiscountCodePercentage, discountCodePercentage } = useAuthContext()
+  const { setDiscountCodePercentage, discountCodePercentage } = useAuthContext();
+  const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
@@ -54,6 +57,7 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
     apiService.verifyPayment(reference.reference, token)
       .then(response => {
         console.log(response);
+        navigate(`/order-complete/${reference.reference}`);
       })
       .catch(error => {
         console.error("An error occurred:", error);

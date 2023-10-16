@@ -10,7 +10,7 @@ const Footer = () => {
         <div className='homepage-categories-container bg-gray-200 py-16'>
             <div className="flex flex-wrap md:flex-nowrap justify-between gap-8 md:gap-36">
                 <div className='flex flex-wrap md:flex-nowrap flex-col gap-4 w-full md:w-1/3 pr-0 md:pr-24'>
-                    <h1 className='logo text-3xl'>NOSTRA</h1>
+                    <h1 className='font-semibold text-3xl'>Virtuc</h1>
                     <p className='p-400 text-gray-600 text-sm'>Specializes in providing high-quality, stylish products for your wardrobe</p>
                 </div>
 
