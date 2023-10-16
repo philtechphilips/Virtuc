@@ -32,7 +32,7 @@ const AccountOverView = ({ userProfile, isLoading }) => {
 
                 <div className='flex flex-col gap-2 mb-5'>
                     <h1 className='p-700 text-gray-900 text-xl'>Address</h1>
-                    <p className='p-400 uppercase text-[15px]'>1, Olayiwola Olajide Street, Abaranje Road, Ikotun Lagos.</p>
+                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile.home_address}`}.</p>
                 </div>
 
                 <div className='flex flex-col gap-2 mb-5'>
