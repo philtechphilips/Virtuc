@@ -212,6 +212,30 @@ const apiService = {
           throw error;
         }
       },
+
+      fetchOrderByTxRef: async (token, txref) => {
+        try {
+          const response = await axios.get(`/checkout/order/${txref}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      fetchPaymentByTxRef: async (token, txref) => {
+        try {
+          const response = await axios.get(`/checkout/payment/${txref}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }});
+          return response;
+        } catch (error) {
+          throw error;
+        }
+      },
   };
   
   export default apiService;
