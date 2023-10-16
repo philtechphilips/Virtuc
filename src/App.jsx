@@ -43,7 +43,7 @@ function App() {
         </Route>
 
         <Route element={<AuthenticatedRoutes />}>
-          <Route path="/order-complete" element={<OrderComplete />}></Route>
+          <Route path="/order-complete/:txRef" element={<OrderComplete />}></Route>
           <Route path="/payment" element={<Payment />}></Route>
           <Route path="/my-account" element={<Account />}></Route>
           <Route path="/checkout" element={<Checkout />}></Route>
