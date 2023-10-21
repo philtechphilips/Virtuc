@@ -278,6 +278,15 @@ const apiService = {
       throw error;
     }
   },
+
+  getSearchItem: async (query) => {
+    try {
+      const response = await axios.get(`/product/search/${query}`)
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default apiService;

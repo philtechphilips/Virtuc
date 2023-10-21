@@ -15,14 +15,26 @@ const NavBar = () => {
     const { activeCategory, setActiveCategory, activeCategoryId, setActiveCategoryId, setWishList, wishList, cart, setCart } = useAuthContext();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true)
-    const user = JSON.parse(localStorage.getItem('user'))
+    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [query, setQuery] = useState("");
+    const [searchItems, setSearchItems] = useState([]);
+    const user = JSON.parse(localStorage.getItem('user'));
     const showNavbar = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen)
     };
 
     const showSubmenu = () => {
         setIsSubMenuOpen(!isSubMenuOpen)
+    };
+
+    const showMobileSearch = () => {
+        setIsMobileSearchOpen(!isMobileSearchOpen)
+    };
+
+    const clearSearch = () => {
+        setQuery("");
+        setSearchItems([]);
     };
 
     const setNewCategory = (category) => {
@@ -40,9 +52,9 @@ const NavBar = () => {
                     cartQuantity: item.cartQuantity,
                     selectedColor: item.color,
                     selectedSize: item.sizes
-                  }));
-                  
-                  setCart(transformedCart);
+                }));
+
+                setCart(transformedCart);
             }
             fetchCart(user.token)
         } else {
@@ -85,6 +97,21 @@ const NavBar = () => {
         }
         fetchMegamenu()
     }, []);
+
+    useEffect(() => {
+        const getSearchItems = async () => {
+            try {
+                const response = await apiService.getSearchItem(query);
+                setSearchItems(response.data.payload);
+            } catch (error) {
+                console.log(error);
+                setSearchItems([]);
+            }
+        };
+        getSearchItems();
+
+        console.log(searchItems); // Log the updated searchItems here
+    }, [query]);
     return (
         <>
             {/* Desktop menu starts here */}
@@ -126,15 +153,37 @@ const NavBar = () => {
                     )}
                 </ul>
 
-                <div className="hidden md:flex items-center gap-10">
-                    <form className="flex items-center bg-gray-100 border border-gray-300 rounded-lg p-2">
-                        <i className="ri-search-line text-lg text-gray-400 mr-1 cursor-pointer"></i>
+                <div className="relative hidden md:flex items-center gap-10">
+                    <form className=" flex items-center bg-gray-100 border border-gray-300 rounded-lg p-2">
+                    {searchItems && searchItems.length > 0 ? (
+                        <i className="ri-close-line text-xl text-gray-800 mr-1 cursor-pointer" onClick={clearSearch}></i>
+                    ): (
+                        <i className="ri-search-line text-xl text-gray-800 mr-1 cursor-pointer"></i>
+                    )}
                         <input
                             type="text"
                             placeholder="Search"
                             className="flex-1 bg-transparent border-none focus:outline-none p-400 w-60"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={() => setSearchItems([])}
                         />
                     </form>
+                    {searchItems && searchItems.length > 0 && (
+                        <div className='absolute z-[100000] top-[56px] left-0 shadow-lg bg-white p-3'>
+                            <h3 className='p-400 uppercase'>Suggestions</h3>
+                            {searchItems.map((item, index) => (
+                                <Link to={`/product-details/${item.slug}`} className='flex mt-4 gap-4 items-center border-b border-dashed pb-3'>
+                                    <img className="w-20" src={item.images[0]} alt="First Image" />
+                                    <div className='flex flex-col'>
+                                        <h1 className='p-500 text-sm'>{item.categoryType}</h1>
+                                        <h1 className='p-600'>{item.title}</h1>
+                                        <p className='p-400'>{item.price}</p>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
 
                     <div className="flex items-center gap-4 cursor-pointer">
                         <div className='relative'>
@@ -186,6 +235,7 @@ const NavBar = () => {
                     </div>
                 </div>
                 <div className="flex items-center gap-4 md:hidden">
+                    <Link><i className="ri-search-2-line text-2xl" onClick={showMobileSearch}></i></Link>
                     <div className='relative'>
                         {cart && cart.length > 0 ? (
                             <Link to="/cart" className='flex items-center relative'>
@@ -201,6 +251,7 @@ const NavBar = () => {
                         )}
                     </div>
                     <Link to="/auth/login"><i className="ri-user-3-line text-2xl"></i></Link>
+
                 </div>
             </div>
             {/* Desktop menu ends here */}
@@ -314,6 +365,46 @@ const NavBar = () => {
                 </div>
             </div>
             {/* Submenu for mobile ends here */}
+
+            {/* Mobile search starts here */}
+            <div
+                className={`md:hidden fixed top-0 left-0 w-full min-h-full overflow-y-scroll bg-white z-[100000] shadow transition-transform duration-300 ease-in-out ${isMobileSearchOpen ? 'translate-x-0' : 'translate-x-[1000vw]'
+                    }`}
+            >
+                <div className='flex gap-2 items-center justify-between p-1 py-5'>
+                    <div className='flex gap-4 items-center'>
+                        <i className="ri-arrow-left-s-line text-2xl p-400" onClick={showMobileSearch}></i>
+                        <form className=" flex items-center bg-gray-100 border border-gray-300 rounded-lg p-2">
+                            <i className="ri-search-line text-lg text-gray-400 mr-1 cursor-pointer"></i>
+                            <input
+                                type="text"
+                                placeholder="Search"
+                                className="flex-1 bg-transparent border-none focus:outline-none p-400 w-60"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                onKeyDown={() => setSearchItems([])}
+                            />
+                        </form>
+                    </div>
+                    <div onClick={clearSearch}>
+                        <p className='p-400'>Clear</p>
+                    </div>
+                </div>
+                <div className='w-full border border-dashed'></div>
+                <div className='flex gap-4 flex-col p-5'>
+                    {searchItems.map((item, index) => (
+                        <Link to={`/product-details/${item.slug}`} className='flex mt-4 gap-4 items-center border-b border-dashed pb-3'>
+                            <img className="w-20" src={item.images[0]} alt="First Image" />
+                            <div className='flex flex-col'>
+                                <h1 className='p-500 text-sm'>{item.categoryType}</h1>
+                                <h1 className='p-600'>{item.title}</h1>
+                                <p className='p-400'>{item.price}</p>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+            {/* Mobile search starts here */}
 
             {/* Submenu for desktop */}
             <NavCategoryType category={category} isLoading={isLoading} />
