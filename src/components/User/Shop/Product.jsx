@@ -80,9 +80,6 @@ const Products = () => {
                                 onMouseEnter={() => { handleMouseEnter(item._id) }}
                                 onMouseLeave={handleMouseLeave}
                             />
-                            <div className="h-8 w-8 bg-white absolute bottom-2 right-2 rounded-full flex items-center justify-center">
-                                <i className="ri-heart-3-line font-bold text-xl"></i>
-                            </div>
 
                             <div className="bg-red-500 absolute top-2 left-2 rounded px-2 py-1 flex items-center justify-center">
                                 <p className='text-white p-600 text-xs'>-{Math.ceil(item.discountInPercentage)}%</p>

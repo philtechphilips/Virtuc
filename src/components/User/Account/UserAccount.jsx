@@ -44,13 +44,6 @@ const UserAccount = () => {
                         <h1 className='p-700 text-2xl uppercase w-40'><span>{isLoading ? <Skeleton /> : `HI ${user.first_name}`}</span></h1>
                         <p className='p-500 text-sm w-40'>{isLoading ? <Skeleton /> : `${user.phone_number}`}</p>
                     </div>
-                    <div className='border-1 w-24 h-24 rounded-full border-gray-100 relative'>
-                        {isLoading ? <Skeleton className='w-24 h-24 rounded-full border-4 border-white' /> : (<img className='w-24 h-24 rounded-full border-4 border-white' src={user.profileImgUrl} />)}
-
-                        <div className='absolute bg-slate-200 h-7 flex items-center justify-center w-7 -top-0 -right-0 rounded-md z-[100]'>
-                            <i className="ri-pencil-line text-xl"></i>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div className='mt-10'>
