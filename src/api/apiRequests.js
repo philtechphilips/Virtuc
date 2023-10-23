@@ -287,6 +287,15 @@ const apiService = {
       throw error;
     }
   },
+
+  getHeaderBar: async () => {
+    try {
+      const response = await axios.get(`/header-bar`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default apiService;

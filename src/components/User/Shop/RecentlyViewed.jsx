@@ -5,6 +5,7 @@ import 'swiper/css';
 import 'swiper/css/bundle';
 import product from "../../../assets/images/Mens-Standard-Fit-Deconstructed-Knit-Blazer01-600x764.jpg";
 import productHover from "../../../assets/images/Mens-Standard-Fit-Deconstructed-Knit-Blazer02-600x764.jpg";
+import { Link } from 'react-router-dom';
 
 
 const RecentlyViewed = () => {
@@ -43,6 +44,7 @@ const RecentlyViewed = () => {
                         }} className='mt-3 pl-4 md:pl-10 pr-1'>
                             {recentlyViewed.map((item, index) => (
                                 <SwiperSlide className='flex flex-col w-[300px] gap-1 md:w-36 mb-4 py-5' key={index}>
+                                    <Link to={`/product-details/${item.slug}`}>
                                     <div className='w-full relative'>
                                         <img
                                             className='rounded w-full item-center'
@@ -73,6 +75,7 @@ const RecentlyViewed = () => {
                                             })}
                                         </p>
                                     </div>
+                                    </Link>
                                 </SwiperSlide>
                             ))}
 
