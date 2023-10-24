@@ -4,14 +4,16 @@ import App from './App.jsx'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext.jsx'
-import { SkeletonTheme } from 'react-loading-skeleton'
+import { ContextProvider } from './screens/admin/context/ContextProvider.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ContextProvider>
         <AuthProvider>
           <App />
         </AuthProvider>
-      </BrowserRouter>
+      </ContextProvider>
+    </BrowserRouter>
   </React.StrictMode>,
 )

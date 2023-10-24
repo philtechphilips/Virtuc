@@ -6,8 +6,8 @@ import { useStateContext } from "../context/ContextProvider";
 import {
   BsChevronDown,
 } from "react-icons/bs";
-import NacomesLogo from "../../assets/images/PicsArt_10-12-01.47.00.png";
-import YabatechLogo from "../../assets/images/Yabatech-Logo-removebg-preview.png";
+// import NacomesLogo from "../../assets/images/PicsArt_10-12-01.47.00.png";
+// import YabatechLogo from "../../assets/images/Yabatech-Logo-removebg-preview.png";
 
 
 
@@ -44,16 +44,7 @@ const Sidebar = () => {
               onClick={handleCloseSideBar}
               className="flex items-center "
             >
-              <img
-                src={YabatechLogo}
-                style={{ width: 50 }}
-                className="mt-2"
-              />
-              <img
-                src={NacomesLogo}
-                style={{ width: 50 }}
-              />
-                
+             <h1 className="text-xl">VirtuC</h1>   
             </Link>
             <button
               type="button"
@@ -63,13 +54,6 @@ const Sidebar = () => {
               <i className="ri-close-line"></i>
             </button>
           </div>
-
-          <Link
-            to="/administrator/dashboard"
-            className="flex items-center bg-gray-200 p-2 mt-5 rounded"
-          >
-            <p className="text-black text-md font-bold ml-4">Isola Pelumi</p>
-          </Link>
 
           <ul className="pt-6">
             {Menus.map((Menu, index) => (

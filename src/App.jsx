@@ -20,6 +20,8 @@ import AuthenticatedRoutes from './protectedRoutes/AuthenticatedRoutes'
 import Account from './screens/Account'
 import PageNotFound from './screens/404'
 import Wishlist from './screens/Wishlist'
+import AdminIndex from './screens/admin/AdminIndex'
+import AdminLayout from './protectedRoutes/AdminRoutes'
 
 function App() {
   return (
@@ -30,7 +32,8 @@ function App() {
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/wishlist" element={<Wishlist />}></Route>
         <Route path="/product-details/:slug" element={<ProductDetails />}></Route>
-        <Route path="*" element={<PageNotFound />}></Route>
+        
+        
 
         <Route element={<GuestRoutes />}>
           <Route path="/auth/login" element={<Login />}></Route>
@@ -48,6 +51,13 @@ function App() {
           <Route path="/my-account" element={<Account />}></Route>
           <Route path="/checkout" element={<Checkout />}></Route>
         </Route>
+
+
+        <Route element={<AdminLayout />}>
+        <Route path='/*' element={<AdminIndex />}></Route>
+        </Route>
+        <Route path="*" element={<PageNotFound />}></Route>
+
       </Routes>
     </>
   )
