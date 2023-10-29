@@ -12,9 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { DataGrid } from "@mui/x-data-grid";
 import apiService from "../../../api/apiRequests";
 
-
-
-const AddCTA = () => {
+const Categories = () => {
     const [data, setData] = useState([]);
     const [errors, setErrors] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,17 +52,17 @@ const AddCTA = () => {
     }
 
     const initialValues = {
-        content: '',
+        category: '',
     };
 
     const validationSchema = Yup.object().shape({
-        content: Yup.string().required('Header bar content is required'),
+        category: Yup.string().required('Category is required'),
     });
 
     const userColumns = [
         {
-            field: "content",
-            headerName: "Content",
+            field: "category",
+            headerName: "Category",
             width: 600
         }
     ];
@@ -77,6 +75,15 @@ const AddCTA = () => {
             renderCell: (params) => {
                 return (
                     <div className="cellAction flex gap-5">
+                    <button
+                            type="button"
+                            className={`viewButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+                                }`}
+                            onClick={() => handleDelete(params.row._id)}
+                            disabled={isSubmitting}
+                        >
+                            Add Category Type
+                        </button>
                         <button
                             type="button"
                             className={`viewButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
@@ -104,7 +111,7 @@ const AddCTA = () => {
     useEffect(() => {
         const fetchHeaderBarContent = async () => {
             try {
-                const response = await apiService.fetchHeaderBarContent();
+                const response = await apiService.fetchCategory();
                 setData(response.data.payload);
             } catch (error) {
                 toast.error("Something went wrong!");
@@ -168,7 +175,7 @@ const AddCTA = () => {
                     <div className="pb-20 w-full h-full  p-5 pt-24 md:pt-2">
                         <div className="bg-white p-5">
                             <div className="flex w-full md:w-1/2 justify-between items-center">
-                                <h1 className="text-lg font-semibold mb-4">Add Header Bar</h1>
+                                <h1 className="text-lg font-semibold mb-4">Add Categories</h1>
                             </div>
 
                             <Formik initialValues={initialValues}
@@ -181,10 +188,10 @@ const AddCTA = () => {
                                                 htmlFor="vote"
                                                 className="block text-gray-700 font-semibold text-sm mb-2"
                                             >
-                                                Content:
+                                                Category:
                                             </label>
-                                            <Field type="text" id="content" name="content" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Add header bar content" />
-                                            <ErrorMessage name="content" component="div" className="text-sm text-red-600" />
+                                            <Field type="text" id="category" name="category" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Add category" />
+                                            <ErrorMessage name="category" component="div" className="text-sm text-red-600" />
                                             {errors && (<p className="text-sm text-red-600">{errors}</p>)}
                                         </div>
                                     </div>
@@ -208,7 +215,7 @@ const AddCTA = () => {
                                                 <span className="text-sm font-medium ml-2">Submitting..</span>
                                             </div>
                                         ) : (
-                                            "Add Header Bar Content"
+                                            "Add Category"
                                         )}
                                     </button>
                                 </Form>
@@ -235,4 +242,4 @@ const AddCTA = () => {
     );
 }
 
-export default AddCTA
+export default Categories

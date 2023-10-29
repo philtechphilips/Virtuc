@@ -383,6 +383,20 @@ const apiService = {
       throw error;
     }
   },
+
+  addCategory: async (token, values) => {
+    try {
+      const response = await axios.post(`/category/create-category`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
 };
 
 export default apiService;

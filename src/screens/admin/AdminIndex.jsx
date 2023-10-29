@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Admin from "./pages/Admin";
 import Users from "./pages/Users";
 import AddCTA from "./pages/AddCTA";
+import Categories from "./pages/Categories";
 
 const AdminIndex = () => {
   return (
@@ -13,6 +14,7 @@ const AdminIndex = () => {
       <Route path="/administrators" element={<Admin />} />
       <Route path="/users" element={<Users />} />
       <Route path="/add-cta" element={<AddCTA />} />
+      <Route path="/categories" element={<Categories />} />
       <Route path="*" element="404" />
     </Routes>
   )

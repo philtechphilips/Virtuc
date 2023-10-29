@@ -91,9 +91,8 @@ export const Menus = [
         cName: "sub-nav",
       },
       {
-        title: "Create Vote",
-        src: "/administrator/class",
-
+        title: "Categories",
+        src: "/categories",
         cName: "sub-nav",
       },
       {
