@@ -5,13 +5,13 @@ import "./table.scss";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useStateContext } from "../context/ContextProvider";
-import apiService from "../../api/apiRequests";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DataGrid } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
+import apiService from "../../../api/apiRequests";
+
 
 
 const AddCTA = () => {
@@ -25,7 +25,8 @@ const AddCTA = () => {
     const handleDelete = async (id) => {
         setIsDeleted(true)
         try {
-            const response = await apiService.deleteVote(id);
+            const user = JSON.parse(localStorage.getItem("user"));
+            const response = await apiService.deleteHeaderBarContent(user.token, id);
             toast.success("Vote Deleted Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
@@ -52,74 +53,19 @@ const AddCTA = () => {
         }
     }
 
-    const handleActive = async (id) => {
-        setIsActive(true)
-        try {
-            const response = await apiService.activateVote(id);
-            toast.success("Vote Status Changed Sucessfully!", {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } catch (e) {
-            toast.error(e.response.data.message, {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            })
-        } finally {
-            setIsActive(false)
-        }
-    }
-
     const initialValues = {
-        vote: '',
-        startDate: '',
-        endDate: '',
+        content: '',
     };
 
     const validationSchema = Yup.object().shape({
-        vote: Yup.string().required('Vote type is required'),
-        startDate: Yup.string().required('Vote start date and time is required'),
-        endDate: Yup.string().required('Vote end date and time is required'),
+        content: Yup.string().required('Header bar content is required'),
     });
 
     const userColumns = [
         {
-            field: "vote",
-            headerName: "Vote Type",
-            width: 250,
-            renderCell: (params) => {
-                return <div className="cellWithImg">{params.row.vote}</div>;
-            },
-        },
-
-        {
-            field: "startDate",
-            headerName: "Start Date/Time",
-            width: 280,
-            renderCell: (params) => {
-                return <div className="cellWithImg">{new Date(params.row.startDate).toLocaleString()}</div>;
-            },
-        },
-
-        {
-            field: "endDate",
-            headerName: "End Date/Time",
-            width: 200,
-            renderCell: (params) => {
-                return <div className="cellWithImg">{new Date(params.row.endDate).toLocaleString()}</div>;
-            },
+            field: "content",
+            headerName: "Content",
+            width: 600
         }
     ];
 
@@ -131,9 +77,6 @@ const AddCTA = () => {
             renderCell: (params) => {
                 return (
                     <div className="cellAction flex gap-5">
-                        <button onClick={() => handleActive(params.row._id)}  style={{ textDecoration: "none" }}>
-                            <div className="viewButton">{params.row.isActive ? "Active" : "Inactive"}</div>
-                        </button>
                         <button
                             type="button"
                             className={`deleteButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
@@ -150,21 +93,23 @@ const AddCTA = () => {
     ];
 
     useEffect(() => {
-        const fetchVote = async () => {
-            const response = await apiService.fetchVote();
+        const fetchHeaderBarContent = async () => {
+            try {
+                const response = await apiService.fetchHeaderBarContent();
             setData(response.data.payload);
+            } catch (error) {
+                toast.error("Something went wrong!");
+            }
         }
-        fetchVote()
+        fetchHeaderBarContent();
     }, [isSubmitting, isDeleted]);
-
-
 
     const handleSubmit = async (values, { resetForm }) => {
         setIsSubmitting(true)
-        console.log(values)
         try {
-            const response = await apiService.createVote(values);
-            toast.success("Vote Created Sucessfully!", {
+            const user = JSON.parse(localStorage.getItem("user"));
+            const response = await apiService.addHeaderBarContent(user.token, values);
+            toast.success("Header Bar Content Created Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -214,7 +159,7 @@ const AddCTA = () => {
                     <div className="pb-20 w-full h-full  p-5 pt-24 md:pt-2">
                         <div className="bg-white p-5">
                             <div className="flex w-full md:w-1/2 justify-between items-center">
-                                <h1 className="text-lg font-semibold mb-4">Create Votes</h1>
+                                <h1 className="text-lg font-semibold mb-4">Add Header Bar</h1>
                             </div>
 
                             <Formik initialValues={initialValues}
@@ -227,39 +172,11 @@ const AddCTA = () => {
                                                 htmlFor="vote"
                                                 className="block text-gray-700 font-semibold text-sm mb-2"
                                             >
-                                                Vote Type
+                                                Content:
                                             </label>
-                                            <Field type="text" id="vote" name="vote" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter vote type" />
-                                            <ErrorMessage name="vote" component="div" className="text-sm text-red-600" />
+                                            <Field type="text" id="content" name="content" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Add header bar content" />
+                                            <ErrorMessage name="content" component="div" className="text-sm text-red-600" />
                                             {errors && (<p className="text-sm text-red-600">{errors}</p>)}
-                                        </div>
-                                    </div>
-
-                                    <div className="w-full flex flex-wrap justify-between">
-                                        <div className="mb-4 mt-4 w-full pr-3">
-                                            <label
-                                                htmlFor="startDate"
-                                                className="block text-gray-700 font-semibold text-sm mb-2"
-                                            >
-                                                Start Date/Time:
-                                            </label>
-                                            <Field type="datetime-local" id="startDate" name="startDate" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                                            <ErrorMessage name="startDate" component="div" className="text-sm text-red-600" />
-
-                                        </div>
-                                    </div>
-
-                                    <div className="w-full flex flex-wrap justify-between">
-                                        <div className="mb-4 mt-4 w-full pr-3">
-                                            <label
-                                                htmlFor="firstname"
-                                                className="block text-gray-700 font-semibold text-sm mb-2"
-                                            >
-                                                End Date/Time:
-                                            </label>
-                                            <Field type="datetime-local" id="endDate" name="endDate" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                                            <ErrorMessage name="endDate" component="div" className="text-sm text-red-600" />
-
                                         </div>
                                     </div>
 
@@ -282,7 +199,7 @@ const AddCTA = () => {
                                                 <span className="text-sm font-medium ml-2">Submitting..</span>
                                             </div>
                                         ) : (
-                                            "Create Vote"
+                                            "Add Header Bar Content"
                                         )}
                                     </button>
                                 </Form>

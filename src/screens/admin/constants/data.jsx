@@ -74,7 +74,7 @@ export const Menus = [
       },
       {
         title: "Users",
-        src: "/administrator/parent",
+        src: "/users",
         cName: "sub-nav",
       }
     ],
@@ -85,8 +85,8 @@ export const Menus = [
     icon: "ri-home-line",
     subMenus: [
       {
-        title: "Create Category",
-        src: "/administrator/sections",
+        title: "Header Bar",
+        src: "/add-cta",
 
         cName: "sub-nav",
       },

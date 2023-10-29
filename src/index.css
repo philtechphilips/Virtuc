@@ -26,7 +26,7 @@
 
 
 body {
-  font-family: "Ones Regular", sans-serif;
+  font-family: "Ones Regular", sans-serif !important;
 }
 
 .sidebar {

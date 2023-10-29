@@ -23,9 +23,10 @@ const Admin = () => {
 
   const handleDelete = async (id) => {
     setIsDeleted(true)
+    const user = JSON.parse(localStorage.getItem("user"));
     try {
-      const response = await apiService.deleteAdmin(id);
-      toast.success("User Deleted Sucessfully!", {
+      const response = await apiService.deleteAdmin(user.token, id);
+      toast.success("Admin Deleted Sucessfully!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -52,25 +53,22 @@ const Admin = () => {
   }
 
   const initialValues = {
-    receiptNo: '',
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
+    email: ''
   };
 
   const validationSchema = Yup.object().shape({
-    receiptNo: Yup.string().required('Receipt no. is required'),
-    firstName: Yup.string().required('Firstname is required'),
-    lastName: Yup.string().required('Surname is required'),
+    first_name: Yup.string().required('User first name is required'),
+    last_name: Yup.string().required('User last name is required'),
+    email: Yup.string().required('User email address is required'),
   });
 
   const userColumns = [
     {
-      field: "receiptNo",
-      headerName: "Receipt No.",
+      field: "first_name",
+      headerName: "First Name",
       width: 250,
-      renderCell: (params) => {
-        return <div className="cellWithImg font-bold">{params.row.receiptNo}</div>;
-      },
     },
 
     {
@@ -80,8 +78,8 @@ const Admin = () => {
     },
 
     {
-      field: "first_name",
-      headerName: "Firstname",
+      field: "email",
+      headerName: "Email Address",
       width: 200,
     },
   ];
@@ -111,10 +109,14 @@ const Admin = () => {
 
   useEffect(() => {
     const fetchAdmin = async () => {
-      const response = await apiService.fetchUser();
-      const dataArray = response.data.payload;
-      const filteredArray = dataArray.filter(item => item.role === 'admin');
-      setData(filteredArray);
+      const user = JSON.parse(localStorage.getItem("user"));
+      try {
+        const response = await apiService.fetchAdmin(user.token);
+        setData(response.data.payload);
+      } catch (error) {
+        console.log(error)
+        toast.error("Something went wrong!")
+      }
     }
     fetchAdmin()
   }, [isSubmitting, isDeleted]);
@@ -125,8 +127,9 @@ const Admin = () => {
     setIsSubmitting(true)
     console.log(values)
     try {
-      const response = await apiService.createUser(values);
-      toast.success("User Added Sucessfully!", {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const response = await apiService.addAdmin(user.token, values);
+      toast.success("Admin Added Sucessfully!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -191,10 +194,10 @@ const Admin = () => {
                         htmlFor="receipt-no"
                         className="block text-gray-700 font-semibold text-sm mb-2"
                       >
-                        Receipt No.:
+                        First Name:
                       </label>
-                      <Field type="text" id="receiptNo" name="receiptNo" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                      <ErrorMessage name="receiptNo" component="div" className="text-sm text-red-600" />
+                      <Field type="text" id="first_name" name="first_name" placeholder="Enter First Name" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                      <ErrorMessage name="first_name" component="div" className="text-sm text-red-600" />
                       {errors && (<p className="text-sm text-red-600">{errors}</p>)}
                     </div>
                   </div>
@@ -205,10 +208,10 @@ const Admin = () => {
                         htmlFor="lastname"
                         className="block text-gray-700 font-semibold text-sm mb-2"
                       >
-                        Surname:
+                        Last Name:
                       </label>
-                      <Field type="text" id="lastName" name="lastName" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                      <ErrorMessage name="lastName" component="div" className="text-sm text-red-600" />
+                      <Field type="text" id="last_name" name="last_name" placeholder="Enter Last Name" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                      <ErrorMessage name="last_name" component="div" className="text-sm text-red-600" />
 
                     </div>
                   </div>
@@ -219,10 +222,10 @@ const Admin = () => {
                         htmlFor="firstname"
                         className="block text-gray-700 font-semibold text-sm mb-2"
                       >
-                        Firstname:
+                        Email:
                       </label>
-                      <Field type="text" id="firstName" name="firstName" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                      <ErrorMessage name="firstName" component="div" className="text-sm text-red-600" />
+                      <Field type="text" id="email" name="email" placeholder="Enter Email Address" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                      <ErrorMessage name="email" component="div" className="text-sm text-red-600" />
 
                     </div>
                   </div>
@@ -246,7 +249,7 @@ const Admin = () => {
                         <span className="text-sm font-medium ml-2">Submitting..</span>
                       </div>
                     ) : (
-                      "Add New Admin"
+                      "Add Admin"
                     )}
                   </button>
                 </Form>
