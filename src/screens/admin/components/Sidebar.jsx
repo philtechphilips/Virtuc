@@ -6,8 +6,6 @@ import { useStateContext } from "../context/ContextProvider";
 import {
   BsChevronDown,
 } from "react-icons/bs";
-// import NacomesLogo from "../../assets/images/PicsArt_10-12-01.47.00.png";
-// import YabatechLogo from "../../assets/images/Yabatech-Logo-removebg-preview.png";
 
 
 
@@ -16,7 +14,7 @@ const Sidebar = () => {
   // const { user } = useAuthContext();
 
   const handleCloseSideBar = () => {
-    if(activeMenu && screenSize <= 900){
+    if (activeMenu && screenSize <= 900) {
       setActiveMenu(false)
     }
   }
@@ -45,7 +43,7 @@ const Sidebar = () => {
               className="flex items-center "
             >
               VirtuC
-                
+
             </Link>
             <button
               type="button"
@@ -72,14 +70,13 @@ const Sidebar = () => {
                   onClick={() => handleSubmenuClick(Menu.title)}
                 >
                   <i className={Menu.icon}></i>
-                  <NavLink to={Menu.src} className="flex-1" onClick={!Menu.subMenus && handleCloseSideBar}>
+                  <NavLink className="flex-1" onClick={!Menu.subMenus && handleCloseSideBar}>
                     {Menu.title}
                   </NavLink>
                   {Menu.subMenus && (
                     <BsChevronDown
-                      className={`${
-                        subMenuOpen === Menu.title && "rotate-180"
-                      }`}
+                      className={`${subMenuOpen === Menu.title && "rotate-180"
+                        }`}
                     />
                   )}
                 </li>

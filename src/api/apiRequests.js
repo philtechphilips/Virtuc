@@ -397,6 +397,20 @@ const apiService = {
     }
   },
 
+  
+  createCategoryType: async (token, values) => {
+    try {
+      const response = await axios.patch(`/category/create-category-type`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
 };
 
 export default apiService;

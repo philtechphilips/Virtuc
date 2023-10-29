@@ -5,28 +5,29 @@ import "./table.scss";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useStateContext } from "../context/ContextProvider";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DataGrid } from "@mui/x-data-grid";
 import apiService from "../../../api/apiRequests";
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-const Categories = () => {
+const AddCategoryItems = () => {
     const [data, setData] = useState([]);
+    const [votes, setVotes] = useState([]);
     const [errors, setErrors] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { activeMenu } = useStateContext();
+    const { activeMenu } = useStateContext(); 
     const [isDeleted, setIsDeleted] = useState(false);
-    const [isActive, setIsActive] = useState(false);
+    const location = useLocation();
+    const { id, category } = location.state;
 
     const handleDelete = async (id) => {
         setIsDeleted(true)
         try {
-            const user = JSON.parse(localStorage.getItem("user"));
-            const response = await apiService.deleteHeaderBarContent(user.token, id);
-            toast.success("Vote Deleted Sucessfully!", {
+            const response = await apiService.deleteCategory(id);
+            toast.success("Category Deleted Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -53,49 +54,64 @@ const Categories = () => {
     }
 
     const initialValues = {
-        category: '',
+        categoryId: id,
+        categoryType: "",
     };
 
     const validationSchema = Yup.object().shape({
-        category: Yup.string().required('Category is required'),
+        categoryId: Yup.string().required('Category is required'),
+        categoryType: Yup.string().required('Category type is required')
     });
 
     const userColumns = [
         {
-            field: "category",
-            headerName: "Category",
-            width: 600
+            field: "vote",
+            headerName: "Vote Type",
+            width: 400,
+            renderCell: (params) => {
+                return <div className="cellWithImg">{params.row.vote.vote}</div>;
+            },
+        },
+
+        {
+            field: "categoryName",
+            headerName: "Category Name",
+            width: 400,
+        },
+
+        {
+            field: "categoryTypes",
+            headerName: "categoryTypes",
+            width: 800,
+            renderCell: (params) => {
+                return (
+                    <div className="flex gap-5">
+                        {params.row.categoryTypes.map((item, index) => (
+                            <div key={index} className="cellWithImg">
+                                {item.name}
+                            </div>
+                        ))}
+                    </div>
+                );
+            },
         }
+
     ];
 
     const actionColumn = [
         {
             field: "action",
             headerName: "Action",
-            width: 300,
+            width: 100,
             renderCell: (params) => {
                 return (
                     <div className="cellAction flex gap-5">
-                        <Link to={"/category-type"}
-                            state={{ id: params.row._id, category: params.row.category }}
-                          className='viewButton'>
-                            Add Category Type
-                        </Link>
                         <button
                             type="button"
-                            className={`viewButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+                            className={`deleteButton ${isDeleted ? "cursor-not-allowed" : "cursor-pointer"
                                 }`}
                             onClick={() => handleDelete(params.row._id)}
-                            disabled={isSubmitting}
-                        >
-                            Edit
-                        </button>
-                        <button
-                            type="button"
-                            className={`deleteButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
-                                }`}
-                            onClick={() => handleDelete(params.row._id)}
-                            disabled={isSubmitting}
+                            disabled={isDeleted}
                         >
                             Delete
                         </button>
@@ -106,23 +122,21 @@ const Categories = () => {
     ];
 
     useEffect(() => {
-        const fetchHeaderBarContent = async () => {
-            try {
-                const response = await apiService.fetchCategory();
-                setData(response.data.payload);
-            } catch (error) {
-                toast.error("Something went wrong!");
-            }
+        const fetchVote = async () => {
+            const response = await apiService.fetchVote();
+            const responses = await apiService.fetchCategories();
+            console.log(responses.data.payload)
+            setData(responses.data.payload);
+            setVotes(response.data.payload);
         }
-        fetchHeaderBarContent();
+        fetchVote()
     }, [isSubmitting, isDeleted]);
 
     const handleSubmit = async (values, { resetForm }) => {
         setIsSubmitting(true)
         try {
-            const user = JSON.parse(localStorage.getItem("user"));
-            const response = await apiService.addCategory(user.token, values);
-            toast.success("Category Created Sucessfully!", {
+            const response = await apiService.createCategoryType(values);
+            toast.success("Category Type Created Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -172,7 +186,7 @@ const Categories = () => {
                     <div className="pb-20 w-full h-full  p-5 pt-24 md:pt-2">
                         <div className="bg-white p-5">
                             <div className="flex w-full md:w-1/2 justify-between items-center">
-                                <h1 className="text-lg font-semibold mb-4">Add Categories</h1>
+                                <h1 className="text-lg font-semibold mb-4">Create Category Type</h1>
                             </div>
 
                             <Formik initialValues={initialValues}
@@ -182,16 +196,28 @@ const Categories = () => {
                                     <div className="w-full flex flex-wrap justify-between">
                                         <div className="mb-4 mt-4 w-full pr-3">
                                             <label
-                                                htmlFor="vote"
+                                                htmlFor="categoryName"
                                                 className="block text-gray-700 font-semibold text-sm mb-2"
                                             >
-                                                Category:
+                                                Category
                                             </label>
-                                            <Field type="text" id="category" name="category" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Add category" />
-                                            <ErrorMessage name="category" component="div" className="text-sm text-red-600" />
-                                            {errors && (<p className="text-sm text-red-600">{errors}</p>)}
+                                            <Field type="text" value={category}  disabled className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter Category"></Field>
+                                            <ErrorMessage name="categoryId" component="div" className="text-sm text-red-600" />
                                         </div>
                                     </div>
+
+                                    <div className="w-full flex flex-wrap justify-between">
+                                    <div className="mb-4 mt-4 w-full pr-3">
+                                        <label
+                                            htmlFor="categoryName"
+                                            className="block text-gray-700 font-semibold text-sm mb-2"
+                                        >
+                                            Category Type
+                                        </label>
+                                        <Field type="text" name="categoryType"  placeholder="Enter category type" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></Field>
+                                        <ErrorMessage name="categoryType" component="div" className="text-sm text-red-600" />
+                                    </div>
+                                </div>
 
                                     <button
                                         disabled={isSubmitting}
@@ -201,7 +227,7 @@ const Categories = () => {
                                             color: "#fff",
                                             borderRadius: "3px",
                                         }}
-                                        className={`text-sm font-medium p-3 hover:drop-shadow-xl pl-5 pr-5 ${isSubmitting ? "cursor-not-allowed" : ""
+                                        className={` text-sm font-medium p-3 hover:drop-shadow-xl pl-5 pr-5 ${isSubmitting ? "cursor-not-allowed" : ""
                                             }`}
                                     >
                                         {isSubmitting ? (
@@ -212,7 +238,7 @@ const Categories = () => {
                                                 <span className="text-sm font-medium ml-2">Submitting..</span>
                                             </div>
                                         ) : (
-                                            "Add Category"
+                                            "Create Category Type"
                                         )}
                                     </button>
                                 </Form>
@@ -233,10 +259,8 @@ const Categories = () => {
                     {/* Add Admin Form Ends Here */}
                 </div>
             </div>
-
         </div>
-
     );
 }
 
-export default Categories
+export default AddCategoryItems

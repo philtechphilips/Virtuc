@@ -5,6 +5,7 @@ import Admin from "./pages/Admin";
 import Users from "./pages/Users";
 import AddCTA from "./pages/AddCTA";
 import Categories from "./pages/Categories";
+import AddCategoryItems from "./pages/AddCategoryItems";
 
 const AdminIndex = () => {
   return (
@@ -15,6 +16,7 @@ const AdminIndex = () => {
       <Route path="/users" element={<Users />} />
       <Route path="/add-cta" element={<AddCTA />} />
       <Route path="/categories" element={<Categories />} />
+      <Route path="/category-type" element={<AddCategoryItems />} />
       <Route path="*" element="404" />
     </Routes>
   )

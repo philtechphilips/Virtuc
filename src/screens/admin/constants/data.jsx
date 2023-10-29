@@ -94,10 +94,6 @@ export const Menus = [
         title: "Categories",
         src: "/categories",
         cName: "sub-nav",
-      },
-      {
-        title: "View result",
-        src: "/services/services3",
       }
     ],
   },
