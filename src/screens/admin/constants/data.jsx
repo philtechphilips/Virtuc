@@ -69,7 +69,7 @@ export const Menus = [
     subMenus: [
       {
         title: "Administrators",
-        src: "/administrator/admin-users",
+        src: "/administrators",
         cName: "sub-nav",
       },
       {
@@ -80,9 +80,9 @@ export const Menus = [
     ],
   },
   {
-    title: "Manage Vote",
+    title: "Manage Home page",
     gap: true,
-    icon: "ri-graduation-cap-line",
+    icon: "ri-home-line",
     subMenus: [
       {
         title: "Create Category",

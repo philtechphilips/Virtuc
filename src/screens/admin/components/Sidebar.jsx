@@ -40,11 +40,12 @@ const Sidebar = () => {
         <>
           <div className="flex justify-between items-center pt-5">
             <Link
-              to="/administrator/dashboard"
+              to="/dashboard"
               onClick={handleCloseSideBar}
               className="flex items-center "
             >
-             <h1 className="text-xl">VirtuC</h1>   
+              VirtuC
+                
             </Link>
             <button
               type="button"
@@ -54,6 +55,13 @@ const Sidebar = () => {
               <i className="ri-close-line"></i>
             </button>
           </div>
+
+          <Link
+            to="/administrator/dashboard"
+            className="flex items-center bg-gray-200 p-2 mt-5 rounded"
+          >
+            <p className="text-black text-md font-bold ml-4">Isola Pelumi</p>
+          </Link>
 
           <ul className="pt-6">
             {Menus.map((Menu, index) => (

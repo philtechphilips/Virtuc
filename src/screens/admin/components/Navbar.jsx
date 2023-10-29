@@ -63,36 +63,7 @@ const Navbar = () => {
         customFunc={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)}
         icon="ri-menu-line"
       />
-      <div className="flex items-end">
-        {/* Notification button */}
-        <NavButton
-          customFunc={() => handleClick()}
-          icon="ri-notification-4-line"
-          dotColor={COLORS.dangerDark}
-        />
-        {/* Profile button */}
-        <div
-          className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-          onClick={() => handleClickProfile()}
-        >
-          <img
-            className="rounded-full w-10 h-10"
-            src="https://t4.ftcdn.net/jpg/02/14/74/61/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg"
-            alt="Profile"
-          ></img>
-          <p>
-            <span className="text-gray-400 text-14">Hi, </span>{" "}
-            <span className="text-gray-400 ml-1 font-bold text-14">
-              Isola Pelumi
-            </span>
-          </p>
-          <i className="ri-arrow-down-s-line text-gray-400 text-14"></i>
-        </div>
-        {/* Render Notification component based on isClicked state */}
-        {isClicked && <Notification />}
-        {/* Render Profile component based on isClickedProfile state */}
-        {/* {isClickedProfile && <Profile />} */}
-      </div>
+     
     </div>
   );
 };

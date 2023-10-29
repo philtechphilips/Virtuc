@@ -1,4 +1,4 @@
-import DashboardInsight from "../components/DashboardInsight";
+// import DashboardInsight from "../components/DashboardInsight";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useStateContext } from "../context/ContextProvider";
@@ -34,7 +34,9 @@ const Dashboard = () => {
 
 
     <div className="mt-25 mr-3" style={{ paddingBottom: "150px" }}>
-      <DashboardInsight />
+      
+          Dashboard Insight
+
     </div>
 
     </div>

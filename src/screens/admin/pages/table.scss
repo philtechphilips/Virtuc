@@ -1,19 +1,17 @@
-.datatable {
-  max-width: 1000px;
+.datagrid {
+  max-width: 1030px !important;
   height: 500px !important;
 
   @media (max-width: 500px) {
     max-width: 350px;
   }
 
-  .datatableTitle {
+  .MuiDataGrid-columnHeaderTitle {
     width: 100%;
-    font-size: 24px;
-    color: gray;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    font-size: 14px !important;
+    color: #222;
+    font-family: 'Ones Bold' !important;
+    text-align: center !important;
 
     .link {
       text-decoration: none;
