@@ -66,6 +66,7 @@ export const Menus = [
   {
     title: "Accounts",
     icon: "ri-user-add-line",
+    src: "/users",
     subMenus: [
       {
         title: "Administrators",
@@ -83,6 +84,7 @@ export const Menus = [
     title: "Manage Home page",
     gap: true,
     icon: "ri-home-line",
+    src: "/add-cta",
     subMenus: [
       {
         title: "Header Bar",

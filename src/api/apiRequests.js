@@ -398,9 +398,9 @@ const apiService = {
   },
 
   
-  createCategoryType: async (token, values) => {
+  createCategoryType: async (token, { categoryType }, id) => {
     try {
-      const response = await axios.patch(`/category/create-category-type`, values, {
+      const response = await axios.patch(`/category/create-category-type`, { categoryType, categoryId: id}, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -411,6 +411,19 @@ const apiService = {
     }
   },
 
+
+  deleteCategory: async (token, id) => {
+    try {
+      const response = await axios.delete(`/category/delete-category/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default apiService;

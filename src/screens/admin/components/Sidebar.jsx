@@ -70,9 +70,9 @@ const Sidebar = () => {
                   onClick={() => handleSubmenuClick(Menu.title)}
                 >
                   <i className={Menu.icon}></i>
-                  <NavLink className="flex-1" onClick={!Menu.subMenus && handleCloseSideBar}>
+                  <Link to={Menu.src} className="flex-1" onClick={!Menu.subMenus && handleCloseSideBar}>
                     {Menu.title}
-                  </NavLink>
+                  </Link>
                   {Menu.subMenus && (
                     <BsChevronDown
                       className={`${subMenuOpen === Menu.title && "rotate-180"

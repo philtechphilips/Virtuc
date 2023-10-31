@@ -25,8 +25,8 @@ const Categories = () => {
         setIsDeleted(true)
         try {
             const user = JSON.parse(localStorage.getItem("user"));
-            const response = await apiService.deleteHeaderBarContent(user.token, id);
-            toast.success("Vote Deleted Sucessfully!", {
+            const response = await apiService.deleteCategory(user.token, id);
+            toast.success("Category Deleted Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -64,7 +64,21 @@ const Categories = () => {
         {
             field: "category",
             headerName: "Category",
-            width: 600
+            width: 200
+        },
+        {
+            field: "",
+            headerName: "Category Type",
+            width: 600,
+            renderCell: (params) => {
+                return (
+                    <div className="flex gap-5">
+                        {params.row.categoryTypes.map((item, index) => (
+                            <div className="cellWithImg" key={index}>{item.type}</div>
+                        ))}
+                    </div>
+                );
+            },
         }
     ];
 

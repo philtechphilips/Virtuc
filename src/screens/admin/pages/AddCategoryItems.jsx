@@ -11,23 +11,28 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DataGrid } from "@mui/x-data-grid";
 import apiService from "../../../api/apiRequests";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const AddCategoryItems = () => {
     const [data, setData] = useState([]);
-    const [votes, setVotes] = useState([]);
     const [errors, setErrors] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { activeMenu } = useStateContext(); 
+    const { activeMenu } = useStateContext();
     const [isDeleted, setIsDeleted] = useState(false);
+    const [isActive, setIsActive] = useState(false);
     const location = useLocation();
+    const navigate = useNavigate() 
     const { id, category } = location.state;
 
+    if(!location.state.hasOwnProperty("id") && !location.state.hasOwnProperty("category")){
+        navigate('/categories')
+    }
     const handleDelete = async (id) => {
         setIsDeleted(true)
         try {
-            const response = await apiService.deleteCategory(id);
-            toast.success("Category Deleted Sucessfully!", {
+            const user = JSON.parse(localStorage.getItem("user"));
+            const response = await apiService.deleteCategory(user.token, id);
+            toast.success("Category Type Deleted Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -54,64 +59,63 @@ const AddCategoryItems = () => {
     }
 
     const initialValues = {
-        categoryId: id,
-        categoryType: "",
+        categoryType: '',
     };
 
     const validationSchema = Yup.object().shape({
-        categoryId: Yup.string().required('Category is required'),
-        categoryType: Yup.string().required('Category type is required')
+        categoryType: Yup.string().required('Category type is required'),
     });
 
     const userColumns = [
         {
-            field: "vote",
-            headerName: "Vote Type",
-            width: 400,
-            renderCell: (params) => {
-                return <div className="cellWithImg">{params.row.vote.vote}</div>;
-            },
+            field: "category",
+            headerName: "Category",
+            width: 600
         },
-
         {
-            field: "categoryName",
-            headerName: "Category Name",
-            width: 400,
-        },
-
-        {
-            field: "categoryTypes",
-            headerName: "categoryTypes",
-            width: 800,
+            field: "",
+            headerName: "Category Type",
+            width: 600,
             renderCell: (params) => {
                 return (
                     <div className="flex gap-5">
                         {params.row.categoryTypes.map((item, index) => (
-                            <div key={index} className="cellWithImg">
-                                {item.name}
-                            </div>
+                            <div className="cellWithImg" key={index}>{item.type}</div>
                         ))}
                     </div>
                 );
             },
         }
-
     ];
 
     const actionColumn = [
         {
             field: "action",
             headerName: "Action",
-            width: 100,
+            width: 300,
             renderCell: (params) => {
                 return (
                     <div className="cellAction flex gap-5">
+                        <Link to={"/category-type"}
+                            state={{ id: params.row._id, category: params.row.category }}
+                          className='viewButton'>
+                            Add Category Type
+                        </Link>
                         <button
                             type="button"
-                            className={`deleteButton ${isDeleted ? "cursor-not-allowed" : "cursor-pointer"
+                            className={`viewButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
                                 }`}
                             onClick={() => handleDelete(params.row._id)}
-                            disabled={isDeleted}
+                            disabled={isSubmitting}
+                        >
+                            Edit
+                        </button>
+                        <button
+                            type="button"
+                            className={`deleteButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+                                }`}
+                            onClick={() => handleDelete(params.row._id)}
+                            disabled={isSubmitting}
                         >
                             Delete
                         </button>
@@ -122,20 +126,23 @@ const AddCategoryItems = () => {
     ];
 
     useEffect(() => {
-        const fetchVote = async () => {
-            const response = await apiService.fetchVote();
-            const responses = await apiService.fetchCategories();
-            console.log(responses.data.payload)
-            setData(responses.data.payload);
-            setVotes(response.data.payload);
+        const fetchHeaderBarContent = async () => {
+            try {
+                const response = await apiService.fetchCategory();
+                console.log(response.data.payload)
+                setData(response.data.payload);
+            } catch (error) {
+                toast.error("Something went wrong!");
+            }
         }
-        fetchVote()
+        fetchHeaderBarContent();
     }, [isSubmitting, isDeleted]);
 
     const handleSubmit = async (values, { resetForm }) => {
         setIsSubmitting(true)
         try {
-            const response = await apiService.createCategoryType(values);
+            const user = JSON.parse(localStorage.getItem("user"));
+            const response = await apiService.createCategoryType(user.token, values, id);
             toast.success("Category Type Created Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
@@ -186,7 +193,7 @@ const AddCategoryItems = () => {
                     <div className="pb-20 w-full h-full  p-5 pt-24 md:pt-2">
                         <div className="bg-white p-5">
                             <div className="flex w-full md:w-1/2 justify-between items-center">
-                                <h1 className="text-lg font-semibold mb-4">Create Category Type</h1>
+                                <h1 className="text-lg font-semibold mb-4">Add Categories</h1>
                             </div>
 
                             <Formik initialValues={initialValues}
@@ -196,28 +203,31 @@ const AddCategoryItems = () => {
                                     <div className="w-full flex flex-wrap justify-between">
                                         <div className="mb-4 mt-4 w-full pr-3">
                                             <label
-                                                htmlFor="categoryName"
+                                                htmlFor="vote"
                                                 className="block text-gray-700 font-semibold text-sm mb-2"
                                             >
-                                                Category
+                                                Category:
                                             </label>
-                                            <Field type="text" value={category}  disabled className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter Category"></Field>
-                                            <ErrorMessage name="categoryId" component="div" className="text-sm text-red-600" />
+                                            <Field type="text" id="category" value={category} disabled name="category" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Add category" />
+                                            <ErrorMessage name="category" component="div" className="text-sm text-red-600" />
+                                            {errors && (<p className="text-sm text-red-600">{errors}</p>)}
                                         </div>
                                     </div>
 
                                     <div className="w-full flex flex-wrap justify-between">
-                                    <div className="mb-4 mt-4 w-full pr-3">
-                                        <label
-                                            htmlFor="categoryName"
-                                            className="block text-gray-700 font-semibold text-sm mb-2"
-                                        >
-                                            Category Type
-                                        </label>
-                                        <Field type="text" name="categoryType"  placeholder="Enter category type" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></Field>
-                                        <ErrorMessage name="categoryType" component="div" className="text-sm text-red-600" />
+                                        <div className="mb-4 mt-4 w-full pr-3">
+                                            <label
+                                                htmlFor="vote"
+                                                className="block text-gray-700 font-semibold text-sm mb-2"
+                                            >
+                                                Category Type:
+                                            </label>
+                                            <Field type="text" id="categoryType" name="categoryType" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Add category type" />
+                                            <ErrorMessage name="categoryType" component="div" className="text-sm text-red-600" />
+                                            {errors && (<p className="text-sm text-red-600">{errors}</p>)}
+                                        </div>
                                     </div>
-                                </div>
+
 
                                     <button
                                         disabled={isSubmitting}
@@ -227,7 +237,7 @@ const AddCategoryItems = () => {
                                             color: "#fff",
                                             borderRadius: "3px",
                                         }}
-                                        className={` text-sm font-medium p-3 hover:drop-shadow-xl pl-5 pr-5 ${isSubmitting ? "cursor-not-allowed" : ""
+                                        className={`text-sm font-medium p-3 hover:drop-shadow-xl pl-5 pr-5 ${isSubmitting ? "cursor-not-allowed" : ""
                                             }`}
                                     >
                                         {isSubmitting ? (
@@ -238,7 +248,7 @@ const AddCategoryItems = () => {
                                                 <span className="text-sm font-medium ml-2">Submitting..</span>
                                             </div>
                                         ) : (
-                                            "Create Category Type"
+                                            "Add Category Type"
                                         )}
                                     </button>
                                 </Form>
@@ -259,7 +269,9 @@ const AddCategoryItems = () => {
                     {/* Add Admin Form Ends Here */}
                 </div>
             </div>
+
         </div>
+
     );
 }
 
