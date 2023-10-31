@@ -296,6 +296,134 @@ const apiService = {
       throw error;
     }
   },
+
+  addAdmin: async (token, values) => {
+    try {
+      const response = await axios.post(`/users/add-admin`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  fetchAdmin: async (token) => {
+    try {
+      const response = await axios.get(`/users/fetch-admin`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  deleteAdmin: async (token, id) => {
+    try {
+      const response = await axios.delete(`/users/delete-admin/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  fetchUser: async (token) => {
+    try {
+      const response = await axios.get(`/users/fetch-user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  addHeaderBarContent: async (token, values) => {
+    try {
+      const response = await axios.post(`/header-bar/create`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  fetchHeaderBarContent: async () => {
+    try {
+      const response = await axios.get(`/header-bar`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  deleteHeaderBarContent: async (token, id) => {
+    try {
+      const response = await axios.delete(`/header-bar/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  addCategory: async (token, values) => {
+    try {
+      const response = await axios.post(`/category/create-category`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  
+  createCategoryType: async (token, { categoryType }, id) => {
+    try {
+      const response = await axios.patch(`/category/create-category-type`, { categoryType, categoryId: id}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+
+  deleteCategory: async (token, id) => {
+    try {
+      const response = await axios.delete(`/category/delete-category/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default apiService;

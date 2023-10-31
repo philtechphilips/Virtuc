@@ -1,11 +1,10 @@
+// import DashboardInsight from "../components/DashboardInsight";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useStateContext } from "../context/ContextProvider";
 const Dashboard = () => {
-  const { activeMenu } = useStateContext(); // Accessing activeMenu from context
+  const { activeMenu } = useStateContext();
   return (
-
-
       <div className="flex relative">
         {/* Sidebar */}
         {activeMenu ? (
@@ -35,13 +34,9 @@ const Dashboard = () => {
 
 
     <div className="mt-25 mr-3" style={{ paddingBottom: "150px" }}>
-      Hello
-      {/* <DashboardInsight />
+      
+          Dashboard Insight
 
-      <EventCalendar />
-
-      <DashboardAnalytics /> */}
-     hello
     </div>
 
     </div>

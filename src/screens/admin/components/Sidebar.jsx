@@ -6,8 +6,6 @@ import { useStateContext } from "../context/ContextProvider";
 import {
   BsChevronDown,
 } from "react-icons/bs";
-import NacomesLogo from "../../assets/images/PicsArt_10-12-01.47.00.png";
-import YabatechLogo from "../../assets/images/Yabatech-Logo-removebg-preview.png";
 
 
 
@@ -16,7 +14,7 @@ const Sidebar = () => {
   // const { user } = useAuthContext();
 
   const handleCloseSideBar = () => {
-    if(activeMenu && screenSize <= 900){
+    if (activeMenu && screenSize <= 900) {
       setActiveMenu(false)
     }
   }
@@ -40,20 +38,12 @@ const Sidebar = () => {
         <>
           <div className="flex justify-between items-center pt-5">
             <Link
-              to="/administrator/dashboard"
+              to="/dashboard"
               onClick={handleCloseSideBar}
               className="flex items-center "
             >
-              <img
-                src={YabatechLogo}
-                style={{ width: 50 }}
-                className="mt-2"
-              />
-              <img
-                src={NacomesLogo}
-                style={{ width: 50 }}
-              />
-                
+              VirtuC
+
             </Link>
             <button
               type="button"
@@ -80,14 +70,13 @@ const Sidebar = () => {
                   onClick={() => handleSubmenuClick(Menu.title)}
                 >
                   <i className={Menu.icon}></i>
-                  <NavLink to={Menu.src} className="flex-1" onClick={!Menu.subMenus && handleCloseSideBar}>
+                  <Link to={Menu.src} className="flex-1" onClick={!Menu.subMenus && handleCloseSideBar}>
                     {Menu.title}
-                  </NavLink>
+                  </Link>
                   {Menu.subMenus && (
                     <BsChevronDown
-                      className={`${
-                        subMenuOpen === Menu.title && "rotate-180"
-                      }`}
+                      className={`${subMenuOpen === Menu.title && "rotate-180"
+                        }`}
                     />
                   )}
                 </li>
