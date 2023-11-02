@@ -424,6 +424,33 @@ const apiService = {
       throw error;
     }
   },
+
+  createBanner: async (token, formData, image) => {
+    try {
+      const response = await axios.post(`/banner/create-banner`,  {...formData, image}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  deleteBanner: async (token, id) => {
+    try {
+      const response = await axios.delete(`/banner/delete-banner/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
 };
 
 export default apiService;

@@ -96,6 +96,11 @@ export const Menus = [
         title: "Categories",
         src: "/categories",
         cName: "sub-nav",
+      },
+      {
+        title: "Banner",
+        src: "/banners",
+        cName: "sub-nav",
       }
     ],
   },
