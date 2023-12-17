@@ -94,6 +94,15 @@ const apiService = {
     }
   },
 
+  fetchAllFeaturedProducts: async () => {
+    try {
+      const response = await axios.get("/featured/fetch-all-featured-product");
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   fetchProducts: async (slug) => {
     try {
       const response = await axios.get(`/product`);
@@ -451,6 +460,31 @@ const apiService = {
     }
   },
 
+  createFeaturedProduct: async (token, formData, image) => {
+    try {
+      const response = await axios.post(`/featured/create-featured-product`,  {...formData, image}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  deleteFeaturedProduct: async (token, id) => {
+    try {
+      const response = await axios.delete(`/featured/delete-featured-product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default apiService;

@@ -27,7 +27,7 @@ const AddCTA = () => {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
             const response = await apiService.deleteHeaderBarContent(user.token, id);
-            toast.success("Vote Deleted Sucessfully!", {
+            toast.success("Header Bar Content Deleted Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -114,11 +114,11 @@ const AddCTA = () => {
     }, [isSubmitting, isDeleted]);
 
     const handleSubmit = async (values, { resetForm }) => {
-        setIsSubmitting(true)
+        setIsSubmitting(true);
         try {
             const user = JSON.parse(localStorage.getItem("user"));
-            const response = await apiService.addCategory(user.token, values);
-            toast.success("Category Created Sucessfully!", {
+            const response = await apiService.addHeaderBarContent(user.token, values);
+            toast.success("CTA Created Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,

@@ -101,6 +101,11 @@ export const Menus = [
         title: "Banner",
         src: "/banners",
         cName: "sub-nav",
+      },
+      {
+        title: "Featured Product",
+        src: "/featured-product",
+        cName: "sub-nav",
       }
     ],
   },
