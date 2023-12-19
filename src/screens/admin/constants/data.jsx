@@ -110,6 +110,19 @@ export const Menus = [
     ],
   },
 
+  {
+    title: "Product",
+    icon: "ri-home-line",
+    src: "/add-product",
+    subMenus: [
+      {
+        title: "Add Product",
+        src: "/add-product",
+        cName: "sub-nav",
+      },
+    ],
+  },
+
   { title: "Account Setting", src: "/administrator/account-settings", icon: 'ri-user-settings-line' },
   { title: "Logout", src: "/adminisstrator/logout", icon: 'ri-logout-box-r-line' },
 ];

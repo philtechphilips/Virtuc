@@ -8,6 +8,7 @@ import Categories from "./pages/Categories";
 import AddCategoryItems from "./pages/AddCategoryItems";
 import Banners from "./pages/Banners";
 import FeaturedProducts from "./pages/FeaturedProducts";
+import AddProduct from "./pages/AddProduct";
 
 const AdminIndex = () => {
   return (
@@ -21,6 +22,7 @@ const AdminIndex = () => {
       <Route path="/category-type" element={<AddCategoryItems />} />
       <Route path="/banners" element={<Banners />} />
       <Route path="/featured-product" element={<FeaturedProducts />} />
+      <Route path="/add-product" element={<AddProduct />} />
       <Route path="*" element="404" />
     </Routes>
   )

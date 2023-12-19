@@ -1,34 +1,30 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { COLORS } from "../constants/data";
 import { useState } from "react";
 import "./table.scss";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useStateContext } from "../context/ContextProvider";
-import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DataGrid } from "@mui/x-data-grid";
 import apiService from "../../../api/apiRequests";
-import { Link, useLocation } from "react-router-dom";
 
 const FeaturedProducts = () => {
     const [data, setData] = useState([]);
     const [category, setCategory] = useState([]);
-    const [errors, setErrors] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { activeMenu } = useStateContext();
     const [isDeleted, setIsDeleted] = useState(false);
-    const [isActive, setIsActive] = useState(false);
     const [image, setImage] = useState("");
-    const location = useLocation();
 
     const handleDelete = async (id) => {
         setIsDeleted(true)
         try {
             const user = JSON.parse(localStorage.getItem("user"));
-            const response = await apiService.deleteFeaturedProduct(user.token, id);
+            await apiService.deleteFeaturedProduct(user.token, id);
             toast.success("Featured Product Deleted Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
