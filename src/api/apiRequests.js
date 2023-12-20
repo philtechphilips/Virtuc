@@ -103,7 +103,7 @@ const apiService = {
     }
   },
 
-  fetchProducts: async (slug) => {
+  fetchProducts: async () => {
     try {
       const response = await axios.get(`/product`);
       return response;
@@ -406,10 +406,10 @@ const apiService = {
     }
   },
 
-  
+
   createCategoryType: async (token, { categoryType }, id) => {
     try {
-      const response = await axios.patch(`/category/create-category-type`, { categoryType, categoryId: id}, {
+      const response = await axios.patch(`/category/create-category-type`, { categoryType, categoryId: id }, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -436,7 +436,7 @@ const apiService = {
 
   createBanner: async (token, formData, image) => {
     try {
-      const response = await axios.post(`/banner/create-banner`,  {...formData, image}, {
+      const response = await axios.post(`/banner/create-banner`, { ...formData, image }, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -462,7 +462,7 @@ const apiService = {
 
   createFeaturedProduct: async (token, formData, image) => {
     try {
-      const response = await axios.post(`/featured/create-featured-product`,  {...formData, image}, {
+      const response = await axios.post(`/featured/create-featured-product`, { ...formData, image }, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -476,6 +476,32 @@ const apiService = {
   deleteFeaturedProduct: async (token, id) => {
     try {
       const response = await axios.delete(`/featured/delete-featured-product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  createPoduct: async (token, formData) => {
+    try {
+      const response = await axios.post(`/product/create-product`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  deleteProduct: async (token, id) => {
+    try {
+      const response = await axios.delete(`/product/delete-product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         }

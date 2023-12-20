@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { DataGrid } from "@mui/x-data-grid";
 import apiService from "../../../api/apiRequests";
 import { useLocation } from "react-router-dom";
+import { convertToBase64 } from "../../../utils";
 
 const AddProduct = () => {
     const [data, setData] = useState([]);
@@ -21,9 +22,6 @@ const AddProduct = () => {
     const [selectedCategory, setSelectedCategory] = useState("");
     const { activeMenu } = useStateContext();
     const [isDeleted, setIsDeleted] = useState(false);
-    const [isActive, setIsActive] = useState(false);
-    const [image, setImage] = useState("");
-    const location = useLocation();
     const [sizeQuantities, setSizeQuantities] = useState([{ size: '', quantity: '' }]);
     const [colorQuantities, setColorQuantities] = useState([{ color: '', quantity: '' }]);
 
@@ -31,20 +29,22 @@ const AddProduct = () => {
         const updatedSizeQuantities = [...sizeQuantities];
         updatedSizeQuantities[index][property] = value;
         setSizeQuantities(updatedSizeQuantities);
+        formik.setFieldValue("size", updatedSizeQuantities);
     };
 
     const handleColorQuantityChange = (index, property, value) => {
         const updatedColorQuantities = [...colorQuantities];
         updatedColorQuantities[index][property] = value;
         setColorQuantities(updatedColorQuantities);
+        formik.setFieldValue("color", updatedColorQuantities);
     };
 
     const handleDelete = async (id) => {
         setIsDeleted(true)
         try {
             const user = JSON.parse(localStorage.getItem("user"));
-            const response = await apiService.deleteBanner(user.token, id);
-            toast.success("Banner Deleted Sucessfully!", {
+            await apiService.deleteProduct(user.token, id);
+            toast.success("Product Deleted Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -70,39 +70,48 @@ const AddProduct = () => {
         }
     }
 
-    const convertToBase64 = (e) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(e.target.files[0])
-        reader.onload = () => {
-            setImage(reader.result)
-
+    const convertImage = async (e) => {
+        try {
+            const result = await convertToBase64(e);
+            formik.setFieldValue("image", result)
+        } catch (error) {
+            console.error("Error converting image: ", error);
         }
-        reader.onerror = error => {
-            console.log("Error: ", error)
-        }
-    }
+    };
 
     const formik = useFormik({
         initialValues: {
             title: "",
-            body: "",
-            buttonText: "",
-            buttonUrl: "",
-            categoryId: ""
+            categoryId: "",
+            categoryType: "",
+            details: "",
+            price: "",
+            discount: "",
+            quantity: "",
+            instructions: "",
+            highlight: "",
+            image: "",
+            size: "",
+            color: ""
         },
         validationSchema: Yup.object({
             title: Yup.mixed().required("Title is required!"),
-            body: Yup.mixed().required("Body is required!"),
-            buttonText: Yup.mixed().required("Button text is required!"),
-            buttonUrl: Yup.mixed().required("Button url is required!"),
-            categoryId: Yup.mixed().required("Category is required!"),
+            categoryId: Yup.mixed().required("Product category is required!"),
+            categoryType: Yup.mixed().required("Category type is required!"),
+            details: Yup.mixed().required("Product details is required!"),
+            price: Yup.mixed().required("Product price is required!"),
+            discount: Yup.mixed().required("Product discount is required!"),
+            quantity: Yup.mixed().required("Product quantity is required!"),
+            instructions: Yup.mixed().required("Product instructions is required!"),
+            highlight: Yup.mixed().required("Product highlights is required!"),
+            image: Yup.mixed().required("Product image is required!")
         }),
         onSubmit: async () => {
             setIsSubmitting(true)
             try {
                 const user = JSON.parse(localStorage.getItem("user"));
-                const response = await apiService.createBanner(user.token, formik.values, image);
-                toast.success("Banner Upload Sucessful!", {
+                await apiService.createPoduct(user.token, formik.values);
+                toast.success("Product Upload Sucessful!", {
                     position: "bottom-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -112,17 +121,19 @@ const AddProduct = () => {
                     progress: undefined,
                     theme: "light",
                 })
+                formik.resetForm();
             } catch (e) {
-                toast.error(e.response.data.message, {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                })
+                console.log(e)
+                // toast.error(e.response.data.message, {
+                //     position: "bottom-right",
+                //     autoClose: 5000,
+                //     hideProgressBar: false,
+                //     closeOnClick: true,
+                //     pauseOnHover: true,
+                //     draggable: true,
+                //     progress: undefined,
+                //     theme: "light",
+                // })
             } finally {
                 setIsSubmitting(false)
             }
@@ -132,7 +143,7 @@ const AddProduct = () => {
 
     const userColumns = [
         {
-            field: "",
+            field: "category",
             headerName: "Category",
             width: 200,
             renderCell: (params) => {
@@ -145,15 +156,10 @@ const AddProduct = () => {
             width: 500
         },
         {
-            field: "body",
-            headerName: "Content",
-            width: 600,
+            field: "details",
+            headerName: "Details",
+            width: 150,
         },
-        {
-            field: "buttonText",
-            headerName: "Button Text",
-            width: 200,
-        }
     ];
 
     const actionColumn = [
@@ -189,9 +195,10 @@ const AddProduct = () => {
     ];
 
     useEffect(() => {
-        const fetchBanner = async () => {
+        const fetchProduct = async () => {
             try {
-                const response = await apiService.fetchBanner();
+                const response = await apiService.fetchProducts();
+                console.log(response)
                 const responses = await apiService.fetchCategory();
                 setData(response.data.payload);
                 setCategory(responses.data.payload);
@@ -199,7 +206,7 @@ const AddProduct = () => {
                 toast.error("Something went wrong!");
             }
         }
-        fetchBanner();
+        fetchProduct();
     }, [isSubmitting, isDeleted]);
     return (
         <div className="flex relative">
@@ -269,9 +276,9 @@ const AddProduct = () => {
                                         </label>
                                         <select
                                             className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            name="categoryId"
+                                            name="categoryType"
                                             onChange={(e) => {
-                                                formik.setFieldValue("categoryId", e.target.value);
+                                                formik.setFieldValue("categoryType", e.target.value);
                                             }}
                                         >
                                             <option disabled selected>Select a Category Type</option>
@@ -287,10 +294,8 @@ const AddProduct = () => {
                                                     )
                                                 : null}
                                         </select>
-
-
-                                        {formik.errors.categoryId && (
-                                            <p className="text-red-600 text-sm">{formik.errors.categoryId}</p>
+                                        {formik.errors.categoryType && (
+                                            <p className="text-red-600 text-sm">{formik.errors.categoryType}</p>
                                         )}
                                     </div>
                                 </div>
@@ -318,9 +323,9 @@ const AddProduct = () => {
                                         >
                                             Product Details:
                                         </label>
-                                        <input type="text" placeholder="Enter product details" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="body" onChange={(e) => formik.setFieldValue("body", e.target.value)}></input>
-                                        {formik.errors.body && (
-                                            <p className="text-red-600 text-sm">{formik.errors.body}</p>
+                                        <input type="text" placeholder="Enter product details" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="details" onChange={(e) => formik.setFieldValue("details", e.target.value)}></input>
+                                        {formik.errors.details && (
+                                            <p className="text-red-600 text-sm">{formik.errors.details}</p>
                                         )}
                                     </div>
                                 </div>
@@ -333,9 +338,9 @@ const AddProduct = () => {
                                         >
                                             Product Price:
                                         </label>
-                                        <input type="text" placeholder="Enter product price" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="body" onChange={(e) => formik.setFieldValue("body", e.target.value)}></input>
-                                        {formik.errors.body && (
-                                            <p className="text-red-600 text-sm">{formik.errors.body}</p>
+                                        <input type="number" placeholder="Enter product price" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="price" onChange={(e) => formik.setFieldValue("price", e.target.value)}></input>
+                                        {formik.errors.price && (
+                                            <p className="text-red-600 text-sm">{formik.errors.price}</p>
                                         )}
                                     </div>
                                 </div>
@@ -349,9 +354,9 @@ const AddProduct = () => {
                                         >
                                             Discount Price:
                                         </label>
-                                        <input type="text" placeholder="Enter discount price" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="body" onChange={(e) => formik.setFieldValue("body", e.target.value)}></input>
-                                        {formik.errors.body && (
-                                            <p className="text-red-600 text-sm">{formik.errors.body}</p>
+                                        <input type="number" placeholder="Enter discount price" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="discount" onChange={(e) => formik.setFieldValue("discount", e.target.value)}></input>
+                                        {formik.errors.discount && (
+                                            <p className="text-red-600 text-sm">{formik.errors.discount}</p>
                                         )}
                                     </div>
                                 </div>
@@ -364,9 +369,9 @@ const AddProduct = () => {
                                         >
                                             Product Quantity:
                                         </label>
-                                        <input type="text" placeholder="Enter product quantity" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="buttonUrl" onChange={(e) => formik.setFieldValue("buttonUrl", e.target.value)} ></input>
-                                        {formik.errors.buttonUrl && (
-                                            <p className="text-red-600 text-sm">{formik.errors.buttonUrl}</p>
+                                        <input type="text" placeholder="Enter product quantity" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="quantity" onChange={(e) => formik.setFieldValue("quantity", e.target.value)} ></input>
+                                        {formik.errors.quantity && (
+                                            <p className="text-red-600 text-sm">{formik.errors.quantity}</p>
                                         )}
                                     </div>
                                 </div>
@@ -377,14 +382,15 @@ const AddProduct = () => {
                                             htmlFor="vote"
                                             className="block text-gray-700 font-semibold text-sm mb-2"
                                         >
-                                            Product Instructions:
+                                            Product instructionss:
                                         </label>
-                                        <input type="text" placeholder="Enter product instructions" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="buttonUrl" onChange={(e) => formik.setFieldValue("buttonUrl", e.target.value)} ></input>
-                                        {formik.errors.buttonUrl && (
-                                            <p className="text-red-600 text-sm">{formik.errors.buttonUrl}</p>
+                                        <input type="text" placeholder="Enter product instructionss" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="instructions" onChange={(e) => formik.setFieldValue("instructions", e.target.value)} ></input>
+                                        {formik.errors.instructions && (
+                                            <p className="text-red-600 text-sm">{formik.errors.instructions}</p>
                                         )}
                                     </div>
                                 </div>
+
                                 <div className="w-full flex flex-wrap justify-between">
                                     <div className="mb-4 mt-4 w-full pr-3">
                                         <label
@@ -396,11 +402,11 @@ const AddProduct = () => {
                                         <textarea
                                             placeholder="Enter product highlights (separated by newline)"
                                             className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            name="instructions"
-                                            onChange={(e) => formik.setFieldValue("instructions", e.target.value.split('\n'))}
+                                            name="highlight"
+                                            onChange={(e) => formik.setFieldValue("highlight", e.target.value.split('\n'))}
                                         ></textarea>
-                                        {formik.errors.instructions && (
-                                            <p className="text-red-600 text-sm">{formik.errors.instructions}</p>
+                                        {formik.errors.highlight && (
+                                            <p className="text-red-600 text-sm">{formik.errors.highlight}</p>
                                         )}
                                     </div>
                                 </div>
@@ -497,7 +503,7 @@ const AddProduct = () => {
                                         >
                                             Product Image:
                                         </label>
-                                        <input type="file" multiple className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="image" onChange={convertToBase64}></input>
+                                        <input type="file" multiple className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="image" onChange={convertImage}></input>
                                         {formik.errors.image && (
                                             <p className="text-red-600 text-sm">{formik.errors.image}</p>
                                         )}
