@@ -123,6 +123,19 @@ export const Menus = [
     ],
   },
 
+  {
+    title: "Orders",
+    icon: "ri-home-line",
+    src: "/orders",
+    subMenus: [
+      {
+        title: "All Orders",
+        src: "/orders",
+        cName: "sub-nav",
+      },
+    ],
+  },
+
   { title: "Account Setting", src: "/administrator/account-settings", icon: 'ri-user-settings-line' },
   { title: "Logout", src: "/adminisstrator/logout", icon: 'ri-logout-box-r-line' },
 ];

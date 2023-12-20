@@ -511,6 +511,19 @@ const apiService = {
       throw error;
     }
   },
+
+  fetchOrders: async (token) => {
+    try {
+      const response = await axios.get(`/orders`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default apiService;
