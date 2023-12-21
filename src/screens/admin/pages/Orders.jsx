@@ -8,27 +8,56 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DataGrid } from "@mui/x-data-grid";
 import apiService from "../../../api/apiRequests";
+import ReactModal from "react-modal";
+import ChangeOrderStatus from "../components/ChangeOrderStatus";
+import Skeleton from "react-loading-skeleton";
+import TableLoading from "../components/TableLoading";
 
 
 
 const Orders = () => {
     const [data, setData] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [ordersToBeShown, setOrdersToBeShown] = useState("All");
+    const [selectedOrderId, setSelectedOrderId] = useState("");
+    const [selectedPaymentReference, setSelectedPaymentReference] = useState("");
+    const [isViewOrderDeatils, setIsViewOrderDetails] = useState(false);
     const { activeMenu } = useStateContext();
+
+    const handleOrderClick = (order) => {
+        setOrdersToBeShown(order);
+    };
+
+    const viewOrderDetails = (orderId, paymentReference) => {
+        setSelectedOrderId(orderId);
+        setSelectedPaymentReference(paymentReference);
+        setIsViewOrderDetails(!isViewOrderDeatils);
+    };
 
     useEffect(() => {
         const fetchProduct = async () => {
+            setIsLoading(true)
             try {
                 const user = JSON.parse(localStorage.getItem("user"));
                 const response = await apiService.fetchOrders(user.token);
-                console.log(response)
-                setData(response.data.payload);
+                console.log(response.data.payload)
+                if (ordersToBeShown === "All") {
+                    setData(response.data.payload);
+                } else {
+                    const filteredOrders = response.data.payload.filter(
+                        (order) => order.orderStatus === ordersToBeShown
+                    );
+                    setData(filteredOrders)
+                }
             } catch (error) {
                 toast.error("Something went wrong!");
+            } finally {
+                setIsLoading(false);
             }
         }
         fetchProduct();
-    }, [isSubmitting]);
+    }, [ordersToBeShown, isViewOrderDeatils]);
 
     const userColumns = [
         {
@@ -71,8 +100,6 @@ const Orders = () => {
                             type="button"
                             className={`viewButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
                                 }`}
-                            onClick={() => { }}
-                            disabled={isSubmitting}
                         >
                             View Order Details
                         </button>
@@ -81,8 +108,7 @@ const Orders = () => {
                             type="button"
                             className={`deleteButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
                                 }`}
-                            onClick={() => { }}
-                            disabled={isSubmitting}
+                            onClick={() => viewOrderDetails(params.row.orderId, params.row.paymentReference)}
                         >
                             Change Status
                         </button>
@@ -126,26 +152,61 @@ const Orders = () => {
                             <h1 className="text-lg font-semibold mb-4">Orders</h1>
                         </div>
                         <div className="flex gap-3">
-                            <div className="bg-white px-4 py-2"><h5 className="text-sm font-semibold text-gray-700">All</h5></div>
-                            <div className="bg-white px-4 py-2"><h5 className="text-sm font-semibold text-gray-700">Pending</h5></div>
-                            <div className="bg-white px-4 py-2"><h5 className="text-sm font-semibold text-gray-700">Received</h5></div>
-                            <div className="bg-white px-4 py-2"><h5 className="text-sm font-semibold text-gray-700">Delivered</h5></div>
-                            <div className="bg-white px-4 py-2"><h5 className="text-sm font-semibold text-gray-700">Failed</h5></div>
+                            <div
+                                className={`bg-white cursor-pointer px-4 py-2 ${ordersToBeShown === 'All' ? 'border-2 border-green-500' : ''
+                                    }`}
+                                onClick={() => handleOrderClick('All')}
+                            >
+                                <h5 className="text-sm font-semibold text-gray-700">All</h5>
+                            </div>
+                            <div
+                                className={`bg-white cursor-pointer px-4 py-2 ${ordersToBeShown === 'Pending' ? 'border-2 border-green-500' : ''
+                                    }`}
+                                onClick={() => handleOrderClick('Pending')}
+                            >
+                                <h5 className="text-sm font-semibold text-gray-700">Pending</h5>
+                            </div>
+                            <div
+                                className={`bg-white cursor-pointer px-4 py-2 ${ordersToBeShown === 'Received' ? 'border-2 border-green-500' : ''
+                                    }`}
+                                onClick={() => handleOrderClick('Received')}
+                            >
+                                <h5 className="text-sm font-semibold text-gray-700">Received</h5>
+                            </div>
+                            <div
+                                className={`bg-white cursor-pointer px-4 py-2 ${ordersToBeShown === 'Delivered' ? 'border-2 border-green-500' : ''
+                                    }`}
+                                onClick={() => handleOrderClick('Delivered')}
+                            >
+                                <h5 className="text-sm font-semibold text-gray-700">Delivered</h5>
+                            </div>
+                            <div
+                                className={`bg-white cursor-pointer px-4 py-2 ${ordersToBeShown === 'Failed' ? 'border-2 border-green-500' : ''
+                                    }`}
+                                onClick={() => handleOrderClick('Failed')}
+                            >
+                                <h5 className="text-sm font-semibold text-gray-700">Failed</h5>
+                            </div>
                         </div>
                         {/* All Administrators */}
-                        <DataGrid
-                            className="datagrid bg-white mt-3 w-90"
-                            rows={data}
-                            columns={userColumns.concat(actionColumn)}
-                            pageSize={9}
-                            rowsPerPageOptions={[9]}
-                            getRowId={(row) => row._id}
-                        />
-                        {/* All Administrators Ends Here*/}
+                        {isLoading ? (
+                            <div className="mt-3">
+                                <TableLoading />
+                            </div>
+                        ) : (
+                            <DataGrid
+                                className="datagrid bg-white mt-3 w-90"
+                                rows={data}
+                                columns={userColumns.concat(actionColumn)}
+                                pageSize={9}
+                                rowsPerPageOptions={[9]}
+                                getRowId={(row) => row._id}
+                            />
+                        )}
                     </div>
-                    {/* Add Admin Form Ends Here */}
                 </div>
             </div>
+            <ChangeOrderStatus orderId={selectedOrderId} paymentReference={selectedPaymentReference} isModalOpen={isViewOrderDeatils} setIsViewOrderDetails={setIsViewOrderDetails} />
             <ToastContainer />
         </div>
     );

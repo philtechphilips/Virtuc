@@ -524,6 +524,19 @@ const apiService = {
       throw error;
     }
   },
+
+  updateOrderStatus: async (token, orderId, orderStatus) => {
+    try {
+      const response = await axios.patch(`/orders/${orderId}`, { orderStatus }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default apiService;

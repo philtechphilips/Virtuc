@@ -143,14 +143,6 @@ const AddProduct = () => {
 
     const userColumns = [
         {
-            field: "category",
-            headerName: "Category",
-            width: 200,
-            renderCell: (params) => {
-                return <div className="cellWithImg">{params.row.categoryId.category}</div>;
-            },
-        },
-        {
             field: "title",
             headerName: "Title",
             width: 500
