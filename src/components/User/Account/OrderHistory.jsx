@@ -4,10 +4,13 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import apiService from '../../../api/apiRequests';
 import Skeleton from 'react-loading-skeleton';
+import { toast } from 'react-toastify';
+import useAuthContext from '../../../context/AuthContext';
 
 const OrderHistory = () => {
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const { logout } = useAuthContext;
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -18,7 +21,11 @@ const OrderHistory = () => {
             setOrders(response.data.payload);
             console.log(response.data.payload);
            }catch(e){
-
+            if (e.response.data.statusCode === 401) {
+                await toast.error("Session expired kindly login!");
+                logout();
+            }
+            toast.error("Something went wrong!");
            }finally{
             setIsLoading(false)
            }

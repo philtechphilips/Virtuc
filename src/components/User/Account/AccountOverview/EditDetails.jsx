@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import apiService from '../../../../api/apiRequests';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import useAuthContext from '../../../../context/AuthContext';
 
 const EditDetails = ({ open, onClose }) => {
     const [firstName, setFirstName] = useState("");
@@ -15,6 +17,7 @@ const EditDetails = ({ open, onClose }) => {
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isUserUpdated, setIsUserUpdated] = useState("");
+    const { logout } = useAuthContext;
 
 
     const savedUser = JSON.parse(localStorage.getItem('user'))
@@ -30,7 +33,11 @@ const EditDetails = ({ open, onClose }) => {
                 setDOB(response.data.payload.dob)
                 setGender(response.data.payload.gender)
             } catch (error) {
-                console.log(error)
+                if (error.response.data.statusCode === 401) {
+                    await toast.error("Session expired kindly login!");
+                    logout();
+                }
+                toast.error("Something went wrong!");
             } finally {
                 setIsLoading(false)
             }

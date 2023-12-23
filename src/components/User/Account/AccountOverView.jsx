@@ -3,13 +3,16 @@ import { Link } from 'react-router-dom'
 import EditDetails from './AccountOverview/EditDetails'
 import Skeleton from 'react-loading-skeleton'
 import { useNavigate } from 'react-router-dom';
+import useAuthContext from '../../../context/AuthContext';
 
 const AccountOverView = ({ userProfile, isLoading }) => {
     const [isEditAccount, setIsEditAccount] = useState(false);
     const navigate = useNavigate();
+    const { setUser } = useAuthContext;
 
-    const logOut = () => {
+    const logOut = async () => {
         localStorage.removeItem("user");
+        setUser(null);
         navigate('/');
     }
     return (

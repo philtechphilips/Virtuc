@@ -5,32 +5,41 @@ import Footer from '../components/User/Home/Footer'
 import OrderReceipt from '../components/User/Order/OrderReceipt'
 import apiService from '../api/apiRequests'
 import { useParams } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import useAuthContext from '../context/AuthContext'
 
 const OrderComplete = () => {
   const [payment, setPayment] = useState([]);
   const [order, setOrder] = useState([]);
-  const { txRef } =  useParams();
+  const { txRef } = useParams();
+  const { logout } = useAuthContext;
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-      const fetchData = async () => {
-        try{
-          const fetchedPayment = await apiService.fetchPaymentByTxRef(user.token, txRef);
-          const fetchedOrder = await apiService.fetchOrderByTxRef(user.token, txRef); 
-          setOrder(fetchedOrder.data.payload)
-          setPayment(fetchedPayment.data.payload)
-        }catch(e){
-
+    const fetchData = async () => {
+      try {
+        const fetchedPayment = await apiService.fetchPaymentByTxRef(user.token, txRef);
+        const fetchedOrder = await apiService.fetchOrderByTxRef(user.token, txRef);
+        setOrder(fetchedOrder.data.payload)
+        setPayment(fetchedPayment.data.payload)
+      } catch (e) {
+        if (e.response.data.statusCode === 401) {
+          toast.error("Session expired kindly login!");
+          logout();
         }
-        
+        toast.error("Something went wrong!");
       }
-      fetchData()
-  }, []) 
+
+    }
+    fetchData()
+  }, [])
   return (
     <>
-    <CTA />
-    <NavBar />
-    <OrderReceipt payment={payment} order={order} />
-    <Footer />
+      <CTA />
+      <NavBar />
+      <OrderReceipt payment={payment} order={order} />
+      <Footer />
+      <ToastContainer />
     </>
   )
 }

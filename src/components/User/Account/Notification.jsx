@@ -4,10 +4,13 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import apiService from '../../../api/apiRequests';
 import Skeleton from 'react-loading-skeleton';
+import { ToastContainer, toast } from 'react-toastify';
+import useAuthContext from '../../../context/AuthContext';
 
 const Notification = () => {
     const [Notifications, setNotifications] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const { logout } = useAuthContext;
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -17,7 +20,11 @@ const Notification = () => {
                 const response = await apiService.fetchNotifications(user.token)
                 setNotifications(response.data.payload);
             } catch (e) {
-                console.log(e)
+                if (e.response.data.statusCode === 401) {
+                    await toast.error("Session expired kindly login!");
+                    logout();
+                }
+                toast.error("Something went wrong!");
             } finally {
                 setIsLoading(false)
             }
@@ -58,6 +65,7 @@ const Notification = () => {
                             )}
                     </>
                 )}
+                <ToastContainer />
             </div>
         </div>
     )

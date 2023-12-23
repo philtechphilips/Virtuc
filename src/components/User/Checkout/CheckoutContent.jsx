@@ -16,6 +16,7 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
   const [isSubmittingDiscount, setIsSubmittingDiscount] = useState(false);
   const { setDiscountCodePercentage, discountCodePercentage } = useAuthContext();
   const navigate = useNavigate();
+  const { logout } = useAuthContext;
 
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
@@ -28,7 +29,11 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
         setRegion(response.data.payload.region);
         setCity(response.data.payload.city)
       } catch (e) {
-        console.log(e)
+        if (e.response.data.statusCode === 401) {
+          await toast.error("Session expired kindly login!");
+          logout();
+      }
+      toast.error("Something went wrong!");
       }
     }
     fetchUserDetails(token)
@@ -60,7 +65,11 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
         navigate(`/order-complete/${reference.reference}`);
       })
       .catch(error => {
-        console.error("An error occurred:", error);
+        if (error.response.data.statusCode === 401) {
+           toast.error("Session expired kindly login!");
+          logout();
+      }
+      toast.error("Something went wrong!");
       });
   };
 
@@ -102,6 +111,10 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
       setDiscountCodePercentage(response.data.payload.discountPercentage)
       toast.success("Discount Applied!")
     } catch (e) {
+      if (e.response.data.statusCode === 401) {
+        await toast.error("Session expired kindly login!");
+        logout();
+    }
       toast.error("Error Applying Discount!")
     } finally {
       setIsSubmittingDiscount(false)

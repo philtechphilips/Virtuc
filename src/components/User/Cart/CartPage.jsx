@@ -9,11 +9,12 @@ import Swal from 'sweetalert2'
 
 const CartPage = () => {
     const { setCart, cart, discountCodePercentage } = useAuthContext();
-
     const [initialPrice, setInitialPrice] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalDiscount, setTotalDiscount] = useState(0);
     const user = JSON.parse(localStorage.getItem('user'));
+    const { logout } = useAuthContext;
+    
     useEffect(() => {
         calculateTotals();
         increaseQuantity();
@@ -76,6 +77,10 @@ const CartPage = () => {
                             'success'
                           )
                     } catch (e) {
+                        if (e.response.data.statusCode === 401) {
+                            await toast.error("Session expired kindly login!");
+                            logout();
+                        }
                         toast.warning('Something went wrong!');
                     }
                
@@ -117,7 +122,11 @@ const CartPage = () => {
                         )
                         setCart(transformedCart);
                     } catch (e) {
-                        console.log(e)
+                        if (e.response.data.statusCode === 401) {
+                            await toast.error("Session expired kindly login!");
+                            logout();
+                        }
+                        toast.error("Something went wrong!");
                     }
                     setCart(newCartItems);
                 }
@@ -163,7 +172,11 @@ const CartPage = () => {
                 setCart(transformedCart);
                 console.log(updateCart)
             } catch (e) {
-                console.log(e)
+                if (e.response.data.statusCode === 401) {
+                    await toast.error("Session expired kindly login!");
+                    logout();
+                }
+                toast.error("Something went wrong!");
             }
             return true
         }
@@ -196,7 +209,11 @@ const CartPage = () => {
                 setCart(transformedCart);
                 console.log(updateCart)
             } catch (e) {
-                console.log(e)
+                if (e.response.data.statusCode === 401) {
+                    await toast.error("Session expired kindly login!");
+                    logout();
+                }
+                toast.error("Something went wrong!");
             }
             return true
         }

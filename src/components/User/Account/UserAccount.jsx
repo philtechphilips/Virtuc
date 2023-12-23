@@ -10,6 +10,8 @@ import OrderHistory from './OrderHistory'
 import Wishlist from './Wishlist'
 import PendingReview from './PendingReview'
 import Notification from './Notification'
+import { ToastContainer, toast } from 'react-toastify'
+import useAuthContext from '../../../context/AuthContext'
 
 const UserAccount = () => {
     const [section, setSection] = useState("overview");
@@ -17,6 +19,7 @@ const UserAccount = () => {
     const [user, setUser] = useState(null);
     const savedUser = JSON.parse(localStorage.getItem('user'))
     const [isLoading, setIsLoading] = useState(true)
+    const { logout } = useAuthContext;
     
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -25,7 +28,11 @@ const UserAccount = () => {
                 setUser(response.data.payload)
                 // console.log(response.data.payload)
             } catch (error) {
-                console.log(error)
+                if (error.response.data.statusCode === 401) {
+                    await toast.error("Session expired kindly login!");
+                    logout();
+                }
+                toast.error("Something went wrong!");
             } finally {
                 setIsLoading(false)
             }
@@ -121,6 +128,7 @@ const UserAccount = () => {
                     </div>
                 )}
             </div>
+            <ToastContainer />
         </div>
     )
 }
