@@ -1,10 +1,7 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useStateContext } from "../context/ContextProvider";
 import "remixicon/fonts/remixicon.css";
 import { COLORS } from "../constants/data";
-import Notification from "./Notification";
-// import Profile from "./Profile";
-// import useAuthContext from "../../main/context/AuthContext";
 
 // Custom button component for navigation buttons
 const NavButton = ({ customFunc, icon, dotColor }) => (

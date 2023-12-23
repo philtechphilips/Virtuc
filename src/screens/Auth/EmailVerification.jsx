@@ -111,7 +111,7 @@ const EmailVerification = () => {
                 <div onClick={resendVeriifactionToken} className='p-700 cursor-pointer'>Resend verification token</div>
                 <div className='flex items-center flex-col mt-7 gap-2 w-[340px] md:w-[400px] px-1 text-sm'>
                     <p className='p-500 text-gray-500 text-center'>For further support, you may visit the Help Center or contact our customer service team.</p>
-                    <h1 className='p-700 text-xl'>Nostra</h1>
+                    <h1 className='p-700 text-xl'>VirtuC</h1>
                 </div>
             </div>
         </>

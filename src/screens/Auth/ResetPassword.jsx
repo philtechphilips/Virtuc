@@ -158,7 +158,7 @@ const ResetPassword = () => {
                 <p className='p-500 text-gray-500 text-center'>
                     For further support, you may visit the Help Center or contact our customer service team.
                 </p>
-                <h1 className='p-700 text-xl'>Nostra</h1>
+                <h1 className='p-700 text-xl'>VirtuC</h1>
             </div>
         </div>
     );

@@ -47,8 +47,8 @@ const VerifyIdentity = () => {
     <>
       <div className='w-full flex flex-col justify-center items-center min-h-screen px-5'>
         <div className='flex items-center flex-col mb-7 gap-2 w-full md:w-[400px] px-1 text-sm'>
-          <h1 className='p-700 text-xl'>Welcome to Nostra</h1>
-          <p className='p-500 text-gray-500 text-center'>Type your e-mail to log in or create a Nostra account.</p>
+          <h1 className='p-700 text-xl'>Welcome to VirtuC</h1>
+          <p className='p-500 text-gray-500 text-center'>Type your e-mail to log in or create a VirtuC account.</p>
         </div>
         <form className="w-full md:w-[400px]" onSubmit={handleSubmit}>
           <div className="flex flex-wrap -mx-3 mb-6">

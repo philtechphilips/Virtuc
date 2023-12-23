@@ -12,6 +12,7 @@ import AddProduct from "./pages/AddProduct";
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
 import PageNotFound from "../404";
+import Logout from "./pages/Logout";
 
 const AdminIndex = () => {
   return (
@@ -27,6 +28,7 @@ const AdminIndex = () => {
       <Route path="/featured-product" element={<FeaturedProducts />} />
       <Route path="/add-product" element={<AddProduct />} />
       <Route path="/orders" element={<Orders />} />
+      <Route path="/logout" element={<Logout />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   )

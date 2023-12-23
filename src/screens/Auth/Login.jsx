@@ -46,7 +46,7 @@ const Login = () => {
     <div className='w-full flex flex-col justify-center items-center min-h-screen'>
       <div className='flex items-center flex-col mb-7 gap-2 w-[340px] md:w-[400px] px-1 text-sm'>
         <h1 className='p-700 text-xl'>Welcome back!</h1>
-        <p className='p-500 text-gray-500 text-center'>Log back into your Nostra account..</p>
+        <p className='p-500 text-gray-500 text-center'>Log back into your VirtuC account..</p>
       </div>
       <form className='w-[340px] md:w-[400px]' onSubmit={handleSubmit}>
         {/* Email Input */}
@@ -120,7 +120,7 @@ const Login = () => {
         <p className='p-500 text-gray-500 text-center'>
           For further support, you may visit the Help Center or contact our customer service team.
         </p>
-        <h1 className='p-700 text-xl'>Nostra</h1>
+        <h1 className='p-700 text-xl'>VirtuC</h1>
       </div>
     </div>
   );
