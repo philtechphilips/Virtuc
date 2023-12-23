@@ -11,7 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DataGrid } from "@mui/x-data-grid";
 import apiService from "../../../api/apiRequests";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { convertToBase64 } from "../../../utils";
 
 const AddProduct = () => {
@@ -24,6 +24,7 @@ const AddProduct = () => {
     const [isDeleted, setIsDeleted] = useState(false);
     const [sizeQuantities, setSizeQuantities] = useState([{ size: '', quantity: '' }]);
     const [colorQuantities, setColorQuantities] = useState([{ color: '', quantity: '' }]);
+    const navigate = useNavigate();
 
     const handleSizeQuantityChange = (index, property, value) => {
         const updatedSizeQuantities = [...sizeQuantities];
@@ -162,6 +163,14 @@ const AddProduct = () => {
             renderCell: (params) => {
                 return (
                     <div className="cellAction flex gap-5">
+                         <button
+                            type="button"
+                            className={`viewButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+                                }`}
+                                onClick={() => navigate(`/product-details/${params.row.slug}`)}
+                        >
+                            View Product Details
+                        </button>
                         <button
                             type="button"
                             className={`viewButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"

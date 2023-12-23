@@ -12,6 +12,8 @@ import ReactModal from "react-modal";
 import ChangeOrderStatus from "../components/ChangeOrderStatus";
 import Skeleton from "react-loading-skeleton";
 import TableLoading from "../components/TableLoading";
+import { useNavigate } from "react-router-dom";
+import OrderDetails from "./OrderDetails";
 
 
 
@@ -21,9 +23,12 @@ const Orders = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [ordersToBeShown, setOrdersToBeShown] = useState("All");
     const [selectedOrderId, setSelectedOrderId] = useState("");
+    const [selectedOrder, setSelectedOrder] = useState(null);
     const [selectedPaymentReference, setSelectedPaymentReference] = useState("");
     const [isViewOrderDeatils, setIsViewOrderDetails] = useState(false);
+    const [isViewOrderFullDeatils, setIsViewOrderFullDetails] = useState(false);
     const { activeMenu } = useStateContext();
+    const navigate = useNavigate();
 
     const handleOrderClick = (order) => {
         setOrdersToBeShown(order);
@@ -33,6 +38,12 @@ const Orders = () => {
         setSelectedOrderId(orderId);
         setSelectedPaymentReference(paymentReference);
         setIsViewOrderDetails(!isViewOrderDeatils);
+    };
+
+    const viewFullOrderDetails = (order) => {
+        console.log(order)
+        setSelectedOrder(order);
+        setIsViewOrderFullDetails(true)
     };
 
     useEffect(() => {
@@ -100,6 +111,7 @@ const Orders = () => {
                             type="button"
                             className={`viewButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
                                 }`}
+                            onClick={() => viewFullOrderDetails(params.row)}
                         >
                             View Order Details
                         </button>
@@ -207,6 +219,7 @@ const Orders = () => {
                 </div>
             </div>
             <ChangeOrderStatus orderId={selectedOrderId} paymentReference={selectedPaymentReference} isModalOpen={isViewOrderDeatils} setIsViewOrderDetails={setIsViewOrderDetails} />
+            <OrderDetails order={selectedOrder} isModalOpen={isViewOrderFullDeatils} setIsViewOrderDetails={setIsViewOrderFullDetails} />
             <ToastContainer />
         </div>
     );

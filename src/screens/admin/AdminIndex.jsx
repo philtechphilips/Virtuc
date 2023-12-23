@@ -10,6 +10,8 @@ import Banners from "./pages/Banners";
 import FeaturedProducts from "./pages/FeaturedProducts";
 import AddProduct from "./pages/AddProduct";
 import Orders from "./pages/Orders";
+import OrderDetails from "./pages/OrderDetails";
+import PageNotFound from "../404";
 
 const AdminIndex = () => {
   return (
@@ -25,7 +27,7 @@ const AdminIndex = () => {
       <Route path="/featured-product" element={<FeaturedProducts />} />
       <Route path="/add-product" element={<AddProduct />} />
       <Route path="/orders" element={<Orders />} />
-      <Route path="*" element="404" />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   )
 
