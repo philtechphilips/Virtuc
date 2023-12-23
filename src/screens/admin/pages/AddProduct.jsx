@@ -13,6 +13,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import apiService from "../../../api/apiRequests";
 import { useLocation, useNavigate } from "react-router-dom";
 import { convertToBase64 } from "../../../utils";
+import useAuthContext from "../../../context/AuthContext";
 
 const AddProduct = () => {
     const [data, setData] = useState([]);
@@ -25,6 +26,7 @@ const AddProduct = () => {
     const [sizeQuantities, setSizeQuantities] = useState([{ size: '', quantity: '' }]);
     const [colorQuantities, setColorQuantities] = useState([{ color: '', quantity: '' }]);
     const navigate = useNavigate();
+    const { logout } = useAuthContext();
 
     const handleSizeQuantityChange = (index, property, value) => {
         const updatedSizeQuantities = [...sizeQuantities];
@@ -56,6 +58,10 @@ const AddProduct = () => {
                 theme: "light",
             });
         } catch (e) {
+            if (e.response.data.statusCode === 401) {
+                await toast.error("Session expired kindly login!");
+                logout();
+            }
             toast.error(e.response.data.message, {
                 position: "bottom-right",
                 autoClose: 5000,

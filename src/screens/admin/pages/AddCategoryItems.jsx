@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { DataGrid } from "@mui/x-data-grid";
 import apiService from "../../../api/apiRequests";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAuthContext from "../../../context/AuthContext";
 
 const AddCategoryItems = () => {
     const [data, setData] = useState([]);
@@ -22,6 +23,7 @@ const AddCategoryItems = () => {
     const [isActive, setIsActive] = useState(false);
     const location = useLocation();
     const navigate = useNavigate() 
+    const { logout } = useAuthContext()
     const { id, category } = location.state;
 
     if(!location.state.hasOwnProperty("id") && !location.state.hasOwnProperty("category")){
@@ -43,6 +45,10 @@ const AddCategoryItems = () => {
                 theme: "light",
             });
         } catch (e) {
+            if (e.response.data.statusCode === 401) {
+                await toast.error("Session expired kindly login!");
+                logout();
+            }
             toast.error(e.response.data.message, {
                 position: "bottom-right",
                 autoClose: 5000,
@@ -132,6 +138,10 @@ const AddCategoryItems = () => {
                 console.log(response.data.payload)
                 setData(response.data.payload);
             } catch (error) {
+                if (error.response.data.statusCode === 401) {
+                    await toast.error("Session expired kindly login!");
+                    logout();
+                }
                 toast.error("Something went wrong!");
             }
         }
@@ -155,6 +165,10 @@ const AddCategoryItems = () => {
             })
             resetForm();
         } catch (e) {
+            if (e.response.data.statusCode === 401) {
+                await toast.error("Session expired kindly login!");
+                logout();
+            }
             setErrors(e.response.data.message)
         } finally {
             setIsSubmitting(false)
