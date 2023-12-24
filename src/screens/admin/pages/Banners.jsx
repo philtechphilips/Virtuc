@@ -22,7 +22,6 @@ const Banners = () => {
     const [isDeleted, setIsDeleted] = useState(false);
     const [isActive, setIsActive] = useState(false);
     const [image, setImage] =  useState("");
-    const location = useLocation();
 
     const handleDelete = async (id) => {
         setIsDeleted(true)

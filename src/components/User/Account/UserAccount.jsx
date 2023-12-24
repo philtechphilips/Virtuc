@@ -26,7 +26,6 @@ const UserAccount = () => {
             try {
                 const response = await apiService.fetchAuthUser(savedUser);
                 setUser(response.data.payload)
-                // console.log(response.data.payload)
             } catch (error) {
                 if (error.response.data.statusCode === 401) {
                     await toast.error("Session expired kindly login!");

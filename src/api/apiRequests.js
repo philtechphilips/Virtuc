@@ -537,6 +537,19 @@ const apiService = {
       throw error;
     }
   },
+
+  fetchDashboard: async (token) => {
+    try {
+      const response = await axios.get(`/dashboard`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default apiService;

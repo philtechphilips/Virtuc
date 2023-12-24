@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import apiService from '../../../api/apiRequests';
 import { Link } from 'react-router-dom'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import useAuthContext from '../../../context/AuthContext';
 import NavCategoryType from './NavCategoryType';
-import Cookies from 'js-cookie';
 
 
 const NavBar = () => {
-    const [isFixed, setIsFixed] = useState(false);
     const [category, setCategory] = useState([]);
-    const [isAcountOpen, setIsAccountOpen] = useState(false);
-    const { activeCategory, setActiveCategory, activeCategoryId, setActiveCategoryId, setWishList, wishList, cart, setCart } = useAuthContext();
+    const { activeCategory, setActiveCategory, setActiveCategoryId, setWishList, wishList, cart, setCart } = useAuthContext();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -110,11 +107,10 @@ const NavBar = () => {
         };
         getSearchItems();
 
-        console.log(searchItems); // Log the updated searchItems here
+        console.log(searchItems);
     }, [query]);
     return (
         <>
-            {/* Desktop menu starts here */}
             <div className={`h-8  bg-white flex justify-between items-center px-5 md:px-10 py-8  mb-5 z-[1000] border-b`}>
                 <div className='md:hidden' onClick={showNavbar}>
                     <i className="text-2xl ri-menu-2-line"></i>
@@ -155,11 +151,11 @@ const NavBar = () => {
 
                 <div className="relative hidden md:flex items-center gap-10">
                     <form className=" flex items-center bg-gray-100 border border-gray-300 rounded-lg p-2">
-                    {searchItems && searchItems.length > 0 ? (
-                        <i className="ri-close-line text-xl text-gray-800 mr-1 cursor-pointer" onClick={clearSearch}></i>
-                    ): (
-                        <i className="ri-search-line text-xl text-gray-800 mr-1 cursor-pointer"></i>
-                    )}
+                        {searchItems && searchItems.length > 0 ? (
+                            <i className="ri-close-line text-xl text-gray-800 mr-1 cursor-pointer" onClick={clearSearch}></i>
+                        ) : (
+                            <i className="ri-search-line text-xl text-gray-800 mr-1 cursor-pointer"></i>
+                        )}
                         <input
                             type="text"
                             placeholder="Search"
@@ -299,12 +295,23 @@ const NavBar = () => {
 
                     ))}
                     <div className='w-full border border-dashed'></div>
-                    <Link to="/auth/login" className='p-700 flex items-center justify-center py-3 rounded-lg gap-3 bg-gray-900 text-center text-white'>
-                        Sign In
-                    </Link>
-                    <Link to="/auth/create-account" className='p-700 flex items-center justify-center py-3 rounded-lg gap-3 border-2 border-gray-900 text-center text-gray-900'>
-                        Register
-                    </Link>
+                    {user ? (
+                        <>
+                            <Link to="logout" className='p-700 flex items-center justify-center py-3 rounded-lg gap-3 bg-gray-900 text-center text-white'>
+                                Logout
+                            </Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/auth/login" className='p-700 flex items-center justify-center py-3 rounded-lg gap-3 bg-gray-900 text-center text-white'>
+                                Sign In
+                            </Link>
+                            <Link to="/auth/create-account" className='p-700 flex items-center justify-center py-3 rounded-lg gap-3 border-2 border-gray-900 text-center text-gray-900'>
+                                Register
+                            </Link>
+                        </>
+                    )}
+
                 </div>
             </div>
             {/* Mobile menu ends here */}
@@ -356,12 +363,21 @@ const NavBar = () => {
                         <p>Pending Review</p>
                     </Link>
                     <div className='w-full border border-dashed'></div>
-                    <Link to="/auth/login" className='p-700 flex items-center justify-center py-3 rounded-lg gap-3 bg-gray-900 text-center text-white'>
-                        Sign In
-                    </Link>
-                    <Link to="/auth/create-account" className='p-700 flex items-center justify-center py-3 rounded-lg gap-3 border-2 border-gray-900 text-center text-gray-900'>
-                        Register
-                    </Link>
+                    {user ? (
+                        <>
+                            <Link to="/auth/login" className='p-700 flex items-center justify-center py-3 rounded-lg gap-3 bg-gray-900 text-center text-white'>
+                                Sign In
+                            </Link>
+                            <Link to="/auth/create-account" className='p-700 flex items-center justify-center py-3 rounded-lg gap-3 border-2 border-gray-900 text-center text-gray-900'>
+                                Register
+                            </Link>
+                        </>
+                    ) : (
+                        <Link to="/logout" className='p-700 flex items-center justify-center py-3 rounded-lg gap-3 bg-gray-900 text-center text-white'>
+                            Sign Out
+                        </Link>
+
+                    )}
                 </div>
             </div>
             {/* Submenu for mobile ends here */}

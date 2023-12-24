@@ -22,6 +22,7 @@ import PageNotFound from './screens/404'
 import Wishlist from './screens/Wishlist'
 import AdminIndex from './screens/admin/AdminIndex'
 import AdminLayout from './protectedRoutes/AdminRoutes'
+import Logout from './screens/admin/pages/Logout'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/wishlist" element={<Wishlist />}></Route>
         <Route path="/product-details/:slug" element={<ProductDetails />}></Route>
+        <Route path="/logout" element={<Logout />} />
         
         
 

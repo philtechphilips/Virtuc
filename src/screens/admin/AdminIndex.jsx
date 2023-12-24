@@ -28,7 +28,6 @@ const AdminIndex = () => {
       <Route path="/featured-product" element={<FeaturedProducts />} />
       <Route path="/add-product" element={<AddProduct />} />
       <Route path="/orders" element={<Orders />} />
-      <Route path="/logout" element={<Logout />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   )

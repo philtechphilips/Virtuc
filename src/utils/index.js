@@ -19,3 +19,17 @@ export const convertToBase64 = (e) => {
         })
     );
 };
+
+
+export const revenue = (payments) => {
+    const totalSuccessfulAmount = payments
+        .filter(payment => payment.paymentStatus === 'success')
+        .reduce((sum, payment) => sum + +payment.amount, 0);
+
+    const formattedAmount = new Intl.NumberFormat('en-NG', {
+        style: 'currency',
+        currency: 'NGN'
+    }).format(totalSuccessfulAmount);
+
+    return formattedAmount;
+}
