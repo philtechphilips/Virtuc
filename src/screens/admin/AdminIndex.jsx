@@ -19,6 +19,7 @@ const AdminIndex = () => {
 
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/administrator/dashboard" element={<Dashboard />} />
       <Route path="/administrators" element={<Admin />} />
       <Route path="/users" element={<Users />} />
       <Route path="/add-cta" element={<AddCTA />} />

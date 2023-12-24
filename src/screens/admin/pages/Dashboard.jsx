@@ -36,13 +36,8 @@ const Dashboard = () => {
       }
     }
     fetchDashboard();
-  }, []);
+  }, [isViewOrderDeatils]);
   const { activeMenu } = useStateContext();
-
-
-  const handleOrderClick = (order) => {
-    setOrdersToBeShown(order);
-  };
 
   const viewOrderDetails = (orderId, paymentReference) => {
     setSelectedOrderId(orderId);

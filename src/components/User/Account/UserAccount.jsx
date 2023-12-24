@@ -20,7 +20,7 @@ const UserAccount = () => {
     const savedUser = JSON.parse(localStorage.getItem('user'))
     const [isLoading, setIsLoading] = useState(true)
     const { logout } = useAuthContext;
-    
+
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
@@ -48,7 +48,14 @@ const UserAccount = () => {
                 <div className='flex flex-col-reverse pl-5 py-10 border' >
                     <div className='flex flex-col px-3'>
                         <h1 className='p-700 text-2xl uppercase w-40'><span>{isLoading ? <Skeleton /> : `HI ${user.first_name}`}</span></h1>
-                        <p className='p-500 text-sm w-40'>{isLoading ? <Skeleton /> : `${user.phone_number}`}</p>
+                        <p className='p-500 text-sm w-40'>
+                            {isLoading ? (
+                                <Skeleton />
+                            ) : (
+                                `${user?.phone_number || ''}`
+                            )}
+                        </p>
+
                     </div>
                 </div>
             </div>
@@ -116,12 +123,12 @@ const UserAccount = () => {
                         <Wishlist />
                     </div>
                 )}
-                 {section === 'review' && (
+                {section === 'review' && (
                     <div className='mt-5 p-4'>
                         <PendingReview />
                     </div>
                 )}
-                 {section === 'notification' && (
+                {section === 'notification' && (
                     <div className='mt-5 p-4'>
                         <Notification />
                     </div>

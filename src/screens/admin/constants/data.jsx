@@ -92,8 +92,6 @@ export const Menus = [
       },
     ],
   },
-
-  { title: "Account Setting", src: "/account-settings", icon: 'ri-user-settings-line' },
   { title: "Logout", src: "/logout", icon: 'ri-logout-box-r-line' },
 ];
 

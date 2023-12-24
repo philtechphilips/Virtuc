@@ -19,17 +19,17 @@ const AccountOverView = ({ userProfile, isLoading }) => {
 
                 <div className='flex flex-col gap-2 mb-5'>
                     <h1 className='p-700 text-gray-900 text-xl'>Details</h1>
-                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile.first_name} ${userProfile.last_name}`}</p>
-                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile.email}`}</p> 
-                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile.gender}`}</p>
-                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile.dob}`}</p>
-                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile.phone_number}`}</p>
+                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile?.first_name} ${userProfile?.last_name}`}</p>
+                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile?.email || ''}`}</p>
+                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile?.gender || ''}`}</p>
+                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile?.dob || ''}`}</p>
+                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile?.phone_number || ''}`}</p>
                     <Link onClick={() => setIsEditAccount(true)} className='p-600 uppercase underline text-gray-950 text-[15px] hover:bg-gray-900 hover:text-white w-fit'>EDIT</Link>
                 </div>
 
                 <div className='flex flex-col gap-2 mb-5'>
                     <h1 className='p-700 text-gray-900 text-xl'>Address</h1>
-                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile.home_address}`}.</p>
+                    <p className='p-400 uppercase text-[15px]'>{isLoading ? <Skeleton className='w-64 md:w-80' /> : `${userProfile?.home_address || ''}`}</p>
                 </div>
 
                 <div className='flex flex-col gap-2 mb-5'>
