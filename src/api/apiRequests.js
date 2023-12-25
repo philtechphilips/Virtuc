@@ -371,6 +371,19 @@ const apiService = {
     }
   },
 
+  updtaeHeaderBarContent: async (token, values, id) => {
+    try {
+      const response = await axios.patch(`/header-bar/update/${id}`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   fetchHeaderBarContent: async () => {
     try {
       const response = await axios.get(`/header-bar`);

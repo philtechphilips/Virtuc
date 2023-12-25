@@ -11,11 +11,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DataGrid } from "@mui/x-data-grid";
 import apiService from "../../../api/apiRequests";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 
 
-const AddCTA = () => {
+const EditCTA = () => {
     const [data, setData] = useState([]);
     const [errors, setErrors] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,6 +23,8 @@ const AddCTA = () => {
     const [isDeleted, setIsDeleted] = useState(false);
     const [isActive, setIsActive] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+    console.log(location.state)
 
     const handleDelete = async (id) => {
         setIsDeleted(true)
@@ -56,7 +58,7 @@ const AddCTA = () => {
     }
 
     const initialValues = {
-        content: '',
+        content: location?.state?.content || '',
     };
 
     const validationSchema = Yup.object().shape({
@@ -83,7 +85,7 @@ const AddCTA = () => {
                             type="button"
                             className={`viewButton ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
                                 }`}
-                            onClick={() => navigate("/edit-cta", { state: params.row})}
+                            onClick={() => navigate("/edit-cta", { state: params.row })}
                         >
                             Edit
                         </button>
@@ -118,8 +120,8 @@ const AddCTA = () => {
         setIsSubmitting(true);
         try {
             const user = JSON.parse(localStorage.getItem("user"));
-            const response = await apiService.addHeaderBarContent(user.token, values);
-            toast.success("CTA Created Sucessfully!", {
+            await apiService.updtaeHeaderBarContent(user.token, values, location?.state?._id);
+            toast.success("Header Bar Updated Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -169,24 +171,39 @@ const AddCTA = () => {
                     <div className="pb-20 w-full h-full  p-5 pt-24 md:pt-2">
                         <div className="bg-white p-5">
                             <div className="flex w-full md:w-1/2 justify-between items-center">
-                                <h1 className="text-lg font-semibold mb-4">Add Header Bar</h1>
+                                <h1 className="text-lg font-semibold mb-4">Edit Header Bar</h1>
                             </div>
 
-                            <Formik initialValues={initialValues}
+                            <Formik
+                                initialValues={initialValues}
                                 validationSchema={validationSchema}
-                                onSubmit={handleSubmit} className="md:w-1/2 w-full">
+                                onSubmit={handleSubmit}
+                                className="md:w-1/2 w-full"
+                            >
                                 <Form>
                                     <div className="w-full flex flex-wrap justify-between">
                                         <div className="mb-4 mt-4 w-full pr-3">
                                             <label
-                                                htmlFor="vote"
+                                                htmlFor="content"
                                                 className="block text-gray-700 font-semibold text-sm mb-2"
                                             >
                                                 Content:
                                             </label>
-                                            <Field type="text" id="content" name="content" className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Add header bar content" />
-                                            <ErrorMessage name="content" component="div" className="text-sm text-red-600" />
-                                            {errors && (<p className="text-sm text-red-600">{errors}</p>)}
+                                            <Field
+                                                type="text"
+                                                id="content"
+                                                name="content"
+                                                className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                placeholder="Add header bar content"
+                                            />
+                                            <ErrorMessage
+                                                name="content"
+                                                component="div"
+                                                className="text-sm text-red-600"
+                                            />
+                                            {errors && (
+                                                <p className="text-sm text-red-600">{errors}</p>
+                                            )}
                                         </div>
                                     </div>
 
@@ -209,11 +226,12 @@ const AddCTA = () => {
                                                 <span className="text-sm font-medium ml-2">Submitting..</span>
                                             </div>
                                         ) : (
-                                            "Add Header Bar Content"
+                                            "Update Header Bar Content"
                                         )}
                                     </button>
                                 </Form>
                             </Formik>
+
                             <ToastContainer />
                         </div>
                         {/* All Administrators */}
@@ -236,4 +254,4 @@ const AddCTA = () => {
     );
 }
 
-export default AddCTA
+export default EditCTA
