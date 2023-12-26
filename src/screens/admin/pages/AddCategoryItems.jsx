@@ -152,7 +152,7 @@ const AddCategoryItems = () => {
         setIsSubmitting(true)
         try {
             const user = JSON.parse(localStorage.getItem("user"));
-            const response = await apiService.createCategoryType(user.token, values, id);
+            await apiService.createCategoryType(user.token, values, id);
             toast.success("Category Type Created Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
@@ -207,7 +207,7 @@ const AddCategoryItems = () => {
                     <div className="pb-20 w-full h-full  p-5 pt-24 md:pt-2">
                         <div className="bg-white p-5">
                             <div className="flex w-full md:w-1/2 justify-between items-center">
-                                <h1 className="text-lg font-semibold mb-4">Add Categories</h1>
+                                <h1 className="text-lg font-semibold mb-4">Add Category Type</h1>
                             </div>
 
                             <Formik initialValues={initialValues}

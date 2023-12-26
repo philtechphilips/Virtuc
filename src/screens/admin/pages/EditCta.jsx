@@ -21,10 +21,11 @@ const EditCTA = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { activeMenu } = useStateContext();
     const [isDeleted, setIsDeleted] = useState(false);
-    const [isActive, setIsActive] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    console.log(location.state)
+    if (!location.state) {
+        navigate("/add-cta");
+    }
 
     const handleDelete = async (id) => {
         setIsDeleted(true)
@@ -173,7 +174,7 @@ const EditCTA = () => {
                             <div className="flex w-full md:w-1/2 justify-between items-center">
                                 <h1 className="text-lg font-semibold mb-4">Edit Header Bar</h1>
                             </div>
-
+                            <div className="flex gap-1 items-center cursor-pointer" onClick={() => navigate("/add-cta")}><i className="ri-arrow-left-s-line text-2xl"></i> <p>Back</p></div>
                             <Formik
                                 initialValues={initialValues}
                                 validationSchema={validationSchema}

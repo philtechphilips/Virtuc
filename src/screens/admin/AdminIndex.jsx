@@ -14,6 +14,7 @@ import OrderDetails from "./pages/OrderDetails";
 import PageNotFound from "../404";
 import Logout from "./pages/Logout";
 import EditCTA from "./pages/EditCta";
+import EditCategories from "./pages/EditCategories";
 
 const AdminIndex = () => {
   return (
@@ -25,6 +26,7 @@ const AdminIndex = () => {
       <Route path="/users" element={<Users />} />
       <Route path="/add-cta" element={<AddCTA />} />
       <Route path="/edit-cta" element={<EditCTA />} />
+      <Route path="/edit-categories" element={<EditCategories />} />
       <Route path="/categories" element={<Categories />} />
       <Route path="/category-type" element={<AddCategoryItems />} />
       <Route path="/banners" element={<Banners />} />

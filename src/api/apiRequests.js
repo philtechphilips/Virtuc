@@ -422,7 +422,7 @@ const apiService = {
 
   createCategoryType: async (token, { categoryType }, id) => {
     try {
-      const response = await axios.patch(`/category/create-category-type`, { categoryType, categoryId: id }, {
+      const response = await axios.patch(`/category/category-type/create`, { categoryType, categoryId: id }, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -554,6 +554,19 @@ const apiService = {
   fetchDashboard: async (token) => {
     try {
       const response = await axios.get(`/dashboard`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  editCategory: async (token, values, id) => {
+    try {
+      const response = await axios.patch(`/category/${id}`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
         }

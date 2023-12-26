@@ -21,14 +21,13 @@ const AddCTA = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { activeMenu } = useStateContext();
     const [isDeleted, setIsDeleted] = useState(false);
-    const [isActive, setIsActive] = useState(false);
     const navigate = useNavigate();
 
     const handleDelete = async (id) => {
         setIsDeleted(true)
         try {
             const user = JSON.parse(localStorage.getItem("user"));
-            const response = await apiService.deleteHeaderBarContent(user.token, id);
+            await apiService.deleteHeaderBarContent(user.token, id);
             toast.success("Header Bar Content Deleted Sucessfully!", {
                 position: "bottom-right",
                 autoClose: 5000,
