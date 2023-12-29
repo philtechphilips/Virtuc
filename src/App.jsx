@@ -34,9 +34,8 @@ function App() {
         <Route path="/wishlist" element={<Wishlist />}></Route>
         <Route path="/product-details/:slug" element={<ProductDetails />}></Route>
         <Route path="/logout" element={<Logout />} />
+        {/* <Route path="*" element={<PageNotFound />}></Route> */}
         
-        
-
         <Route element={<GuestRoutes />}>
           <Route path="/auth/login" element={<Login />}></Route>
           <Route path="/auth/create-account" element={<CreateAccount />}></Route>
@@ -58,8 +57,6 @@ function App() {
         <Route element={<AdminLayout />}>
         <Route path='/*' element={<AdminIndex />}></Route>
         </Route>
-        <Route path="*" element={<PageNotFound />}></Route>
-
       </Routes>
     </>
   )

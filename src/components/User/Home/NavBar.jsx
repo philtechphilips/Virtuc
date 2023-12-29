@@ -17,6 +17,7 @@ const NavBar = () => {
     const [query, setQuery] = useState("");
     const [searchItems, setSearchItems] = useState([]);
     const user = JSON.parse(localStorage.getItem('user'));
+    const [onSearch, setOnSearch] = useState(false);
     const showNavbar = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen)
     };
@@ -100,14 +101,12 @@ const NavBar = () => {
             try {
                 const response = await apiService.getSearchItem(query);
                 setSearchItems(response.data.payload);
+                console.log(response.data.payloa)
             } catch (error) {
-                console.log(error);
                 setSearchItems([]);
             }
         };
         getSearchItems();
-
-        console.log(searchItems);
     }, [query]);
     return (
         <>
@@ -165,7 +164,7 @@ const NavBar = () => {
                             onKeyDown={() => setSearchItems([])}
                         />
                     </form>
-                    {searchItems && searchItems.length > 0 && (
+                    {searchItems && searchItems.length > 0 ? (
                         <div className='absolute z-[100000] top-[56px] left-0 shadow-lg bg-white p-3'>
                             <h3 className='p-400 uppercase'>Suggestions</h3>
                             {searchItems.map((item, index) => (
@@ -179,6 +178,14 @@ const NavBar = () => {
                                 </Link>
                             ))}
                         </div>
+                    ): (
+                        <>
+                        {onSearch && (
+    <div className='absolute z-[100000] top-[56px] left-0 shadow-lg bg-white p-3'>
+        <p className='p-400 text-red-600'>No Item Found!</p>
+    </div>
+)}
+                        </>
                     )}
 
                     <div className="flex items-center gap-4 cursor-pointer">

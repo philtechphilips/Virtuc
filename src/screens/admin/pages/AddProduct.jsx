@@ -263,6 +263,7 @@ const AddProduct = () => {
                                             formik.setFieldValue("categoryId", e.target.value);
                                             setSelectedCategory(e.target.value);
                                         }}>
+                                            <option disabled selected>Select a Category</option>
                                             {category && category.length > 0 && category.map((item, index) => (
                                                 <option key={index} value={item._id}>{item.category}</option>
                                             ))}

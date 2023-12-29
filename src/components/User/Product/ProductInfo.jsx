@@ -203,7 +203,6 @@ const ProductInfo = ({ product, loading }) => {
                                                     value={size}
                                                     onChange={(e) => setSize(e.target.value)}
                                                     className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'>
-                                                    <option defaultValue="" disabled>Select a size</option>
                                                     {product
                                                         && product.sizes && product.sizes.map((item, index) => (
                                                             <>
@@ -211,7 +210,6 @@ const ProductInfo = ({ product, loading }) => {
                                                                     <option key={index}>{item.size}</option>
                                                                 )}
                                                             </>
-
                                                         ))}
                                                 </select>
                                             </>
@@ -234,7 +232,6 @@ const ProductInfo = ({ product, loading }) => {
                                                     onChange={(e) => setColor(e.target.value)}
                                                     className='w-full p-400 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm'
                                                 >
-                                                    <option value="" disabled>Select a color</option>
                                                     {product &&
                                                         product.colors &&
                                                         product.colors.map((item, index) => (
@@ -243,7 +240,6 @@ const ProductInfo = ({ product, loading }) => {
                                                             </option>
                                                         ))}
                                                 </select>
-
                                             </>
                                         )
 

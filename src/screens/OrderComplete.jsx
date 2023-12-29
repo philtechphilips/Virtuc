@@ -10,6 +10,7 @@ import useAuthContext from '../context/AuthContext'
 
 const OrderComplete = () => {
   const [payment, setPayment] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [order, setOrder] = useState([]);
   const { txRef } = useParams();
   const { logout } = useAuthContext;
@@ -17,6 +18,7 @@ const OrderComplete = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const fetchData = async () => {
+      setIsSubmitting(true)
       try {
         const fetchedPayment = await apiService.fetchPaymentByTxRef(user.token, txRef);
         const fetchedOrder = await apiService.fetchOrderByTxRef(user.token, txRef);
@@ -28,6 +30,8 @@ const OrderComplete = () => {
           logout();
         }
         toast.error("Something went wrong!");
+      }finally{
+        setIsSubmitting(false);
       }
 
     }
@@ -37,7 +41,7 @@ const OrderComplete = () => {
     <>
       <CTA />
       <NavBar />
-      <OrderReceipt payment={payment} order={order} />
+      <OrderReceipt payment={payment} order={order} isSubmitting={isSubmitting} />
       <Footer />
       <ToastContainer />
     </>

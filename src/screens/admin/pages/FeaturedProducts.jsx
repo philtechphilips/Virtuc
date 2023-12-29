@@ -221,6 +221,7 @@ const FeaturedProducts = () => {
                                             Category:
                                         </label>
                                         <select className="appearance-none border text-sm rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="categoryId" onChange={(e) => formik.setFieldValue("categoryId", e.target.value)}>
+                                        <option disabled selected>Select a Category</option>
                                             {category && category.length > 0 && category.map((item, index) => (
                                                 <option key={index} value={item._id}>{item.category}</option>
                                             ))}

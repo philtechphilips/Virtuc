@@ -1,7 +1,8 @@
 import React from 'react'
+import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 
-const OrderReceipt = ({ payment, order }) => {
+const OrderReceipt = ({ payment, order, isSubmitting }) => {
     console.log(order)
     const date = new Date();
     return (
@@ -15,8 +16,16 @@ const OrderReceipt = ({ payment, order }) => {
                 <div className='w-full border border-dashed mt-5'></div>
                 <div className='pt-2'>
                     <h5 className='p-600'>Transaction Date</h5>
-                    {payment && payment.length > 0 && (
+                    {isSubmitting ? (
+                        <>
+                        <Skeleton className='w-48 py-1'></Skeleton>
+                        </>
+                    ) : (
+                        <>
+                         {payment && payment.length > 0 && (
                         <p className='text-sm text-gray-400 mt-1'>{new Date(payment[0].paidDate).toDateString()}</p>
+                    )}
+                        </>
                     )}
                 </div>
 
@@ -28,6 +37,15 @@ const OrderReceipt = ({ payment, order }) => {
                 <div className='w-full border border-dashed mt-5'></div>
                 <div className='pt-2'>
                     <h5 className='p-600'>Your Order</h5>
+                    {isSubmitting ? (
+                        <>
+                        <Skeleton className='w-full py-1 mb-[3px]'></Skeleton>
+                        <Skeleton className='w-full py-1 mb-[3px]'></Skeleton>
+                        <Skeleton className='w-full py-1 mb-[3px]'></Skeleton>
+                        <Skeleton className='w-full py-1 mb-[3px]'></Skeleton>
+                        </>
+                    ) : (
+                        <>
                     {order && order.length >> 0 && (
                       order.map((item, index) => (
                         <div className='flex justify-between pt-3' key={index}>
@@ -43,7 +61,8 @@ const OrderReceipt = ({ payment, order }) => {
                     </div>
                       ))
                     )}
-
+                    </>
+                    )}
                 </div>
                 <div className='w-full border border-dashed mt-5'></div>
                 {/* <div className='pt-2 flex items-center justify-between'>
