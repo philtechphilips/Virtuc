@@ -80,15 +80,32 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
 
 
   const PaystackHookExample = () => {
-    const initializePayment = usePaystackPayment(config);
+    let initializePayment = usePaystackPayment(config);
     return (
       <div>
-        <button type='submit' className='bg-gray-900 p-600 p-3 w-full mt-3 rounded text-white disabled:bg-gray-200 disabled:text-gray-900 disabled:cursor-not-allowed' onClick={() => {
-          initializePayment(onSuccess, onClose)
-        }}>Continue to payment</button>
+        <button
+          type="submit"
+          className="bg-gray-900 p-600 p-3 w-full mt-3 rounded text-white disabled:bg-gray-200 disabled:text-gray-900 disabled:cursor-not-allowed"
+          onClick={() => {
+            if (
+              userdetails &&
+              (userdetails.phone_number === undefined ||
+                userdetails.home_address === undefined ||
+                userdetails.city === undefined ||
+                userdetails.region === undefined)
+            ) {
+              toast.error("Kindly update your profile in the account page to make purchases!");
+            } else {
+              initializePayment(onSuccess, onClose);
+            }
+          }}
+        >
+          Continue to payment
+        </button>
       </div>
     );
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -147,7 +164,7 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
               </div>
               <div className='flex flex-col w-full md:w-1/2'>
                 <label htmlFor="name" className='p-600 text-gray-500 text-sm'>Phone Number*</label>
-                <input type='phone' className='px-3 py-3 bg-gray-100 border border-gray-300 outline-none rounded mt-1' disabled value={userdetails && userdetails.phone_number} placeholder='Enter Your Phone Number'></input>
+                <input type='phone' className='px-3 py-3 bg-gray-100 border border-gray-300 outline-none rounded mt-1' value={userdetails && userdetails.phone_number} placeholder='Enter Your Phone Number'></input>
               </div>
             </div>
 
@@ -166,24 +183,7 @@ const CheckoutContent = ({ cart, initialPrice, totalPrice, totalDiscount }) => {
                 <input type='phone' className='px-3 py-3 bg-gray-100 border border-gray-300 outline-none rounded mt-1' onChange={(e) => { setRegion(e.target.value) }} disabled={userdetails && (userdetails.region === "" || userdetails.region === undefined) ? false : true} value={userdetails && region} placeholder='Enter Your Region'></input>
               </div>
             </div>
-
           </div>
-
-          {/* <div className='border-[1.5px] rounded-lg border-gray-300 py-5 px-3 md:p-5'>
-            <p className='p-600 text-lg'>Delivery Details</p>
-            <div className='flex  justify-between mt-3'>
-              <div className='flex'>
-                <input type='radio' className='text-gray-900 border-2 border-gray-900 focus:border-[#0C513F] h-4 w-4' placeholder='Enter Your full name'></input>
-                <div className='pl-2'>
-                  <p className='p-600'>Door delivery</p>
-                  <p className='p-500 text-gray-400'>1-3 business days</p>
-                </div>
-              </div>
-              <div className='p-600'>
-                &#x20A6;250
-              </div>
-            </div>
-          </div> */}
         </div>
 
         <div className='w-full md:w-1/3 border rounded-lg border-gray-300 py-5 px-3 md:p-5'>
