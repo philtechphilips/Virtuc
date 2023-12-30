@@ -98,8 +98,8 @@ const AddProduct = () => {
             instructions: "",
             highlight: "",
             image: "",
-            size: "",
-            color: ""
+            size: [],
+            color: []
         },
         validationSchema: Yup.object({
             title: Yup.mixed().required("Title is required!"),
@@ -130,17 +130,16 @@ const AddProduct = () => {
                 })
                 formik.resetForm();
             } catch (e) {
-                console.log(e)
-                // toast.error(e.response.data.message, {
-                //     position: "bottom-right",
-                //     autoClose: 5000,
-                //     hideProgressBar: false,
-                //     closeOnClick: true,
-                //     pauseOnHover: true,
-                //     draggable: true,
-                //     progress: undefined,
-                //     theme: "light",
-                // })
+                toast.error(e.response.data.message, {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                })
             } finally {
                 setIsSubmitting(false)
             }

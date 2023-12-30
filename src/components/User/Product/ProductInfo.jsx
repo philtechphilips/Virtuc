@@ -144,7 +144,6 @@ const ProductInfo = ({ product, loading }) => {
                                 <p className='p-400'>{product.categoryType}</p>
                             ) :
                             " "}
-                        <i className="text-[#F59E0B] text-2xl text-right ri-heart-add-line"></i>
                     </div>
                     {loading ? <Skeleton className='w-full py-[3px]' /> : product
                         && product.title

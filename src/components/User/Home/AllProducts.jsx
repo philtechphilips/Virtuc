@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useAuthContext from '../../../context/AuthContext';
 import apiService from '../../../api/apiRequests';
 import { Link } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
 
 
 const AllProducts = () => {
@@ -16,13 +17,13 @@ const AllProducts = () => {
     };
 
     const [product, setProduct] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const { activeCategory, setActiveCategory } = useAuthContext();
     useEffect(() => {
         async function fetchproduct() {
+            setIsLoading(true)
             try {
                 const response = await apiService.fetchProducts();
-                // console.log(response.data.payload)
                 setProduct(response.data.payload);
             } catch (error) {
                 console.error(error);
@@ -37,11 +38,31 @@ const AllProducts = () => {
             <div className='px-5 md:px-10 mb-4'>
                 <p className="p-600 text-2xl">Handpicked for you</p>
             </div>
+             {isLoading ? (
+                <div className='flex flex-wrap gap-3 md:px-10 px-5 mt-3'>
+                    <div>
+                        <Skeleton className='md:w-80 w-full px-40 py-40' />
+                        <Skeleton className='md:w-80 w-full px-40 py-42 mt-1'/>
+                    </div>
+                    <div>
+                        <Skeleton className='md:w-80 w-full px-40 py-40' />
+                        <Skeleton className='md:w-80 w-full px-40 py-42 mt-1'/>
+                    </div>
+                    <div>
+                        <Skeleton className='md:w-80 w-full px-40 py-40' />
+                        <Skeleton className='md:w-80 w-full px-40 py-42 mt-1'/>
+                    </div>
+                    <div>
+                        <Skeleton className='md:w-80 w-full px-40 py-40' />
+                        <Skeleton className='md:w-80 w-full px-40 py-42 mt-1'/>
+                    </div>
+                </div>
+             ) : (
             <div className='w-full px-5 md:px-10 flex flex-wrap items-start gap-4'>
                 {product.map((item, index) => (
                     <>
                         {item && item.categoryId && item.categoryId[0].category === activeCategory && (
-                            <Link to={`/product-details/${item.slug}`} className='flex flex-col w-full md:w-[300px] gap-1  mb-4 py-2 ' key={index}>
+                            <Link to={`/product-details/${item.slug}`} className='flex flex-col w-full md:w-[280px] gap-1  mb-4 py-2 ' key={index}>
                                 <div className=' relative'>
                                     <img
                                         className='rounded w-full item-center'
@@ -75,6 +96,7 @@ const AllProducts = () => {
                 ))}
 
             </div>
+             )}
         </>
     )
 }

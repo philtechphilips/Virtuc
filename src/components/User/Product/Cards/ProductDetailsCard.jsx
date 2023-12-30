@@ -64,7 +64,7 @@ const ProductDetailsCard = ({ product, loading }) => {
                             product && product.instructions &&
                             (
                                 <>
-                                    <h1 className='p-700 '>Whats in the box</h1>
+                                    <h1 className='p-700 '>Additional Information</h1>
                                     <p className='p-400 mt-2'>{product.instructions}</p>
                                 </>
                             )

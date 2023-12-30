@@ -39,7 +39,7 @@ const Products = () => {
         <>
          
             <div className='w-full px-5 md:px-10 flex flex-wrap items-start gap-x-3 md:gap-x-5 py-5'>
-                {product && product.length > 0 && product.map((item, index) => (
+                {product && product.length > 0 ? product.map((item, index) => (
                     <Link to={`/product-details/${item.slug}`} className='flex flex-col w-[48%] md:w-[300px] gap-1  mb-4 py-2 md:py-5' key={index}>
                         <div className=' relative'>
                             <img
@@ -68,7 +68,9 @@ const Products = () => {
                             })}</p>
                         </div>
                     </Link>
-                ))}
+                )) : (
+                    <p className='text-red-500'>No product yet!</p>
+                )}
             </div>
         </>
     )

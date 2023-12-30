@@ -6,12 +6,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Scrollbar } from 'swiper/modules'
 import 'swiper/css';
 import 'swiper/css/bundle';
+import Skeleton from 'react-loading-skeleton';
 
 
 
 const TrendingProducts = () => {
     const [isHovered, setIsHovered] = useState(false);
-
     const handleMouseEnter = (id) => {
         setIsHovered(id);
     };
@@ -21,10 +21,11 @@ const TrendingProducts = () => {
     };
 
     const [product, setProduct] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const { activeCategory, activeCategoryId } = useAuthContext();
     useEffect(() => {
         async function fetchproduct() {
+            setIsLoading(true)
             const category = JSON.parse(localStorage.getItem("category"));
             try {
                 const response = await apiService.fetchTrendingProducts(category.id);
@@ -45,7 +46,27 @@ const TrendingProducts = () => {
                         <p className="p-600 text-2xl">Trending Products</p>
                     </div>
                 </div>
-                <Swiper loop={true} modules={[Scrollbar]} scrollbar={{ draggable: true, dragSize: 60 }} spaceBetween={10} breakpoints={{
+             {isLoading ? (
+                <div className='flex flex-wrap gap-3 md:px-10 px-5 mt-3'>
+                    <div>
+                        <Skeleton className='md:w-80 w-full px-40 py-40' />
+                        <Skeleton className='md:w-80 w-full px-40 py-42 mt-1'/>
+                    </div>
+                    <div>
+                        <Skeleton className='md:w-80 w-full px-40 py-40' />
+                        <Skeleton className='md:w-80 w-full px-40 py-42 mt-1'/>
+                    </div>
+                    <div>
+                        <Skeleton className='md:w-80 w-full px-40 py-40' />
+                        <Skeleton className='md:w-80 w-full px-40 py-42 mt-1'/>
+                    </div>
+                    <div>
+                        <Skeleton className='md:w-80 w-full px-40 py-40' />
+                        <Skeleton className='md:w-80 w-full px-40 py-42 mt-1'/>
+                    </div>
+                </div>
+             ) : (
+                   <Swiper loop={true} modules={[Scrollbar]} scrollbar={{ draggable: true, dragSize: 60 }} spaceBetween={10} breakpoints={{
                     320: {
                         slidesPerView: 1.5,
                         spaceBetween: 10,
@@ -95,6 +116,7 @@ const TrendingProducts = () => {
                         </div>
                     ))}
                 </Swiper>
+             )}
             </div>
         </>
     )
